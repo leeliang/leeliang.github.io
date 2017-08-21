@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/10/2017-08-10-mcmc3/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/mcmc3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/10/2017-08-10-mcmc3/" itemprop="url">MCMC (3): MCMC采样方法</a></h1>
+                <a class="post-title-link" href="/2017/08/24/mcmc3/" itemprop="url">MCMC (3): MCMC采样方法</a></h1>
         
 
         <div class="post-meta">
@@ -298,7 +298,163 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-10T13:45:07+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T15:20:06+08:00">
+                2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-MCMC采样算法"><a href="#1-MCMC采样算法" class="headerlink" title="1. MCMC采样算法"></a>1. MCMC采样算法</h1><p>在上一篇文章 <a href="/2017/08/10/mcmc2/" title="《MCMC (2): 马尔科夫链》">《MCMC (2): 马尔科夫链》</a> 中，我们提到需要构造一个转移矩阵 $Q(q(i,j))$，使其满足细致平稳条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}</p>
+<p>假设我们已经有一个转移矩阵为 $Q$ 的马氏链，$q(i,j)$ 表示从状态 $i$ 转移到 $j$ 的概率，通常情况下，我们随便取得转移矩阵不满足细致平稳条件，即：<br>\begin{equation}<br>p(i) q(i,j) \neq p(j) q(j,i)<br>\end{equation}<br>也就是说，这个转移矩阵不是所需要的。我们通过对其改造一下，使其满足细致平稳条件，如引入一个参数 $\alpha(i,j)$，使得：<br>\begin{equation}<br>p(i) q(i,j)\alpha(i,j) = p(j) q(j,i)\alpha(j,i)<br>\label{equ3}<br>\end{equation}<br>按照对称性，我们有：<br>\begin{equation}<br>\alpha(i,j)= p(j) q(j,i)， \quad \alpha(j,i) = p(i) q(i,j)<br>\end{equation}<br>于是，我们得到了满足细致平稳条件的转移矩阵 $Q’$:<br>\begin{equation}<br>Q’(i,j) = q(i,j)\alpha(i,j)<br>\end{equation}<br>在改造 $Q’$ 过程中引入的 $\alpha(i,j)$ 成为接受率，可以理解为从状态 $i$ 以 $q(i,j)$ 的概率跳转到状态 $j$ 的时候，我们以 $\alpha(i,j)$ 的概率接受这个转移，于是得到了新的马氏链的转移概率为 $Q’(i,j)=q(i,j)\alpha(i,j)$。</p>
+<h2 id="1-1-Metropolis采样方法"><a href="#1-1-Metropolis采样方法" class="headerlink" title="1.1. Metropolis采样方法"></a>1.1. Metropolis采样方法</h2><p>假设我们已经有一个转移矩阵 $Q$，将上述的理论实现为方法，具体过程为：</p>
+<ol>
+<li>初始化马氏链状态，采样 $x_0$，其中 $x_0$ 服从 $\pi_0(x)$ 分布；</li>
+<li>以 $x_0$ 为中心，根据转移矩阵 $q(x_1 \mid X=x_0)$ 采样  $x_1$，其中 $x_1$ 服从 $\pi_1(x)=\pi_0(x) Q$ 分布；</li>
+<li>考虑到我们的转移矩阵不满足细致平稳条件，需要按照接受率 $\alpha(i,j)$ 确定是否接受从 $0$ 状态转移到 $1$ 状态；</li>
+<li>若不接受，重新以 $x_0$ 为中心采样 $x_1$;</li>
+<li>若接受，以 $x_1$ 为中心采样 $x_2$，其中 $x_2$ 服从 $\pi_2(x)=\pi_1(x) Q’$</li>
+<li>重复以上过程，根据马氏链收敛定理，概率分布将收敛到 $\pi(x)$，即采样的 $x_n, x_{n+1}, x_{n+2}\cdots$将都服从 $\pi(x)$ 分布，而 $\pi(x)$ 正是我们需要采样的概率分布。这样，我们就得到了概率分布 $\pi(x)$ 的样本。</li>
+</ol>
+<p>具体算法如下：<br><img src="/img/mcmc/metropolis.jpg" title="图1. 算法示意"></p>
+<h2 id="1-2-MH-采样算法"><a href="#1-2-MH-采样算法" class="headerlink" title="1.2. MH 采样算法"></a>1.2. MH 采样算法</h2><p>上述的采样算法存在一个小问题：在马氏链的转移过程中，接受率可能偏小，这样采样过程容易原地踏步，收敛到平稳分布的速度过慢。为了扩大接受率，我们将 (\ref{equ3}) 式两边同时乘上一个系数，同比例的放大 $\alpha(i,j)$ 和 $\alpha(j,i)$, 使得两个数中最大的为 1，这样在满足细致平稳条件的情况下提高了接受率，这就是 Metropolis-Hastings 采样算法。<br>具体过程如下：<br><img src="/img/mcmc/mh.jpg" title="图2. 算法示意"></p>
+<h1 id="2-MH算法-PYTHON-实现"><a href="#2-MH算法-PYTHON-实现" class="headerlink" title="2. MH算法 PYTHON 实现"></a>2. MH算法 PYTHON 实现</h1><p>我们还是采用 <a href="/2017/08/10/mcmc2/" title="《MCMC (2): 马尔科夫链》">《MCMC (2): 马尔科夫链》</a> 中的例子，采样 $p = [0.9, 0.05, 0.05]$ 的分布的样本，即下层收入的人占比 90%，中层占比 5%，上层占比 5%。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line">p=np.array([<span class="number">0.9</span>,<span class="number">0.05</span>,<span class="number">0.05</span>])</div><div class="line"><span class="comment"># 初始化转移矩阵 </span></div><div class="line">A = np.array([p <span class="keyword">for</span> x <span class="keyword">in</span> range(len(p))], dtype=np.float32)</div><div class="line"><span class="comment"># 采样计数 </span></div><div class="line">samplecount = <span class="number">0</span></div><div class="line">sMax = <span class="number">100000</span></div><div class="line">samples = []</div><div class="line"><span class="comment"># 马氏链初始状态</span></div><div class="line">i = np.random.randint(len(p))</div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="comment"># 以状态 i 为中心，根据转移矩阵采样状态 j</span></div><div class="line">    j = np.argmax(np.random.multinomial(<span class="number">1</span>, A[i]))</div><div class="line">    <span class="comment"># 计算接受率 (A[j][i]*p[j]) / (A[i][j]*p[i])</span></div><div class="line">    alpha = min(<span class="number">1</span>,(A[j][i]*p[j])/(A[i][j]*p[i]))</div><div class="line">    <span class="comment"># 生成u</span></div><div class="line">    u = np.random.uniform()</div><div class="line">    <span class="keyword">if</span> u &lt; alpha:</div><div class="line">    	 <span class="comment"># 转移至状态 j </span></div><div class="line">        i = j</div><div class="line">        samplecount += <span class="number">1</span></div><div class="line">        samples.append(j)</div><div class="line">    <span class="comment"># if u &gt; alpha, 状态不转移，依旧从状态 i 采样</span></div><div class="line">    <span class="keyword">if</span> samplecount &gt;= sMax:</div><div class="line">        <span class="keyword">break</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">continue</span></div><div class="line">        </div><div class="line">samples = np.array(samples)</div><div class="line">sizes = [np.sum(samples==<span class="number">0</span>), np.sum(samples==<span class="number">1</span>), np.sum(samples==<span class="number">2</span>)]</div><div class="line">plt.figure(figsize=[<span class="number">3</span>,<span class="number">3</span>])</div><div class="line">plt.pie(sizes,autopct=<span class="string">'%1.1f%%'</span>, shadow=<span class="keyword">True</span>)</div></pre></td></tr></table></figure></p>
+<p>结果如下：<br><img src="/img/mcmc/pie.png" title="图3. 采样结果"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/10/mcmc2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/10/mcmc2/" itemprop="url">MCMC (2): 马尔科夫链</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-10T14:41:04+08:00">
                 2017-08-10
               </time>
             
@@ -360,21 +516,730 @@
       
         
           
-            <h1 id="1-MCMC采样算法"><a href="#1-MCMC采样算法" class="headerlink" title="1 MCMC采样算法"></a>1 MCMC采样算法</h1><p>在上一篇文章<a href="!--￼2--&gt;//math/mcmc2.html">《马尔科夫链》</a>中，我们提到需要构造一个转移矩阵$Q(q(i,j))$，使其满足细致平稳条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}</p>
-<p>假设我们已经有一个转移矩阵为$Q$的马氏链，$q(i,j)$表示从状态$i$转移到$j$的概率，通常情况下，我们随便取得转移矩阵不满足细致平稳条件，即：<br>\begin{equation}<br>p(i) q(i,j) \neq p(j) q(j,i)<br>\end{equation}<br>也就是说，这个转移矩阵不是所需要的。我们通过对其改造一下，使其满足细致平稳条件，如引入一个参数$\alpha(i,j)$，使得：<br>\begin{equation}<br>p(i) q(i,j)\alpha(i,j) = p(j) q(j,i)\alpha(j,i)<br>\label{equ3}<br>\end{equation}<br>按照对称性，我们有：<br>\begin{equation}<br>\alpha(i,j)= p(j) q(j,i)， \quad \alpha(j,i) = p(i) q(i,j)<br>\end{equation}<br>于是，我们得到了满足细致平稳条件的转移矩阵$Q’$:<br>\begin{equation}<br>Q’(i,j) = q(i,j)\alpha(i,j)<br>\end{equation}<br>在改造 $Q’$ 过程中引入的 $\alpha(i,j)$ 成为接受率，可以理解为从状态 $i$ 以 $q(i,j)$ 的概率跳转到状态 $j$ 的时候，我们以 $\alpha(i,j)$ 的概率接受这个转移，于是得到了新的马氏链的转移概率为 $Q’(i,j)=q(i,j)\alpha(i,j)$。</p>
-<h3 id="1-1-Metropolis采样方法"><a href="#1-1-Metropolis采样方法" class="headerlink" title="1.1 Metropolis采样方法"></a>1.1 Metropolis采样方法</h3><p>假设我们已经有一个转移矩阵 $Q$，将上述的理论实现为方法，具体过程为：</p>
+            <h1 id="1-为什么需要马尔科夫链？"><a href="#1-为什么需要马尔科夫链？" class="headerlink" title="1. 为什么需要马尔科夫链？"></a>1. 为什么需要马尔科夫链？</h1><p>在上一篇文章 <a href="/2017/08/07/mcmc1/" title="《MCMC (1): 蒙特卡洛方法》">《MCMC (1): 蒙特卡洛方法》</a> 中，我们总结了蒙特卡洛方法解决问题的三个步骤为：</p>
+<blockquote>
+<ul>
+<li>构造概率过程；</li>
+<li>采样；</li>
+<li>估计参数。</li>
+</ul>
+</blockquote>
+<p><code>马尔科夫链也就是需要解决上述的采样问题。</code></p>
+<p>在计算机中，均匀分布 $Uniform(0,1)$ 的样本相对容易生成，常见的概率分布也可以基于均匀分布生成。但是，当我们的概率分布很复杂或者是高维分布时，样本的生成就存在困难，这时候就需要借助马尔科夫链了。也就是说，马尔科夫链的性质可以帮助我们近似的生成符合某概率分布的样本。为什么呢？</p>
+<h1 id="2-马尔科夫链"><a href="#2-马尔科夫链" class="headerlink" title="2. 马尔科夫链"></a>2. 马尔科夫链</h1><p>马尔科夫链的定义很简单：</p>
+<p>\begin{equation}<br>P(X_{t+1} = x \mid X_t, X_{t-1}, \cdots) =P(X_{t+1}=x \mid X_t)<br>\end{equation}</p>
+<p>也就是状态转移的概率只依赖于前一个状态。符合这样定义的马氏链有什么性质呢？让我们看一个例子。</p>
+<p>社会学家经常把人按其经济状况分成 3 类：低层、中层、高层 ，我们用 1、2、3 分别代表这三个阶层。社会学家们发现决定一个人的收入阶层只与其父母的收入阶层有关，也就说收入状态转移的概率只依赖于前一个状态(马尔科夫链)。具体的转移概率如下图所示：<br><img src="/img/mcmc/uml.png" title="图1. 转移概率"></p>
+<p>也就说如果一个人的父代的收入阶层是底层，他属于底层的概率是 0.65、属于中层的概率是 0.28、属于高层的概率是 0.07 (寒门难出贵子！)。将转移概率写成矩阵：</p>
+<p>\begin{equation}<br>P =<br>\begin{bmatrix}<br>0.65 &amp; 0.28 &amp; 0.07 \\\<br>0.15 &amp; 0.67 &amp; 0.18 \\\<br>0.12 &amp; 0.36 &amp; 0.52 \\\<br>\end{bmatrix}<br>\end{equation}</p>
+<p>假设某一代为初始状态，初始概率分布为 $\pi_0 = [0.21,0.68,0.11]$，则根据转移矩阵我们可以计算 $n$ 代人的收入阶层分布：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">下层比例</th>
+<th style="text-align:center">中层比例</th>
+<th style="text-align:center">高层比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">第0代人</td>
+<td style="text-align:center">0.210</td>
+<td style="text-align:center">0.680</td>
+<td style="text-align:center">0.110</td>
+</tr>
+<tr>
+<td style="text-align:center">第1代人</td>
+<td style="text-align:center">0.252</td>
+<td style="text-align:center">0.554</td>
+<td style="text-align:center">0.194</td>
+</tr>
+<tr>
+<td style="text-align:center">第2代人</td>
+<td style="text-align:center">0.270</td>
+<td style="text-align:center">0.512</td>
+<td style="text-align:center">0.218</td>
+</tr>
+<tr>
+<td style="text-align:center">第3代人</td>
+<td style="text-align:center">0.278</td>
+<td style="text-align:center">0.497</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第4代人</td>
+<td style="text-align:center">0.282</td>
+<td style="text-align:center">0.492</td>
+<td style="text-align:center">0.226</td>
+</tr>
+<tr>
+<td style="text-align:center">第5代人</td>
+<td style="text-align:center">0.284</td>
+<td style="text-align:center">0.490</td>
+<td style="text-align:center">0.226</td>
+</tr>
+<tr>
+<td style="text-align:center">第6代人</td>
+<td style="text-align:center">0.285</td>
+<td style="text-align:center">0.489</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第7代人</td>
+<td style="text-align:center">0.286</td>
+<td style="text-align:center">0.489</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第8代人</td>
+<td style="text-align:center">0.286</td>
+<td style="text-align:center">0.489</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第9代人</td>
+<td style="text-align:center">0.286</td>
+<td style="text-align:center">0.489</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第10代人</td>
+<td style="text-align:center">0.286</td>
+<td style="text-align:center">0.489</td>
+<td style="text-align:center">0.225</td>
+</tr>
+</tbody>
+</table>
+<p>我们发现从第7代人开始，这个分布就稳定不变了，这个是偶然的吗？</p>
+<p>我们换一个初始概率分布 $\pi_0 = [0.75,0.15,0.1]$ 试试：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center"></th>
+<th style="text-align:center">下层比例</th>
+<th style="text-align:center">中层比例</th>
+<th style="text-align:center">高层比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">第0代人</td>
+<td style="text-align:center">0.750</td>
+<td style="text-align:center">0.150</td>
+<td style="text-align:center">0.100</td>
+</tr>
+<tr>
+<td style="text-align:center">第1代人</td>
+<td style="text-align:center">0.522</td>
+<td style="text-align:center">0.346</td>
+<td style="text-align:center">0.132</td>
+</tr>
+<tr>
+<td style="text-align:center">第2代人</td>
+<td style="text-align:center">0.407</td>
+<td style="text-align:center">0.426</td>
+<td style="text-align:center">0.167</td>
+</tr>
+<tr>
+<td style="text-align:center">第3代人</td>
+<td style="text-align:center">0.349</td>
+<td style="text-align:center">0.459</td>
+<td style="text-align:center">0.192</td>
+</tr>
+<tr>
+<td style="text-align:center">第4代人</td>
+<td style="text-align:center">0.318</td>
+<td style="text-align:center">0.475</td>
+<td style="text-align:center">0.207</td>
+</tr>
+<tr>
+<td style="text-align:center">第5代人</td>
+<td style="text-align:center">0.303</td>
+<td style="text-align:center">0.482</td>
+<td style="text-align:center">0.215</td>
+</tr>
+<tr>
+<td style="text-align:center">第6代人</td>
+<td style="text-align:center">0.295</td>
+<td style="text-align:center">0.485</td>
+<td style="text-align:center">0.220</td>
+</tr>
+<tr>
+<td style="text-align:center">第7代人</td>
+<td style="text-align:center">0.291</td>
+<td style="text-align:center">0.487</td>
+<td style="text-align:center">0.222</td>
+</tr>
+<tr>
+<td style="text-align:center">第8代人</td>
+<td style="text-align:center">0.289</td>
+<td style="text-align:center">0.488</td>
+<td style="text-align:center">0.224</td>
+</tr>
+<tr>
+<td style="text-align:center">第9代人</td>
+<td style="text-align:center">0.288</td>
+<td style="text-align:center">0.488</td>
+<td style="text-align:center">0.224</td>
+</tr>
+<tr>
+<td style="text-align:center">第10代人</td>
+<td style="text-align:center">0.287</td>
+<td style="text-align:center">0.488</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第11代人</td>
+<td style="text-align:center">0.287</td>
+<td style="text-align:center">0.488</td>
+<td style="text-align:center">0.225</td>
+</tr>
+<tr>
+<td style="text-align:center">第12代人</td>
+<td style="text-align:center">0.287</td>
+<td style="text-align:center">0.488</td>
+<td style="text-align:center">0.225</td>
+</tr>
+</tbody>
+</table>
+<p>从上面的两个表格可以发现，两次分布都收敛了，而且都收敛到 $\pi=[0.286, 0.489, 0.225]$ 这个分布。<strong>这就是马尔科夫链的收敛性质</strong>。</p>
+<p>这里我们不过多的讲述关于马尔科夫链的定理和性质，需近一步了解的可以参考本文后列出的参考资料。我们需要知道的是，对于一个概率分布来说，如果马尔科夫链中的每一步都让这个概率分布保持不变，我们就说这个概率分布是马尔科夫链的平稳分布。用公式可如下表示：<br>\begin{equation}<br>\pi P = \pi, \quad \sum_{i=0}^{\infty} \pi_i = 1<br>\end{equation}<br>其中 $\pi$ 是马尔科夫链的概率分布，$P$ 是转移概率矩阵。即概率分布乘上转移矩阵还是它本身，也就是概率分布在每一步都保持不变。而且 $\pi$ 是方程 $\pi P = \pi$ 的唯一非负解。</p>
+<p>回到我们的正题。我们需要利用马尔科夫链的性质来生成复杂概率分布 $p(x)$ 的样本。很自然的，我们的想法是产生一条马氏链，使得它的平稳分布就是想要的分布。即，构造符合条件的转移矩阵，使其满足：<br>\begin{equation}<br>p(x)Q = p(x)<br>\end{equation}<br>因为 $p(x)$ 是上式的唯一解，我们可以根据上式来生成 $p(x)$ 的样本。</p>
+<p>那么，如何构造转移矩阵呢？</p>
+<p>假设我们有一个转移矩阵 $Q$($q(i,j)$)，其满足如下条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}<br>$i,j$ 是分布中的两个状态，如上面例子中的低层、中层(就是 $Q$ 矩阵中的下标)。根据 (\ref{dbc}) 式，我们有：<br>\begin{align}<br>&amp; \sum_{i=1}^\infty p(i)q(i,j) = \sum_{i=1}^\infty p(j)q(j,i)<br>= p(j) \sum_{i=1}^\infty q(j,i) = p(j) \\\<br>&amp; \Rightarrow p Q = p<br>\end{align}<br>可以看到，只要构造满足 (\ref{dbc}) 式的转移矩阵，我们就可以得到平稳分布 $p$，(\ref{dbc}) 式也就是马氏链的细致平稳条件。根据 (\ref{dbc}) 式，利用随机采样的方法，就可以得到分布 $p$ 的样本。随机采样的方法将在下一章记录。</p>
+<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
+<p>[2] Information Theory, Inference, and Learning Algorithms, David J.C. MacKay. (Chap. 29).</p>
+<p>[3] Pattern Recognition and Machine Learning, Christopher M. Bishop. (Chap. 11).</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/07/mcmc1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/07/mcmc1/" itemprop="url">MCMC (1): 蒙特卡洛方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T14:37:33+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-蒙特卡洛方法"><a href="#1-蒙特卡洛方法" class="headerlink" title="1. 蒙特卡洛方法"></a>1. 蒙特卡洛方法</h1><p>蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计<strong>参数</strong>，该参数是某一随机事件的<strong>某个统计值</strong>，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。</p>
+<p>举个例子帮助理解：</p>
+<blockquote>
+<p>怎么利用蒙特卡洛方法估计$pi$?</p>
+</blockquote>
+<p>如下图所示：<br><img src="/img/mcmc/circle.png" title="图1. 示意图"></p>
+<p>图中圆和正方形的面积比为：<br>\begin{equation*}<br>\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}<br>\end{equation*}<br>也就是说，只需要知道圆和它的外切正方形的面积比就可以求得 $\pi$。假设有这样的一个随机事件：</p>
+<blockquote>
+<p>往正方形中撒入点，点落在正方形中的位置是均匀分布，随后计算有多少比例的点落入了圆中(根据距离圆心的距离判断)，这个比例就是 $\frac{\pi}{4}$。</p>
+</blockquote>
+<p>上述过程就是蒙特卡洛方法，有以下三方面的内容：</p>
 <ol>
-<li>初始化马氏链状态，采样 $x_0$，其中 $x_0$ 服从 $\pi_0(x)$ 分布；</li>
-<li>以 $x_0$ 为中心，根据转移矩阵 $q(x_1 \mid X=x_0)$ 采样 $x_1$，其中 $x_1$ 服从 $\pi_1(x)=\pi_0(x) Q$ 分布；</li>
-<li>考虑到我们的转移矩阵不满足细致平稳条件，需要按照接受率 $\alpha(i,j)$ 确定是否接受从 $0$ 状态转移到 $1$ 状态；</li>
-<li>若不接受，重新以 $x_0$ 为中心采样 $x_1$;</li>
-<li>若接受，以 $x_1$ 为中心采样 $x_2$，其中 $x_2$ 服从 $\pi_2(x)=\pi_1(x) Q’$</li>
-<li>重复以上过程，根据马氏链收敛定理，概率分布将收敛到 $\pi(x)$，即采样的 $x<em>n, x</em>{n+1}, x_{n+2}\cdots$将都服从 $\pi(x)$ 分布，而 $\pi(x)$ 正是我们需要采样的概率分布。这样，我们就得到了概率分布 $\pi(x)$ 的样本。</li>
+<li>随机事件：正方形中撒入点；</li>
+<li>根据随机事件的概率分布(均匀分布)模拟数据，生成样本；</li>
+<li>根据样本的某统计值(在圆内的比例)估计待估参数 $pi$。</li>
 </ol>
-<p>具体算法如下：<br><img src="/img/metropolis.jpg" alt="code"></p>
-<h3 id="1-2-Metropolis-Hastings采样算法"><a href="#1-2-Metropolis-Hastings采样算法" class="headerlink" title="1.2 Metropolis-Hastings采样算法"></a>1.2 Metropolis-Hastings采样算法</h3><p>上述的采样算法存在一个小问题：在马氏链的转移过程中，接受率可能偏小，这样采样过程容易原地踏步，收敛到平稳分布的速度过慢。为了扩大接受率，我们将(\ref{equ3})式两边同时乘上一个系数，同比例的放大 $\alpha(i,j)$ 和 $\alpha(j,i)$, 使得两个数中最大的为 1，这样在满足细致平稳条件的情况下提高了接受率，这就是 Metropolis-Hastings采样算法。<br>具体过程如下：</p>
-<h1 id="Metropolis-Hastings-PYTHON-实现"><a href="#Metropolis-Hastings-PYTHON-实现" class="headerlink" title="Metropolis-Hastings PYTHON 实现"></a>Metropolis-Hastings PYTHON 实现</h1><p>我们还是采用<a href="!--￼3--&gt;//math/mcmc2.html">《马尔科夫链》</a>中的例子，采样 $p = [0.9, 0.05, 0.05]$ 的分布的样本，即下层收入的人占比 90%，中层占比 5%，上层占比 5%。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line">p=np.array([<span class="number">0.9</span>,<span class="number">0.05</span>,<span class="number">0.05</span>])</div><div class="line"><span class="comment"># 初始化转移矩阵 </span></div><div class="line">A = np.array([p <span class="keyword">for</span> x <span class="keyword">in</span> range(len(p))], dtype=np.float32)</div><div class="line"><span class="comment"># 采样计数 </span></div><div class="line">samplecount = <span class="number">0</span></div><div class="line">sMax = <span class="number">100000</span></div><div class="line">samples = []</div><div class="line"><span class="comment"># 马氏链初始状态</span></div><div class="line">i = np.random.randint(len(p))</div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="comment"># 以状态 i 为中心，根据转移矩阵采样状态 j</span></div><div class="line">    j = np.argmax(np.random.multinomial(<span class="number">1</span>, A[i]))</div><div class="line">    <span class="comment"># 计算接受率 (A[j][i]*p[j]) / (A[i][j]*p[i])</span></div><div class="line">    alpha = min(<span class="number">1</span>,(A[j][i]*p[j])/(A[i][j]*p[i]))</div><div class="line">    <span class="comment"># 生成u</span></div><div class="line">    u = np.random.uniform()</div><div class="line">    <span class="keyword">if</span> u &lt; alpha:</div><div class="line">    	 <span class="comment"># 转移至状态 j </span></div><div class="line">        i = j</div><div class="line">        samplecount += <span class="number">1</span></div><div class="line">        samples.append(j)</div><div class="line">    <span class="comment"># if u &gt; alpha, 状态不转移，依旧从状态 i 采样</span></div><div class="line">    <span class="keyword">if</span> samplecount &gt;= sMax:</div><div class="line">        <span class="keyword">break</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">continue</span></div><div class="line">        </div><div class="line">samples = np.array(samples)</div><div class="line">sizes = [np.sum(samples==<span class="number">0</span>), np.sum(samples==<span class="number">1</span>), np.sum(samples==<span class="number">2</span>)]</div><div class="line">plt.figure(figsize=[<span class="number">3</span>,<span class="number">3</span>])</div><div class="line">plt.pie(sizes,autopct=<span class="string">'%1.1f%%'</span>, shadow=<span class="keyword">True</span>)</div></pre></td></tr></table></figure></p>
-<p>结果如下：<br><img src="/img/mcmc/uml.png" title="图1"></p>
+<p>一般地，蒙特卡洛方法的三个步骤为：</p>
+<ol>
+<li>构造概率过程：确定随机事件的概率分布，该随机事件的某统计量刚好是待估参数；</li>
+<li>采样：根据随机事件的概率分布采样；</li>
+<li>估计参数：根据采样的样本估算参数。</li>
+</ol>
+<h1 id="2-PYTHON实现"><a href="#2-PYTHON实现" class="headerlink" title="2. PYTHON实现"></a>2. PYTHON实现</h1><p>利用蒙特卡洛法估计 $pi$，代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">n = <span class="number">1000</span></div><div class="line">x = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">y = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">index = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(n) <span class="keyword">if</span> (x[i]**<span class="number">2</span>+y[i]**<span class="number">2</span>) &lt;<span class="number">1</span>]</div><div class="line">count = len(index)</div><div class="line">pi = <span class="number">4.0</span>*count/n</div><div class="line">print(<span class="string">"PI=%f"</span> %pi)</div></pre></td></tr></table></figure></p>
+<p>随机模拟了1000个点，所得结果为：PI=3.164。</p>
+<img src="/img/mcmc/circle.png" title="图2. 示意图2">
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/07/26/frequentism-and-bayesianism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/26/frequentism-and-bayesianism/" itemprop="url">频率主义和贝叶斯主义---参数估计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-26T13:17:03+08:00">
+                2017-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-频率主义与贝叶斯主义"><a href="#1-频率主义与贝叶斯主义" class="headerlink" title="1. 频率主义与贝叶斯主义"></a>1. 频率主义与贝叶斯主义</h1><p>频率主义认为<strong>_概率_</strong>与事件的<strong>频率</strong>有关，贝叶斯主义认为<strong>_概率_</strong>是对事件的认知程度的度量。举个例子说明一下，假设我们多次测量了一个棍子的长度，得到的观测数据为： <code>Data = [L1, L2]</code>，其中 <code>L1</code> 占比 30%，<code>L2</code> 占比 70%（_假设测量结果就两种情况_）。  </p>
+<ul>
+<li><p>频率主义认为：棍子的长度 (length) 是固定值，即参数是固定的。由于测量误差的存在，测量结果 <code>L1</code> 发生的频率为 30%，<code>L2</code> 发生的频率为 70%。根据频率主义者对概率的认知，可用如下公式表示：\begin{equation*}<br>P(Data=L1 \mid length)= 30\%  \\\<br>P(Data=L2 \mid length)= 70\%<br>\end{equation*}<br>其意义为：在 length 的条件下(在棍子长度为固定某值得条件下)，得到 <code>L1</code> 的概率为 30%，得到 <code>L2</code> 的概率为 70%。</p>
+</li>
+<li><p>贝叶斯主义认为：观测结果 (Data) 是固定的，是我们对事件的认知。根据观测结果，棍子长度为 <code>L1</code> 的概率为 30%，为 <code>L2</code> 的概率为7 0%，即参数 (length) 不是固定的，而是一个分布。概率就是我们对棍子长度的认知程度，我们 30% 地认为棍子长度为 <code>L1</code>, 70% 地认为棍子长度为 <code>L2</code>，可用如下公式表示：<br>\begin{equation*}<br>P(length=L1 \mid Data)= 30\%  \\\<br>P(length=L2 \mid Data)= 70\%<br>\end{equation*}<br>其意思为：在观测数据 (Data) 的条件下，棍子长度为 <code>L1</code> 的概率为 30%，为 <code>L2</code> 的概率为 70%。</p>
+</li>
+</ul>
+<p>为了更直观的说明频率主义和贝叶斯主义，根据上述例子，有如下图像。<br><img src="/img/frequentism/vs.png" title="图1. 频率主义和贝叶斯主义对比"></p>
+<p>$\quad$</p>
+<h1 id="2-频率主义参数估计"><a href="#2-频率主义参数估计" class="headerlink" title="2. 频率主义参数估计"></a>2. 频率主义参数估计</h1><p>我们用线性拟合作为例子，考虑下面的数据集合 x、y和y 的误差 e，数据来源于<a href="http://jakevdp.github.io/blog/2014/06/06/frequentism-and-bayesianism-2-when-results-differ/" target="_blank" rel="external">Frequentism and Bayesianism II: When Results Differ</a>。</p>
+<p>先看一下数据长什么样。<br><img src="/img/frequentism/xye.png" width="400" height="320" title="图2. 用于拟合的数据"><br>我们的任务是找出一条直线来拟合数据，这里我们采用最大似然估计法(常用的最小二乘估计为最大似然估计的一种特例：正态最大似然估计)。</p>
+<p>我们构造一个线性模型，参数有斜率和截距，模型定义如下：<br>\begin{equation}<br>\label{model}<br>\hat{y} = a_0x+a_1<br>\end{equation}<br>根据观测数据 x，y 集合，估计 $a=(a_0,a_1)$。<br>对于某一次测量值 ($d_i=(x_i,y_i,e_i)$)，假设测量误差按正态分布，该事件发生的概率分布满足：<br>\begin{equation}<br>\label{pro}<br>P(d_i \mid a) = \frac{1}{\sqrt{2\pi e_i^2}}exp[-\frac{(y_i-\hat{y}_i)^2}{2e_i^2}]<br>\end{equation}</p>
+<p>似然函数为每个观测值概率的乘积：<br>\begin{equation}<br>\label{like}<br>\ell (d \mid a) = \prod_{i=1}^N P(d_i \mid a)<br>\end{equation}</p>
+<p>最大似然法就是使似然函数最大，这里很好理解。还是使用上面棍子的例子，假设我们测得的数据为 (10.1 米, 9.9 米)，根据测量数据我们估计棍子到底多长。那怎么估计呢？考虑这样的一个问题：棍子长度为多少时，我们最大概率上得到的测量数据为 (10.1 米, 9.9 米)，答案呼之欲出，我们猜测棍子的长度为 10.0 米，因为这样我们最大概率获得了我们的观测数据。如果棍子长度为 1 米，我们基本上不可能得到(10.1 米, 9.9 米)这样的观测数据。也就是说，我们需要求一个 length，使得 $P(10.1 \mid length)\cdot P(9.9 \mid length)$ 最大，也就是最大似然法。</p>
+<p>回到上面的线性拟合问题，我们需要估计参数 $a$，使得 $d$ 发生的概率最大。一般情况下，因为似然估计值可能非常小，通常更方便的做法是取似然函数的对数，将公式 (\ref{pro}) 代入公式 (\ref{like}) 并取对数：<br>\begin{equation}<br>\begin{split}<br>log \ell (d \mid a) = -\frac{1}{2}\sum_{i=1}^N[log(2\pi e_i^2)+ \frac{(y_i-\hat{y}_i)^2}{e_i^2}]<br>\end{split}<br>\end{equation}</p>
+<p>\begin{equation}<br>log \ell (d \mid a) = const - \sum_{i=1}^N\frac{1}{2e_i^2}(y_i-\hat{y}_i^2)<br>\end{equation}</p>
+<p>我们需要求解 $a$ 使得上式最大化，等价于最小化下式:<br>\begin{equation}<br>loss = \sum_{i=1}^N\frac{1}{2e_i^2}(y_i-\hat{y})<br>\label{loss}<br>\end{equation}</p>
+<p>上式与我们的直觉很符合，为了找到一个最佳拟合直线，我们需要观测值与模型值的差的平方和最小，这也就是最小二乘方法，或者说最小平方损失。</p>
+<p>公式 (\ref{loss}) 的解算方法很多，这里用矩阵的解算方法。记误差 $e^2$ 组成的矩阵为 $P$，$v= y_i-\hat{y}$ 组成的矩阵为 $V$，公式 (\ref{loss}) 最小化等价于：<br>\begin{equation}<br>V^T P V = min<br>\label{vpv}<br>\end{equation}</p>
+<p>将 $v= y_i-\hat{y}$ 写成矩阵形式：<br>\begin{equation}<br>V = Ba -l<br>\end{equation}</p>
+<p>其中，$a=[a_0, a_1]$，$l=[-y]$，$B=[-x, -1]$。</p>
+<p>求解公式 (\ref{vpv}):<br>\begin{equation}<br>\begin{split}<br>&amp;\frac{\partial{V^TPV}}{\partial a}=2V^T P \frac{\partial V}{\partial{a}}= V^TPB=0 \\\<br>&amp;\Rightarrow B^TPV=0 \\\<br>&amp;\Rightarrow B^TP(Ba-l)=0 \\\<br>&amp;\Rightarrow a = (B^TPB)^{-1}B^TPl<br>\end{split}<br>\end{equation}</p>
+<p>根据上式，即可利用频率主义的方法估计参数 $a$。所得结果如下图所示：<br><img src="/img/frequentism/mlf.png" width="400" height="320" title="图3 频率主义拟合结果"></p>
+<hr>
+<p><strong>总结</strong>：频率主义认为参数是固定的(斜率和截距)，利用最大似然法估计参数，使得在此参数条件下，得到该组观测数据的概率最大。  </p>
+<hr>
+<h1 id="3-贝叶斯主义参数估计"><a href="#3-贝叶斯主义参数估计" class="headerlink" title="3. 贝叶斯主义参数估计"></a>3. 贝叶斯主义参数估计</h1><p>贝叶斯主义认为测量数据是固定的，根据测量数据可以得到我们对参数的认知程度 (参数的概率分布)，得到了参数的概率分布也就求解了参数。</p>
+<p>同样采用上述线性拟合的例子，需要估计的参数的概率分布可如下表示：<br>\begin{equation}<br>P(a \mid d)<br>\end{equation}</p>
+<p>即在观测数据 (d) 的条件下，参数 (a) 的概率分布是什么？怎么样才能得到参数的分布 ($P(a \mid d)$)？</p>
+<p>这里需要引入贝叶斯定理，贝叶斯定理是贝叶斯估计的理论基础，可如下表示：<br>\begin{equation}<br>P(a \mid d) = \frac{P(a) P(d \mid a)}{P(d)}<br>\label{beyes}<br>\end{equation}</p>
+<p>贝叶斯定理可以这样理解，$a$ 和 $d$ 同时发生的概率可如下表示：<br>\begin{equation}<br>P(a \cap d) = P(a) P(d \mid a) = P(d) P(a \mid d)<br>\end{equation}</p>
+<p>即$a$和$d$同时发生的概率可表示为：发生 $a$ 的概率乘上 $a$ 发生的条件下 $b$ 发生的概率，反之亦然。通过 $a$ 和 $b$ 同时发生这一桥梁，就可以建立起 $P(d \mid a)$ 和 $P(a \mid d)$ 的联系。</p>
+<p>根据公式 (\ref{beyes})，就可以达到我们的目的，求解 $P(a \mid d)$。但是，$P(a)$、$P(d \mid a)$、$P(d)$怎么知道呢？这里，我们先介绍这几个量的概念。</p>
+<ul>
+<li>$P(a \mid d)$：参数 $a$ 的后验概率，依据测量数据 $d$ 得到的结果，就是我们需要计算的量。</li>
+<li>$P(a)$：参数 $a$ 的先验概率，在获取测量数据 $d$ 之前，我们对 $a$ 的认知。</li>
+<li>$P(d \mid a)$：似然度，表示观测数据 $d$ 信息，形式上与似然函数 $\ell (d \mid a)$ 相同。</li>
+<li>$P(d)$： 标准化常量，观测数据 $d$ 独立于待估参数 $a$，对于$a$ 而言，$P(d)$ 可以认为是常数。</li>
+</ul>
+<p>公式 (\ref{beyes}) 可以改写为：<br>\begin{equation}<br>P(a \mid d) \propto P(a) \ell(d \mid a)<br>\end{equation}</p>
+<p>这里即包含了贝叶斯方法的基本思路：假定要估计的参数是服从一定分布的随机变量；根据待估参数的先验分布，并结合观测数据信息，应用贝叶斯定理求得待估参数的后验分布，并根据待估参数的后验分布得到待估参数的估计量。</p>
+<p>这时候，唯一不清楚的是先验分布 $P(a)$。先验分布是人们对参数的主观认识，需要事先提供。如果有多个测量方法对同一事件进行了测量，我们可以采用其他方法的结果作为先验事实，给出先验分布；当先验事实不存在时，可以主观的选择先验分布，如常用的扁平先验：<br>\begin{equation}<br>P(a) \propto 1<br>\end{equation}</p>
+<p>后验分布的计算往往是难以直接计算的，因此，贝叶斯方法往往需要采用随机模拟的方法来生成符合后验分布的样本，从而得到后验分布。这里采用贝叶斯估计中常用的抽样方法：MCMC。MCMC 的原理这里不详细叙述。根据后验分布的表达式，利用 MCMC 方法生成满足后验分布的样本，用这些样本来确定我们的待估参数。所得结果如下。</p>
+<ul>
+<li>$a_0$的分布：<img src="/img/frequentism/a0.png" title="图4 $a0$ 的分布">
+</li>
+</ul>
+<ul>
+<li><p>$a_1$的分布：</p>
+<img src="/img/frequentism/a1.png" title="图5 $a1$ 的分布">
+</li>
+<li><p>结果：</p>
+<img src="/img/frequentism/mlf2.png" title="图6 贝叶斯主义拟合结果">
+</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="http://jakevdp.github.io/blog/2014/03/11/frequentism-and-bayesianism-a-practical-intro/" target="_blank" rel="external">Frequentism and Bayesianism 系列博文</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/07/22/convolution/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/convolution/" itemprop="url">通俗易懂的理解卷积</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T14:25:29+08:00">
+                2017-07-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-卷积"><a href="#1-卷积" class="headerlink" title="1. 卷积"></a>1. 卷积</h1><p>卷积是通过两个函数生成第三个函数的一种数学算子：<br>\begin{equation}<br>y(\color{red}{t})= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\color{blue}{\tau}<br>\end{equation}</p>
+<p>我们先什么都不要管，只需要注意，不要把公式中的 $\color{red}{t}$ 和 $\color{blue}{\tau}$ 混淆了。</p>
+<h1 id="2-卷积的解释"><a href="#2-卷积的解释" class="headerlink" title="2. 卷积的解释"></a>2. 卷积的解释</h1><p>贴近生活的解释永远比公式更好理解，参考网上卷积的各种血腥残暴的解释。这里，我们使用一个温和的例子。</p>
+<p>假设你是一名研究生，你还有三天的时间来完成老板的任务，由于患有拖延症，你工作的热情可如下图表示：<br><img src="/img/convolution/passion.png" title="图1. 工作热情函数"></p>
+<p>上面就是你的输入函数 $x(t)$，具体内容为:<br>\begin{equation*}<br>x(0) = 0.1, \quad<br>x(1) = 0.1, \quad<br>x(2) = 0.6.<br>\end{equation*}</p>
+<p>按照你这个效率，完全不可能完成任务，因此老板会每天苦口婆心的来 push 你。老板的 push 就是 $h(t)$ 函数，我们称之为响应函数。基本上，随着时间的流逝，老板的劝说只是浪费了一点口水，对你的作用越来越小。所以，我们的 $h(t)$ 函数应该长这样：<br><img src="/img/convolution/push.png" title="图2. 响应函数"></p>
+<p>$h(t)$ 的具体内容为:<br>\begin{equation*}<br>h(0) = 8, \quad<br>h(1) = 3, \quad<br>h(2) = 2.<br>\end{equation*}</p>
+<p>意思就是老板当天的劝说对你的作用是8倍，过了一天后为3倍，过了两天后为2倍。<strong>也就是说，$h$ 函数作用于工作热情上的效果是这样的：对当天工作热情的效果是 8 倍，对昨天工作热情的效果是 3 倍，对前天工作热情的效果是 2 倍。其他时候我们记为 $h^{+}=0$</strong></p>
+<p>那在老板的 push 下，我们的工作热情是怎么样的呢？</p>
+<p>这里就是输入函数在响应的作用下，得到输出函数的问题，也就是求卷积。说了这么多，好像只是介绍了我们的 $x$ 和 $h$ 函数，卷积到底是什么意思呢？让我们看一下 $x$ 和 $h$ 的卷积会发生什么。</p>
+<ul>
+<li><p>Day 0：今天不太想工作，只有 0.1 的意愿，但是老板来 push 了，最终的工作意愿为：<br>\begin{equation*}<br>\begin{split}<br>y(0) &amp;= \int_0^2 x(\tau)h(0-\tau)d\tau \\\<br>   &amp;= \color{red}{x(0)}h(0) + \color{blue}{x(1)}h^+ +\color{blue}{x(2)}h^+ \\\<br>   &amp;= \color{red}{x(0)}h(0) =0.8<br>\end{split}<br>\end{equation*}<br>该公式的意思可以这样理解：将 $h$ 函数作用在输入上，得到了我们的输出。根据 $h$ 函数的特性，它只作用在今天、昨天和前天的数据上 (以 $y(0)$ 中的 $0$ 为参考)，对于明天 ($x(1)$) 和后天的数据 ($x(2)$) 的数据没有作用。</p>
+</li>
+<li><p>Day 1: 昨天老板骂了一顿，今天又来了，老板昨天的效果也还在。最终，我们的工作热情为：<br>\begin{equation*}<br>\begin{split}<br>y(1) &amp;=  \color{blue}{x(0)}h(1)+\color{red}{x(1)}h(0)+\color{blue}{x(2)}h^+ \\\<br>&amp;= 0.8+0.3=1.1<br>\end{split}<br>\end{equation*}<br>意思就是今天你的工作热情只有 0.1，老板把你骂了后，你的热情变成了0.8；除此之外，老板昨天劝说的效果还在，只是从 8 倍的作用变成了 3 倍。按照 $h$ 函数的作用，将所有输入结果叠加。</p>
+</li>
+<li><p>Day 2：同样的：<br>\begin{equation*}<br>\begin{split}<br>y(2) &amp;=  \color{blue}{x(0)}h(2)+\color{blue}{x(1)}h(1)+\color{red}{x(2)}h(0) \\\<br>&amp;=4.8+0.3+0.2=5.3<br>\end{split}<br>\end{equation*}<br>我们可以把 $h$ 看做权，这个计算实际上就相当于对 $x$ 进行了加权叠加。</p>
+</li>
+<li><p>Day 3: 虽然从今天开始我们不再有新的工作热情(输入数据)，但是思想教育的效果依然余留，工作效率在老板 push 的作用下为：<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h(2)+\color{blue}{x(2)}h(1) \\\<br>&amp;=1.8 + 0.2 = 2<br>\end{split}<br>\end{equation*}<br>幸好，根据 $h$ 的加权作用，老板第一天的教育终于被你忘了。</p>
+</li>
+<li><p>Day 4: 快要迎来美好时光，老板前几天的教育都要被你忘了。<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h^++\color{blue}{x(2)}h(2) \\\<br>&amp;=1.2<br>\end{split}<br>\end{equation*}<br>老板的督促使得你保持了几天工作热情。根据你三分钟热度的性格，今天之后，又过上了毫无工作热情的生活。</p>
+</li>
+</ul>
+<p>我们复习一下卷积的公式：<br>\begin{equation}<br>y(\color{red}{t})= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\color{blue}{\tau}<br>\end{equation}</p>
+<p>从上面的例子可以看出，卷积就是对于每一个位置 $t_i \in (-\infty,\infty)$，将输入 $x$ (整个输入，上面几式中颜色标注)，按照 $h$ 的方式加权叠加起来，这里 $h$ 的方式就是以当前时间为基准 ($t_i$，红色标注)，对当天的效应是 8，昨天的效应是 3，前天的效应是 2。</p>
+<p>最后，给出在老板的连番督促下，你的工作热情:<br><img src="/img/convolution/passion.png" title="图3. 输出函数"></p>
 
           
         
@@ -456,7 +1321,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -478,7 +1343,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

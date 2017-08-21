@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="MCMC," />
 
 
 
@@ -94,16 +94,21 @@
 
 
 
-<meta name="description" content="A mind needs books.">
-<meta property="og:type" content="website">
-<meta property="og:title" content="My Blog">
-<meta property="og:url" content="http://leeliang.github.io/archives/2017/08/index.html">
+<meta name="description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta name="keywords" content="MCMC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MCMC (1): 蒙特卡洛方法">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/07/mcmc1/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="A mind needs books.">
+<meta property="og:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
+<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
+<meta property="og:updated_time" content="2017-08-21T06:41:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="My Blog">
-<meta name="twitter:description" content="A mind needs books.">
+<meta name="twitter:title" content="MCMC (1): 蒙特卡洛方法">
+<meta name="twitter:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta name="twitter:image" content="http://leeliang.github.io/img/mcmc/circle.png">
 
 
 
@@ -132,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/archives/2017/08/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/07/mcmc1/"/>
 
 
 
 
 
-  <title>Archive | My Blog</title>
+  <title>MCMC (1): 蒙特卡洛方法 | My Blog</title>
   
 
 
@@ -157,7 +162,7 @@
     
   
 
-  <div class="container sidebar-position-left  page-archive  ">
+  <div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -251,148 +256,197 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/07/mcmc1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">MCMC (1): 蒙特卡洛方法</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T14:37:33+08:00">
+                2017-08-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        Um..! 5 posts in total. Keep on posting.
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/24/mcmc3/" itemprop="url">
-              
-                <span itemprop="name">MCMC (3): MCMC采样方法</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-24T15:20:06+08:00"
-              content="2017-08-24" >
-          08-24
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/10/mcmc2/" itemprop="url">
-              
-                <span itemprop="name">MCMC (2): 马尔科夫链</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-10T14:41:04+08:00"
-              content="2017-08-10" >
-          08-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/07/mcmc1/" itemprop="url">
-              
-                <span itemprop="name">MCMC (1): 蒙特卡洛方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-07T14:37:33+08:00"
-              content="2017-08-07" >
-          08-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="1-蒙特卡洛方法"><a href="#1-蒙特卡洛方法" class="headerlink" title="1. 蒙特卡洛方法"></a>1. 蒙特卡洛方法</h1><p>蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计<strong>参数</strong>，该参数是某一随机事件的<strong>某个统计值</strong>，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。</p>
+<p>举个例子帮助理解：</p>
+<blockquote>
+<p>怎么利用蒙特卡洛方法估计$pi$?</p>
+</blockquote>
+<p>如下图所示：<br><img src="/img/mcmc/circle.png" title="图1. 示意图"></p>
+<p>图中圆和正方形的面积比为：<br>\begin{equation*}<br>\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}<br>\end{equation*}<br>也就是说，只需要知道圆和它的外切正方形的面积比就可以求得 $\pi$。假设有这样的一个随机事件：</p>
+<blockquote>
+<p>往正方形中撒入点，点落在正方形中的位置是均匀分布，随后计算有多少比例的点落入了圆中(根据距离圆心的距离判断)，这个比例就是 $\frac{\pi}{4}$。</p>
+</blockquote>
+<p>上述过程就是蒙特卡洛方法，有以下三方面的内容：</p>
+<ol>
+<li>随机事件：正方形中撒入点；</li>
+<li>根据随机事件的概率分布(均匀分布)模拟数据，生成样本；</li>
+<li>根据样本的某统计值(在圆内的比例)估计待估参数 $pi$。</li>
+</ol>
+<p>一般地，蒙特卡洛方法的三个步骤为：</p>
+<ol>
+<li>构造概率过程：确定随机事件的概率分布，该随机事件的某统计量刚好是待估参数；</li>
+<li>采样：根据随机事件的概率分布采样；</li>
+<li>估计参数：根据采样的样本估算参数。</li>
+</ol>
+<h1 id="2-PYTHON实现"><a href="#2-PYTHON实现" class="headerlink" title="2. PYTHON实现"></a>2. PYTHON实现</h1><p>利用蒙特卡洛法估计 $pi$，代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">n = <span class="number">1000</span></div><div class="line">x = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">y = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">index = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(n) <span class="keyword">if</span> (x[i]**<span class="number">2</span>+y[i]**<span class="number">2</span>) &lt;<span class="number">1</span>]</div><div class="line">count = len(index)</div><div class="line">pi = <span class="number">4.0</span>*count/n</div><div class="line">print(<span class="string">"PI=%f"</span> %pi)</div></pre></td></tr></table></figure></p>
+<p>随机模拟了1000个点，所得结果为：PI=3.164。</p>
+<img src="/img/mcmc/circle.png" title="图2. 示意图2">
 
       
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MCMC/" rel="tag"># MCMC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/26/frequentism-and-bayesianism/" rel="next" title="频率主义和贝叶斯主义---参数估计">
+                <i class="fa fa-chevron-left"></i> 频率主义和贝叶斯主义---参数估计
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/10/mcmc2/" rel="prev" title="MCMC (2): 马尔科夫链">
+                MCMC (2): 马尔科夫链 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -400,6 +454,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -420,8 +478,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -529,6 +596,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蒙特卡洛方法"><span class="nav-text">1. 蒙特卡洛方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PYTHON实现"><span class="nav-text">2. PYTHON实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -659,11 +742,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
 
 
   
