@@ -417,6 +417,27 @@
 <li><p>得到超平面 $\mathbf{w}^* \cdot x + b^* = 0$。对于需要分类的数据，根据 $f(x) = sign(\mathbf{w}^* \cdot x+b^*)$ 判断其类别，其中 $sign$ 为相应的决策函数。</p>
 </li>
 </ol>
+<hr>
+<h1 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h1><p>对于给定的非线性可分数据集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，找不到一个分类平面将数据集分类。自然的想法就是将数据映射到新的空间 $\mathbf{x} \rightarrow \phi(\mathbf{x})$，使得其在新的空间中存在分类平面 $\mathbf{w}^T \cdot \phi(\mathbf{x}) +b= 0$，将其分类。如图 3 所示。<br><img src="/img/svm/svm3.png" title="图3. 左边为非线性可分，投影之后线性可分."></p>
+<p>通常来说，非线性 SVM 不显式地定义映射函数 $\phi(\mathbf{x})$，而是采用核技巧，原因下面讲。</p>
+<h2 id="5-1-核技巧"><a href="#5-1-核技巧" class="headerlink" title="5.1. 核技巧"></a>5.1. 核技巧</h2><p>针对非线性可分数据集，假设找到了映射函数 $\phi(\mathbf{x})$，使其线性可分。与线性支持向量机推导一样，约束最优化问题为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j\color{red}{(\phi{(x_i)}^T \cdot \phi{(x_j)})}- \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}<br>可以看到，上式的优化问题需要计算 $K(x_i,x_j)= \phi{(x_i)}^T \cdot \phi{(x_j)}$，我们称 $K(x_i,x_j)$ 为核函数。因为特征空间通常很高维，甚至是无穷维，映射函数的内积 $\phi{(x_i)}^T \cdot \phi{(x_j)}$ 并不容易计算。为了避开这个障碍，特征空间的內积用核函数 $K(,)$ 来代替，从而避免高维中的內积。所以，不需要定义映射函数 $\phi{\mathbf{x}}$，只需要定义核函数，这便是核技巧。核技巧的好处在于不需要显式定义映射函数，只需要选择合适的核函数。此外，值得说明的是，正是对偶问题的引入，才能使得应用核技巧。</p>
+<h2 id="5-2-核函数"><a href="#5-2-核函数" class="headerlink" title="5.2. 核函数"></a>5.2. 核函数</h2><p>显然，若已知映射函数，则可写出核函数。但是现实任务中我们通常不知道映射函数是什么样的形式。那么，什么样的函数 $K(,)$ 可以作为一个有效的核函数呢？答案是只要 $K(,)$ 满足 <strong>Mercer</strong> 定理即可。这里不再展开叙述。</p>
+<p>定义了核函数，实际上就定义了一个新的特征空间，这个新的特征空间称之为再生核希尔伯特空间。需要注意的是，在不知道特征映射的形式时，我们并不知道什么样的核函数是合适的，而核函数也仅是隐式的定义了新的特征空间。于是，核函数的选用成为了非线性支持向量机的最大变数。若核函数选择不合适，则意味着数据映射到了一个不合适的特征空间，很可能会导致分类效果不佳。</p>
+<p>显然，判断一个函数是否可以当成核函数或者判断一个核函数是否适合是很困难的。这里给出一些常用的核函数。</p>
+<ol>
+<li><p>线性核<br>\begin{equation*}<br>K(x_i,x_j) = x_i^T~x_j +c<br>\end{equation*}</p>
+</li>
+<li><p>多项式核<br>\begin{equation*}<br>K(x_i,x_j) = (x_i^T~x_j +c)^d<br>\end{equation*}</p>
+</li>
+<li><p>高斯核<br>\begin{equation*}<br>K(x_i,x_j) = exp(\frac{-||x_i-x_j||^2}{2\sigma^2})<br>\end{equation*}</p>
+</li>
+<li><p>拉普拉斯核<br>\begin{equation*}<br>K(x_i,x_j) = exp(\frac{-||x_i-x_j||}{\sigma})<br>\end{equation*}<br>此外，也可通过函数组合得到。</p>
+</li>
+</ol>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
+<p>[2] 《<a href="https://book.douban.com/subject/10590856/" target="_blank" rel="external">统计学习方法</a>》, 李航</p>
+<p>[3] 《<a href="http://web.stanford.edu/~boyd/cvxbook/" target="_blank" rel="external">Convex Optimization</a>》, Stephen Boyd and Lieven Vandenberghe</p>
 
           
         
