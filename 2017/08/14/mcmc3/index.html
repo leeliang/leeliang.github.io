@@ -94,21 +94,22 @@
 
 
 
-<meta name="description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta name="description" content="1. MCMC采样算法在上一篇文章 《MCMC (2): 马尔科夫链》 中，我们提到需要构造一个转移矩阵 $Q(q(i,j))$，使其满足细致平稳条件：\begin{equation}p(i)q(i,j) = p(j)q(j,i)\label{dbc}\end{equation} 假设我们已经有一个转移矩阵为 $Q$ 的马氏链，$q(i,j)$ 表示从状态 $i$ 转移到 $j$ 的概率，通常情况">
 <meta name="keywords" content="MCMC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MCMC (1): 蒙特卡洛方法">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/07/mcmc1/index.html">
+<meta property="og:title" content="MCMC (3): MCMC采样方法">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/14/mcmc3/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta property="og:description" content="1. MCMC采样算法在上一篇文章 《MCMC (2): 马尔科夫链》 中，我们提到需要构造一个转移矩阵 $Q(q(i,j))$，使其满足细致平稳条件：\begin{equation}p(i)q(i,j) = p(j)q(j,i)\label{dbc}\end{equation} 假设我们已经有一个转移矩阵为 $Q$ 的马氏链，$q(i,j)$ 表示从状态 $i$ 转移到 $j$ 的概率，通常情况">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:updated_time" content="2017-08-21T06:41:42.000Z">
+<meta property="og:image" content="http://leeliang.github.io/img/mcmc/metropolis.jpg">
+<meta property="og:image" content="http://leeliang.github.io/img/mcmc/mh.jpg">
+<meta property="og:image" content="http://leeliang.github.io/img/mcmc/pie.png">
+<meta property="og:updated_time" content="2017-08-21T12:44:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MCMC (1): 蒙特卡洛方法">
-<meta name="twitter:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
-<meta name="twitter:image" content="http://leeliang.github.io/img/mcmc/circle.png">
+<meta name="twitter:title" content="MCMC (3): MCMC采样方法">
+<meta name="twitter:description" content="1. MCMC采样算法在上一篇文章 《MCMC (2): 马尔科夫链》 中，我们提到需要构造一个转移矩阵 $Q(q(i,j))$，使其满足细致平稳条件：\begin{equation}p(i)q(i,j) = p(j)q(j,i)\label{dbc}\end{equation} 假设我们已经有一个转移矩阵为 $Q$ 的马氏链，$q(i,j)$ 表示从状态 $i$ 转移到 $j$ 的概率，通常情况">
+<meta name="twitter:image" content="http://leeliang.github.io/img/mcmc/metropolis.jpg">
 
 
 
@@ -137,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/07/mcmc1/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/14/mcmc3/"/>
 
 
 
 
 
-  <title>MCMC (1): 蒙特卡洛方法 | My Blog</title>
+  <title>MCMC (3): MCMC采样方法 | My Blog</title>
   
 
 
@@ -270,7 +271,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/07/mcmc1/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/14/mcmc3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -287,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MCMC (1): 蒙特卡洛方法</h1>
+          <h1 class="post-title" itemprop="name headline">MCMC (3): MCMC采样方法</h1>
         
 
         <div class="post-meta">
@@ -299,8 +300,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T14:37:33+08:00">
-                2017-08-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T15:20:06+08:00">
+                2017-08-14
               </time>
             
 
@@ -359,31 +360,21 @@
       
 
       
-        <h1 id="1-蒙特卡洛方法"><a href="#1-蒙特卡洛方法" class="headerlink" title="1. 蒙特卡洛方法"></a>1. 蒙特卡洛方法</h1><p>蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计<strong>参数</strong>，该参数是某一随机事件的<strong>某个统计值</strong>，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。</p>
-<p>举个例子帮助理解：</p>
-<blockquote>
-<p>怎么利用蒙特卡洛方法估计$pi$?</p>
-</blockquote>
-<p>如下图所示：<br><img src="/img/mcmc/circle.png" title="图1. 示意图"></p>
-<p>图中圆和正方形的面积比为：<br>\begin{equation*}<br>\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}<br>\end{equation*}<br>也就是说，只需要知道圆和它的外切正方形的面积比就可以求得 $\pi$。假设有这样的一个随机事件：</p>
-<blockquote>
-<p>往正方形中撒入点，点落在正方形中的位置是均匀分布，随后计算有多少比例的点落入了圆中(根据距离圆心的距离判断)，这个比例就是 $\frac{\pi}{4}$。</p>
-</blockquote>
-<p>上述过程就是蒙特卡洛方法，有以下三方面的内容：</p>
+        <h1 id="1-MCMC采样算法"><a href="#1-MCMC采样算法" class="headerlink" title="1. MCMC采样算法"></a>1. MCMC采样算法</h1><p>在上一篇文章 <a href="/2017/08/10/mcmc2/" title="《MCMC (2): 马尔科夫链》">《MCMC (2): 马尔科夫链》</a> 中，我们提到需要构造一个转移矩阵 $Q(q(i,j))$，使其满足细致平稳条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}</p>
+<p>假设我们已经有一个转移矩阵为 $Q$ 的马氏链，$q(i,j)$ 表示从状态 $i$ 转移到 $j$ 的概率，通常情况下，我们随便取得转移矩阵不满足细致平稳条件，即：<br>\begin{equation}<br>p(i) q(i,j) \neq p(j) q(j,i)<br>\end{equation}<br>也就是说，这个转移矩阵不是所需要的。我们通过对其改造一下，使其满足细致平稳条件，如引入一个参数 $\alpha(i,j)$，使得：<br>\begin{equation}<br>p(i) q(i,j)\alpha(i,j) = p(j) q(j,i)\alpha(j,i)<br>\label{equ3}<br>\end{equation}<br>按照对称性，我们有：<br>\begin{equation}<br>\alpha(i,j)= p(j) q(j,i)， \quad \alpha(j,i) = p(i) q(i,j)<br>\end{equation}<br>于是，我们得到了满足细致平稳条件的转移矩阵 $Q’$:<br>\begin{equation}<br>Q’(i,j) = q(i,j)\alpha(i,j)<br>\end{equation}<br>在改造 $Q’$ 过程中引入的 $\alpha(i,j)$ 成为接受率，可以理解为从状态 $i$ 以 $q(i,j)$ 的概率跳转到状态 $j$ 的时候，我们以 $\alpha(i,j)$ 的概率接受这个转移，于是得到了新的马氏链的转移概率为 $Q’(i,j)=q(i,j)\alpha(i,j)$。</p>
+<h2 id="1-1-Metropolis采样方法"><a href="#1-1-Metropolis采样方法" class="headerlink" title="1.1. Metropolis采样方法"></a>1.1. Metropolis采样方法</h2><p>假设我们已经有一个转移矩阵 $Q$，将上述的理论实现为方法，具体过程为：</p>
 <ol>
-<li>随机事件：正方形中撒入点；</li>
-<li>根据随机事件的概率分布(均匀分布)模拟数据，生成样本；</li>
-<li>根据样本的某统计值(在圆内的比例)估计待估参数 $pi$。</li>
+<li>初始化马氏链状态，采样 $x_0$，其中 $x_0$ 服从 $\pi_0(x)$ 分布；</li>
+<li>以 $x_0$ 为中心，根据转移矩阵 $q(x_1 \mid X=x_0)$ 采样  $x_1$，其中 $x_1$ 服从 $\pi_1(x)=\pi_0(x) Q$ 分布；</li>
+<li>考虑到我们的转移矩阵不满足细致平稳条件，需要按照接受率 $\alpha(i,j)$ 确定是否接受从 $0$ 状态转移到 $1$ 状态；</li>
+<li>若不接受，重新以 $x_0$ 为中心采样 $x_1$;</li>
+<li>若接受，以 $x_1$ 为中心采样 $x_2$，其中 $x_2$ 服从 $\pi_2(x)=\pi_1(x) Q’$</li>
+<li>重复以上过程，根据马氏链收敛定理，概率分布将收敛到 $\pi(x)$，即采样的 $x_n, x_{n+1}, x_{n+2}\cdots$将都服从 $\pi(x)$ 分布，而 $\pi(x)$ 正是我们需要采样的概率分布。这样，我们就得到了概率分布 $\pi(x)$ 的样本。</li>
 </ol>
-<p>一般地，蒙特卡洛方法的三个步骤为：</p>
-<ol>
-<li>构造概率过程：确定随机事件的概率分布，该随机事件的某统计量刚好是待估参数；</li>
-<li>采样：根据随机事件的概率分布采样；</li>
-<li>估计参数：根据采样的样本估算参数。</li>
-</ol>
-<h1 id="2-PYTHON实现"><a href="#2-PYTHON实现" class="headerlink" title="2. PYTHON实现"></a>2. PYTHON实现</h1><p>利用蒙特卡洛法估计 $pi$，代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">n = <span class="number">1000</span></div><div class="line">x = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">y = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">index = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(n) <span class="keyword">if</span> (x[i]**<span class="number">2</span>+y[i]**<span class="number">2</span>) &lt;<span class="number">1</span>]</div><div class="line">count = len(index)</div><div class="line">pi = <span class="number">4.0</span>*count/n</div><div class="line">print(<span class="string">"PI=%f"</span> %pi)</div></pre></td></tr></table></figure></p>
-<p>随机模拟了1000个点，所得结果为：PI=3.164。</p>
-<img src="/img/mcmc/circle.png" title="图2. 示意图2">
+<p>具体算法如下：<br><img src="/img/mcmc/metropolis.jpg" title="图1. 算法示意"></p>
+<h2 id="1-2-MH-采样算法"><a href="#1-2-MH-采样算法" class="headerlink" title="1.2. MH 采样算法"></a>1.2. MH 采样算法</h2><p>上述的采样算法存在一个小问题：在马氏链的转移过程中，接受率可能偏小，这样采样过程容易原地踏步，收敛到平稳分布的速度过慢。为了扩大接受率，我们将 (\ref{equ3}) 式两边同时乘上一个系数，同比例的放大 $\alpha(i,j)$ 和 $\alpha(j,i)$, 使得两个数中最大的为 1，这样在满足细致平稳条件的情况下提高了接受率，这就是 Metropolis-Hastings 采样算法。<br>具体过程如下：<br><img src="/img/mcmc/mh.jpg" title="图2. 算法示意"></p>
+<h1 id="2-MH算法-PYTHON-实现"><a href="#2-MH算法-PYTHON-实现" class="headerlink" title="2. MH算法 PYTHON 实现"></a>2. MH算法 PYTHON 实现</h1><p>我们还是采用 <a href="/2017/08/10/mcmc2/" title="《MCMC (2): 马尔科夫链》">《MCMC (2): 马尔科夫链》</a> 中的例子，采样 $p = [0.9, 0.05, 0.05]$ 的分布的样本，即下层收入的人占比 90%，中层占比 5%，上层占比 5%。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</div><div class="line">p=np.array([<span class="number">0.9</span>,<span class="number">0.05</span>,<span class="number">0.05</span>])</div><div class="line"><span class="comment"># 初始化转移矩阵 </span></div><div class="line">A = np.array([p <span class="keyword">for</span> x <span class="keyword">in</span> range(len(p))], dtype=np.float32)</div><div class="line"><span class="comment"># 采样计数 </span></div><div class="line">samplecount = <span class="number">0</span></div><div class="line">sMax = <span class="number">100000</span></div><div class="line">samples = []</div><div class="line"><span class="comment"># 马氏链初始状态</span></div><div class="line">i = np.random.randint(len(p))</div><div class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    <span class="comment"># 以状态 i 为中心，根据转移矩阵采样状态 j</span></div><div class="line">    j = np.argmax(np.random.multinomial(<span class="number">1</span>, A[i]))</div><div class="line">    <span class="comment"># 计算接受率 (A[j][i]*p[j]) / (A[i][j]*p[i])</span></div><div class="line">    alpha = min(<span class="number">1</span>,(A[j][i]*p[j])/(A[i][j]*p[i]))</div><div class="line">    <span class="comment"># 生成u</span></div><div class="line">    u = np.random.uniform()</div><div class="line">    <span class="keyword">if</span> u &lt; alpha:</div><div class="line">    	 <span class="comment"># 转移至状态 j </span></div><div class="line">        i = j</div><div class="line">        samplecount += <span class="number">1</span></div><div class="line">        samples.append(j)</div><div class="line">    <span class="comment"># if u &gt; alpha, 状态不转移，依旧从状态 i 采样</span></div><div class="line">    <span class="keyword">if</span> samplecount &gt;= sMax:</div><div class="line">        <span class="keyword">break</span></div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        <span class="keyword">continue</span></div><div class="line">        </div><div class="line">samples = np.array(samples)</div><div class="line">sizes = [np.sum(samples==<span class="number">0</span>), np.sum(samples==<span class="number">1</span>), np.sum(samples==<span class="number">2</span>)]</div><div class="line">plt.figure(figsize=[<span class="number">3</span>,<span class="number">3</span>])</div><div class="line">plt.pie(sizes,autopct=<span class="string">'%1.1f%%'</span>, shadow=<span class="keyword">True</span>)</div></pre></td></tr></table></figure></p>
+<p>结果如下：<br><img src="/img/mcmc/pie.png" title="图3. 采样结果"></p>
 
       
     </div>
@@ -414,8 +405,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/26/frequentism-and-bayesianism/" rel="next" title="频率主义和贝叶斯主义---参数估计">
-                <i class="fa fa-chevron-left"></i> 频率主义和贝叶斯主义---参数估计
+              <a href="/2017/08/10/mcmc2/" rel="next" title="MCMC (2): 马尔科夫链">
+                <i class="fa fa-chevron-left"></i> MCMC (2): 马尔科夫链
               </a>
             
           </div>
@@ -424,8 +415,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/10/mcmc2/" rel="prev" title="MCMC (2): 马尔科夫链">
-                MCMC (2): 马尔科夫链 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/21/decision-tree/" rel="prev" title="机器学习算法(1): 决策树">
+                机器学习算法(1): 决策树 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -606,7 +597,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蒙特卡洛方法"><span class="nav-text">1. 蒙特卡洛方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PYTHON实现"><span class="nav-text">2. PYTHON实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-MCMC采样算法"><span class="nav-text">1. MCMC采样算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-Metropolis采样方法"><span class="nav-text">1.1. Metropolis采样方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-MH-采样算法"><span class="nav-text">1.2. MH 采样算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-MH算法-PYTHON-实现"><span class="nav-text">2. MH算法 PYTHON 实现</span></a></li></ol></div>
             
 
           </div>

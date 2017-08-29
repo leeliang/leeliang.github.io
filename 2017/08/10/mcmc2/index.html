@@ -103,7 +103,7 @@
 <meta property="og:description" content="1. 为什么需要马尔科夫链？在上一篇文章 《MCMC (1): 蒙特卡洛方法》 中，我们总结了蒙特卡洛方法解决问题的三个步骤为：   构造概率过程； 采样； 估计参数。   马尔科夫链也就是需要解决上述的采样问题。 在计算机中，均匀分布 $Uniform(0,1)$ 的样本相对容易生成，常见的概率分布也可以基于均匀分布生成。但是，当我们的概率分布很复杂或者是高维分布时，样本的生成就存在困难，这时候">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://leeliang.github.io/img/mcmc/uml.png">
-<meta property="og:updated_time" content="2017-08-21T07:19:19.000Z">
+<meta property="og:updated_time" content="2017-08-24T08:57:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MCMC (2): 马尔科夫链">
 <meta name="twitter:description" content="1. 为什么需要马尔科夫链？在上一篇文章 《MCMC (1): 蒙特卡洛方法》 中，我们总结了蒙特卡洛方法解决问题的三个步骤为：   构造概率过程； 采样； 估计参数。   马尔科夫链也就是需要解决上述的采样问题。 在计算机中，均匀分布 $Uniform(0,1)$ 的样本相对容易生成，常见的概率分布也可以基于均匀分布生成。但是，当我们的概率分布很复杂或者是高维分布时，样本的生成就存在困难，这时候">
@@ -550,7 +550,7 @@
 <p>回到我们的正题。我们需要利用马尔科夫链的性质来生成复杂概率分布 $p(x)$ 的样本。很自然的，我们的想法是产生一条马氏链，使得它的平稳分布就是想要的分布。即，构造符合条件的转移矩阵，使其满足：<br>\begin{equation}<br>p(x)Q = p(x)<br>\end{equation}<br>因为 $p(x)$ 是上式的唯一解，我们可以根据上式来生成 $p(x)$ 的样本。</p>
 <p>那么，如何构造转移矩阵呢？</p>
 <p>假设我们有一个转移矩阵 $Q$($q(i,j)$)，其满足如下条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}<br>$i,j$ 是分布中的两个状态，如上面例子中的低层、中层(就是 $Q$ 矩阵中的下标)。根据 (\ref{dbc}) 式，我们有：<br>\begin{align}<br>&amp; \sum_{i=1}^\infty p(i)q(i,j) = \sum_{i=1}^\infty p(j)q(j,i)<br>= p(j) \sum_{i=1}^\infty q(j,i) = p(j) \\\<br>&amp; \Rightarrow p Q = p<br>\end{align}<br>可以看到，只要构造满足 (\ref{dbc}) 式的转移矩阵，我们就可以得到平稳分布 $p$，(\ref{dbc}) 式也就是马氏链的细致平稳条件。根据 (\ref{dbc}) 式，利用随机采样的方法，就可以得到分布 $p$ 的样本。随机采样的方法将在下一章记录。</p>
-<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
 <p>[2] Information Theory, Inference, and Learning Algorithms, David J.C. MacKay. (Chap. 29).</p>
 <p>[3] Pattern Recognition and Machine Learning, Christopher M. Bishop. (Chap. 11).</p>
 
@@ -593,7 +593,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/24/mcmc3/" rel="prev" title="MCMC (3): MCMC采样方法">
+              <a href="/2017/08/14/mcmc3/" rel="prev" title="MCMC (3): MCMC采样方法">
                 MCMC (3): MCMC采样方法 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -672,7 +672,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -683,7 +683,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -694,7 +694,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -775,7 +775,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么需要马尔科夫链？"><span class="nav-text">1. 为什么需要马尔科夫链？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-马尔科夫链"><span class="nav-text">2. 马尔科夫链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-参考资料"><span class="nav-text">3. 参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-为什么需要马尔科夫链？"><span class="nav-text">1. 为什么需要马尔科夫链？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-马尔科夫链"><span class="nav-text">2. 马尔科夫链</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

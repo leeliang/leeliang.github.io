@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Machine Learning,SVM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta name="keywords" content="Machine Learning,SVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习算法(3): 支持向量机">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/28/svm/index.html">
+<meta property="og:site_name" content="My Blog">
+<meta property="og:description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://leeliang.github.io/img/svm/svm1.png">
+<meta property="og:image" content="http://leeliang.github.io/img/svm/svm2.png">
+<meta property="og:updated_time" content="2017-08-29T02:41:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习算法(3): 支持向量机">
+<meta name="twitter:description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta name="twitter:image" content="http://leeliang.github.io/img/svm/svm1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/28/svm/"/>
+
+
+
+
+
+  <title>机器学习算法(3): 支持向量机 | My Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">My Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/28/svm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">机器学习算法(3): 支持向量机</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-28T20:20:25+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="1-支持向量机"><a href="#1-支持向量机" class="headerlink" title="1.  支持向量机"></a>1.  支持向量机</h1><p>给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。<br><img src="/img/svm/svm1.png" title="图1. 可以划分数据的划分超平面"><br>可以看到，具有多个划分超平面可以将数据分类，我们需要找出唯一的划分超平面，使得划分效果最优，SVM 采用的是最大间隔 (maximum margin) 划分超平面。如图 2 所示。<br><img src="/img/svm/svm2.png" title="图2. 最大间隔划分超平面"><br>图 2 中的实心点，刚好处在划分超平面上，这些点确定了划分超平面，称之为支持向量。</p>
+<p>上面的例子为线性分类器，即超平面可以用一个线性方程表示：<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}</p>
+<p>对于需要非线性超平面才能分离的数据，SVM 采用核方法，这也是要引入对偶问题最大的原因。 </p>
+<p>先基于线性可分支持向量机讲述原理，之后说明线性不可分支持向量机，<br>最后说明非线性支持向量机。</p>
+<h1 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h1><h2 id="2-1-最大间隔超平面"><a href="#2-1-最大间隔超平面" class="headerlink" title="2.1. 最大间隔超平面"></a>2.1. 最大间隔超平面</h2><p>上面提到支持向量机的最优划分标准是最大间隔。在特征空间中，划分超平面可用如下线性方程表示:<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}<br>其中 $\mathbf{w}$ 为超平面的法向量，$b$ 为位移项。样本点 $x_i$ 到划分超平面的几何距离为：<br>\begin{equation}<br>\gamma_i = \frac{|\mathbf{w} \cdot x_i +b|}{||\mathbf{w}||}<br>\label{eqn3}<br>\end{equation}<br>$||\mathbf{w}||$ 为 $\mathbf{w}$ 的 $L_2$ 范数。<br>假设超平面能够将训练样本正确分类，即若 $\mathbf{w} \cdot x_i +b &gt;0$，则 $y_i = 1$，反之亦然。所以 (\ref{eqn3}) 式可以去掉绝对值，几何距离重写为：<br>\begin{equation}<br>\gamma_i = y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||}<br>\end{equation}<br>我们定义训练集中最小的几何距离为<strong>几何间隔</strong>：<br>\begin{equation}<br>\gamma = \min \gamma_i<br>\end{equation}<br>最大间隔思想就是最大化几何间隔，在满足所有样本点的几何距离大于几何间隔的条件下：<br>\begin{equation}<br>\begin{split}<br>&amp;\max_{\mathbf{w},b}\gamma \\ &amp;s.t. \ \ y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||} \ge \gamma, \ \ i = 1,2,…,N<br>\end{split}<br>\label{eqn6}<br>\end{equation}<br>为了简化问题，我们引入一个新的定义，<strong>函数间隔</strong>：<br>\begin{equation}<br>\widehat{\gamma} = \frac{\gamma }{||\mathbf{w}||}<br>\end{equation}<br>所以，(\ref{eqn6}) 式重写为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{\widehat{\gamma }}{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge \widehat{\gamma }, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn8}<br>\end{equation}<br>可以看到，我们自由缩放函数间隔 $N$ 倍：<br>\begin{equation}<br>N ~\widehat{\gamma} = N~ y_i (\mathbf{w} \cdot x_i +b)<br>\end{equation}<br>超平面 $\mathbf{w}^T \cdot \mathbf{x} +b= 0$ 与 缩放后的平面 $N~(\mathbf{w}^T \cdot \mathbf{x} +b)= 0$ 相同；几何间隔同样也不会变化。也就是说，任意缩放函数间隔，对于我们最大化几何间隔问题的解算没有影响。为了简化我们的问题，令函数间隔 $\widehat{\gamma}=1$，这也是引入函数间隔的原因。(\ref{eqn8}) 式简化为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{ 1 }{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>注意到最大化 $\frac{ 1 }{||\mathbf{w}||}$ 等价于最小化 $\frac{ 1 }{2}||\mathbf{w}||^2$，最终，SVM 需要解决的问题为以下有约束的最优化问题，更具体地，该问题为凸二次规划问题：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn11}<br>\end{equation}</p>
+<h2 id="2-2-对偶问题"><a href="#2-2-对偶问题" class="headerlink" title="2.2. 对偶问题"></a>2.2. 对偶问题</h2><p>凸二次规划问题可以使用现成的优化计算包计算，为了引入核函数和方便计算，将原问题转为其对偶问题进行求解。</p>
+<h3 id="2-2-1-原始问题"><a href="#2-2-1-原始问题" class="headerlink" title="2.2.1. 原始问题"></a>2.2.1. 原始问题</h3><p>将原问题 (\ref{eqn11}) 式重写为：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ g(\mathbf{w},b) \le 0 , \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn12}<br>\end{equation}<br>其中 $g(\mathbf{w},b)=1- y_i\left ( \mathbf{w}\cdot x_i + b \right )$。<br>首先，定义拉格朗日函数为：</p>
+<p>\begin{equation}<br>L(\mathbf{w},b,\alpha) = \frac{1}{2} ||\mathbf{w}||^2 - \sum_{i=1}^N \alpha_i ~g(\mathbf{w},b)<br>\end{equation}<br>其中，$\alpha_i \ge 0$。引入 $(\mathbf{w},b)$ 的函数，记为：</p>
+<p>\begin{equation}<br>\theta_p(\mathbf{w},b) = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>若上式最大化问题有解，其必满足 (\ref{eqn12}) 式的条件，且其解为：</p>
+<p>\begin{equation}<br> \frac{ 1 }{2}||\mathbf{w}||^2 = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>因为 $\alpha_i \ge 0$，需要 $g(\mathbf{w},b) \le 0$ 才能有最大值解。</p>
+<p>所以，原问题等价于如下问题：</p>
+<p>\begin{equation}<br>\min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}</p>
+<h3 id="2-2-2-原始问题的对偶问题"><a href="#2-2-2-原始问题的对偶问题" class="headerlink" title="2.2.2 原始问题的对偶问题"></a>2.2.2 原始问题的对偶问题</h3><p>记原始问题的对偶问题为：<br>\begin{equation}<br> \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha)<br>\end{equation}<br>记:<br> \begin{equation}<br> \theta_d(\alpha) = \min_{\mathbf{w},b} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>我们要通过对偶问题的求解来解决原始问题，那么我们的问题是：对偶问题的解和原始问题的解有什么关系呢？</p>
+<h3 id="2-2-3-原始问题与对偶问题的关系"><a href="#2-2-3-原始问题与对偶问题的关系" class="headerlink" title="2.2.3 原始问题与对偶问题的关系"></a>2.2.3 原始问题与对偶问题的关系</h3><p>对任意的 $(\mathbf{w},b,\alpha)$，有：</p>
+<p>\begin{equation}<br>\theta_d(\alpha) = \min_{\mathbf{w},b} L(\mathbf{w},b,\alpha) \le L(\mathbf{w},b,\alpha) \le \max_{\alpha} L(\mathbf{w},b,\alpha) =  \theta_p(\mathbf{w},b)<br>\end{equation}</p>
+<p>若原始问题和对偶问题都有解，根据上式，有：</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp;\theta_d(\alpha) \le \theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \theta_d(\alpha) \le \min_{\mathbf{w},b}\theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \le \min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{split}<br>\end{equation}<br>即对偶问题的解小于或等于原始问题的解。在什么情况下，对偶问题的解与原始问题的解相同呢？如果能找到这个条件，那么我们直接解决对偶问题就可以得到原始问题的解，这个条件就是 KKT (Karush-Kuhn-Tucker) 条件。</p>
+<p>KKT 条件为：</p>
+<p>\begin{equation}<br>\begin{split}<br>\nabla_\mathbf{w} L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_b L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_\alpha L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\alpha_i^* ~ g(\mathbf{w}^*,b^*) &amp;= 0, i=1,2,…,N \\<br>g(\mathbf{w}^*,b^*) &amp;\le 0, i=1,2,…,N \\<br>\alpha_i^* &amp;\ge 0, i=1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>如果 $(\mathbf{w}^*,b^*,\alpha^*)$ 满足 KKT 条件，则对偶问题和原始问题的解均为 $(\mathbf{w}^*,b^*,\alpha^*)$。</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp; \max_\alpha \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \\<br>&amp;= \max_{\alpha} L(\mathbf{w}^*,b^*,\alpha) \\<br>&amp; = L(\mathbf{w}^*,b^*,\alpha^*) \\<br>&amp; = \frac{1}{2} ||\mathbf{w^*}||^2 - \sum_{i=1}^N \alpha_i^* ~g(\mathbf{w^*},b^*) \\<br>&amp; = \min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \  \ s.t. \ \ g(\mathbf{w^*},b^*) \le 0 , \ \ i = 1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>所以，SVM 问题转化为 KKT 条件下的对偶问题求解。</p>
+<h3 id="2-2-3-对偶问题的求解"><a href="#2-2-3-对偶问题的求解" class="headerlink" title="2.2.3 对偶问题的求解"></a>2.2.3 对偶问题的求解</h3><p>为了得到对偶问题的解，需要先求 $L(\mathbf{w},b,\alpha)<br>$ 对 $(\mathbf{w},b)$ 的极小，再求对 $\alpha$ 的极大。</p>
+<ol>
+<li><p>求$\min \limits_{\mathbf{w},b}L(\mathbf{w},b,\alpha)$<br>将 $L(\mathbf{w},b,\alpha)$ 分别对 $\mathbf{w}$，$b$ 求偏导数并令其等于 $0$：<br>\begin{equation}<br>\begin{aligned}  \frac{\partial L(\mathbf{w},b,a)}{\partial \mathbf{w}} &amp;= 0 \Rightarrow \mathbf{w} - \sum_{i=1}^N a_iy_ix_i = 0 \\ \frac{\partial L(\mathbf{w},b,a)}{\partial b} &amp;= 0 \Rightarrow  - \sum_{i=1}^N a_i~y_i = 0 \end{aligned}<br>\end{equation}<br>将上式带入拉格朗日函数消去 $\mathbf{w}$，$b$，有：<br>\begin{equation}<br>\begin{aligned}<br>\min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) =  \ &amp;-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i \\<br>&amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+</li>
+<li><p>求对偶问题<br>\begin{equation}<br>\begin{aligned} &amp;\max_{a_i} \ -\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i\\ &amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+</li>
+</ol>
+<p>根据上式，可以求取对偶问题的解 $\alpha^*$，再根据 KKT 的条件求取原始问题的解 $(\mathbf{w}^*,b^*)$，从而可以得到划分超平面，这种算法为对偶学习算法。</p>
+<p>对偶问题的解是一个凸二次规划问题，理论上任何一个凸二次规划问题的软件包都可以解决，但是通常很慢，为了能够更快找到好的解，我们采用 <strong>SMO</strong> 算法。该算法的原理先放一放。</p>
+<h1 id="3-线性不可分支持向量机"><a href="#3-线性不可分支持向量机" class="headerlink" title="3. 线性不可分支持向量机"></a>3. 线性不可分支持向量机</h1><p>上述的问题是基于所有样本点 $(x_i, y_i)$ 都能满足函数间隔大于等于 $1$ 的约束条件，即线性可分的。如果存在异常点不满足约束条件，上面的方法就不适用了。为了解决线性不可分的问题，可以对每个样本引入一个松弛变量 $\xi _i  \ge 0$，使得函数间隔加上松弛变量大于等于 $1$，即约束条件变为：<br>\begin{equation}<br>y_i(\mathbf{w} \cdot x_i +b) \ge 1 – \xi_i<br>\end{equation}<br>显然，$\xi_i$ 不能任意大，否则所有样本点都满足约束条件，为了约束 $\xi_i$ 的大小，需要在目标函数中加入惩罚。最终，优化目标改成如下的形式：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b,\xi}\ \ \frac{1}{2}||\mathbf{w}||^2 + C\sum_{i=1}^N \xi_i \\ &amp;s.t. \ \ \ \ -y_i(\mathbf{w} \cdot x_i + b) -\xi_i + 1\le 0, \ \ i = 1,2,…,N \\ &amp;\ \ \ \ \ \  \ \ \ \ -\xi_i \le 0 ,\ \ i = 1,2,…,N \end{aligned}<br>\end{equation}<br>其中，$C &gt; 0$ 称为惩罚参数，一般由应用问题决定，$C$ 值越大对误分类的惩罚越大。</p>
+<p>同样地，线性不可分支持向量机的学习问题也是凸二次规划问题，我们采用与线性可分支持向量机同样的方法，即：</p>
+<ol>
+<li>构造拉格朗日函数；</li>
+<li>原始问题转化为对偶问题；</li>
+<li>利用 KKT 条件消去其他参数，得到只包含参数 $a_i$ 的对偶问题；</li>
+<li>利用 <strong>SMO</strong> 算法解释出 $a_i$；</li>
+<li>根据 KKT 条件和 $a_i$ 解算出 $\mathbf{w}~,b,$。</li>
+</ol>
+<p>这里给出对偶问题的具体形式：<br>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>可以看到，线性可分支持向量机可以认为是松弛变量等于$0$，也就是上式的特例。线性可分和线性不可分支持向量机合称为线性支持向量机。至此，上式就是线性支持向量机待学习的问题。</p>
+<h1 id="4-线性支持向量机算法"><a href="#4-线性支持向量机算法" class="headerlink" title="4. 线性支持向量机算法"></a>4. 线性支持向量机算法</h1><hr>
+<ol>
+<li><p>构造约束最优化问题：<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}</p>
+</li>
+<li><p>采用 <strong>SMO</strong> 算法求解 $a_, ~i = 1,2,….N$；</p>
+</li>
+<li><p>根据 KKT 条件和 $a_i^*$ 解算出 $\mathbf{w}^*~,b^*,$。<br>\begin{aligned}<br>&amp;\mathbf{w}^* = \sum_{i=1}^Na_i^*y_ix_i\\ &amp;b^* = y_j - \sum_{i=1}^N y_ia_i^*(x_i \cdot x_j)  \\\<br>&amp;0 &lt; a^*_j &lt; C<br>\end{aligned}</p>
+</li>
+<li><p>得到超平面 $\mathbf{w}^* \cdot x + b^* = 0$。对于需要分类的数据，根据 $f(x) = sign(\mathbf{w}^* \cdot x+b^*)$ 判断其类别，其中 $sign$ 为相应的决策函数。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/SVM/" rel="tag"># SVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/24/nBayes/" rel="next" title="机器学习算法(2): 朴素贝叶斯分类器">
+                <i class="fa fa-chevron-left"></i> 机器学习算法(2): 朴素贝叶斯分类器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Liang LI" />
+          <p class="site-author-name" itemprop="name">Liang LI</p>
+           
+              <p class="site-description motion-element" itemprop="description">A mind needs books.</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/leeliang" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                    
+                      GitHub
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/your-user-name" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                    
+                      微博
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/kiay-lee" target="_blank" title="知乎">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                    
+                      知乎
+                    
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="mailto:liang4lee@gmail.com" target="_blank" title="E-Mail">
+                  
+                    <i class="fa fa-fw fa-envelope"></i>
+                  
+                    
+                      E-Mail
+                    
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-支持向量机"><span class="nav-text">1.  支持向量机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-线性可分支持向量机"><span class="nav-text">2. 线性可分支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-最大间隔超平面"><span class="nav-text">2.1. 最大间隔超平面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-对偶问题"><span class="nav-text">2.2. 对偶问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-1-原始问题"><span class="nav-text">2.2.1. 原始问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-2-原始问题的对偶问题"><span class="nav-text">2.2.2 原始问题的对偶问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-原始问题与对偶问题的关系"><span class="nav-text">2.2.3 原始问题与对偶问题的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-3-对偶问题的求解"><span class="nav-text">2.2.3 对偶问题的求解</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-线性不可分支持向量机"><span class="nav-text">3. 线性不可分支持向量机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-线性支持向量机算法"><span class="nav-text">4. 线性支持向量机算法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liang LI</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+    Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">
+    Theme &mdash;
+    <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+      NexT.Pisces
+    </a>
+  </div>
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: {equationNumbers: {autoNumber: ["AMS"], useLabelIds: true}},
+        "HTML-CSS": {linebreaks: {automatic: true}},
+        SVG: {linebreaks: {automatic: true}}
+    });
+    </script>
+
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

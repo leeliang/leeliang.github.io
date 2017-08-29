@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MCMC," />
+  <meta name="keywords" content="Machine Learning,Bayesian," />
 
 
 
@@ -94,21 +94,18 @@
 
 
 
-<meta name="description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
-<meta name="keywords" content="MCMC">
+<meta name="description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta name="keywords" content="Machine Learning,Bayesian">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MCMC (1): 蒙特卡洛方法">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/07/mcmc1/index.html">
+<meta property="og:title" content="机器学习算法(2): 朴素贝叶斯分类器">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/24/nBayes/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta property="og:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:updated_time" content="2017-08-21T06:41:42.000Z">
+<meta property="og:updated_time" content="2017-08-24T08:57:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MCMC (1): 蒙特卡洛方法">
-<meta name="twitter:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
-<meta name="twitter:image" content="http://leeliang.github.io/img/mcmc/circle.png">
+<meta name="twitter:title" content="机器学习算法(2): 朴素贝叶斯分类器">
+<meta name="twitter:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
 
 
 
@@ -137,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/07/mcmc1/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/24/nBayes/"/>
 
 
 
 
 
-  <title>MCMC (1): 蒙特卡洛方法 | My Blog</title>
+  <title>机器学习算法(2): 朴素贝叶斯分类器 | My Blog</title>
   
 
 
@@ -270,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/07/mcmc1/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/nBayes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -287,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MCMC (1): 蒙特卡洛方法</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习算法(2): 朴素贝叶斯分类器</h1>
         
 
         <div class="post-meta">
@@ -299,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T14:37:33+08:00">
-                2017-08-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T20:20:25+08:00">
+                2017-08-24
               </time>
             
 
@@ -322,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Math/" itemprop="url" rel="index">
-                    <span itemprop="name">Math</span>
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
                   </a>
                 </span>
 
@@ -359,31 +356,24 @@
       
 
       
-        <h1 id="1-蒙特卡洛方法"><a href="#1-蒙特卡洛方法" class="headerlink" title="1. 蒙特卡洛方法"></a>1. 蒙特卡洛方法</h1><p>蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计<strong>参数</strong>，该参数是某一随机事件的<strong>某个统计值</strong>，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。</p>
-<p>举个例子帮助理解：</p>
-<blockquote>
-<p>怎么利用蒙特卡洛方法估计$pi$?</p>
-</blockquote>
-<p>如下图所示：<br><img src="/img/mcmc/circle.png" title="图1. 示意图"></p>
-<p>图中圆和正方形的面积比为：<br>\begin{equation*}<br>\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}<br>\end{equation*}<br>也就是说，只需要知道圆和它的外切正方形的面积比就可以求得 $\pi$。假设有这样的一个随机事件：</p>
-<blockquote>
-<p>往正方形中撒入点，点落在正方形中的位置是均匀分布，随后计算有多少比例的点落入了圆中(根据距离圆心的距离判断)，这个比例就是 $\frac{\pi}{4}$。</p>
-</blockquote>
-<p>上述过程就是蒙特卡洛方法，有以下三方面的内容：</p>
-<ol>
-<li>随机事件：正方形中撒入点；</li>
-<li>根据随机事件的概率分布(均匀分布)模拟数据，生成样本；</li>
-<li>根据样本的某统计值(在圆内的比例)估计待估参数 $pi$。</li>
-</ol>
-<p>一般地，蒙特卡洛方法的三个步骤为：</p>
-<ol>
-<li>构造概率过程：确定随机事件的概率分布，该随机事件的某统计量刚好是待估参数；</li>
-<li>采样：根据随机事件的概率分布采样；</li>
-<li>估计参数：根据采样的样本估算参数。</li>
-</ol>
-<h1 id="2-PYTHON实现"><a href="#2-PYTHON实现" class="headerlink" title="2. PYTHON实现"></a>2. PYTHON实现</h1><p>利用蒙特卡洛法估计 $pi$，代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">n = <span class="number">1000</span></div><div class="line">x = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">y = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">index = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(n) <span class="keyword">if</span> (x[i]**<span class="number">2</span>+y[i]**<span class="number">2</span>) &lt;<span class="number">1</span>]</div><div class="line">count = len(index)</div><div class="line">pi = <span class="number">4.0</span>*count/n</div><div class="line">print(<span class="string">"PI=%f"</span> %pi)</div></pre></td></tr></table></figure></p>
-<p>随机模拟了1000个点，所得结果为：PI=3.164。</p>
-<img src="/img/mcmc/circle.png" title="图2. 示意图2">
+        <h1 id="1-贝叶斯决策论"><a href="#1-贝叶斯决策论" class="headerlink" title="1. 贝叶斯决策论"></a>1. 贝叶斯决策论</h1><p>考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但实际上它是 $C_2$ 类，这样我们就犯了分类错误，反之亦然。在决策过程中，我们希望能最小化错误分类率 $p(mistake)$：<br>\begin{equation}<br>\begin{split}<br>p(mistake) &amp;= p( x \in R_1,C_2) + p( x \in R_2,C_1)<br>\\\<br>&amp;= \int_{R_1} p(C_2,x) ~dx +\int_{R_2} p(C_1,x) ~dx<br>\end{split}<br>\end{equation}<br>即 $R_1$ 区域中，实际类别为 $C_2$ 的样本尽量少；$R_2$ 区域中，实际类别为 $C_1$ 的样本尽量少。</p>
+<p>实际情况中，我们面对的情况要比最小化错误率复杂，因为把 $C_1$ 类错分了 $C_2$ 类和把 $C_2$ 类错分为 $C_1$ 类的代价是不一样。我们需要对不同的错误加一个权值，这就是期望损失 (expected loss)：<br>\begin{equation}<br>EL = \int_{R_1} \color{red}{\lambda_{21}}~ p(C_2,x) ~dx +\int_{R_2}\color{red}{\lambda_{12}}~ p(C_1,x) ~dx<br>\end{equation}<br>其中，$\lambda_{21}$ 是将一个真实标记为 $C_1$ 误分类为 $C_2$ 的损失，反之同理。</p>
+<p>更一般地，对于 $K$ 类的问题，期望损失为：<br>\begin{equation}<br>EL =  \sum_{k} \sum_{j} \int_{R_j} \lambda_{kj}~~p( C_k, x)~ dx<br>\end{equation}</p>
+<p>对于每一个样本 $x$，我们要将其划分到决策区域 $R$ 中，那么划分到 $R_1$ 还是 $R_2$ ……中呢？我们希望期望损失能够最小化。也就是说，对于每个 $x$，我们将其划分到 $R_j$ 中，这样的结果下其期望损失最小：<br>\begin{equation}<br>arg~ \min ~\sum_k~\lambda_{kj}~p( C_k, x)<br>\end{equation}</p>
+<p>将联合概率形式写成条件概率：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)~p(x)<br> \label{5}<br>\end{equation}</p>
+<p>注意到 $p(x)$ 对于所有项都相同，最小化 (\ref{5}) 式等价于：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)<br>  \label{6}<br>\end{equation}</p>
+<h1 id="2-后验概率最大化"><a href="#2-后验概率最大化" class="headerlink" title="2. 后验概率最大化"></a>2. 后验概率最大化</h1><p>若我们的损失函数简化为：<br>\begin{equation}<br>\lambda_{kj} = \begin{cases}1,&amp;k≠j\\0,&amp;k=j\end{cases}<br>\end{equation}<br>(\ref{6}) 式等价于：<br>\begin{equation}<br>\begin{split}<br>f(x) &amp;= arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x) \\\<br>&amp; = arg~ \min ~\sum_{k\neq j}~ p(C_k \mid x)<br>\\\<br>&amp; = arg~ \min ~[1- p(C_{k = j} \mid x)]<br>\\\<br>&amp; = arg \max p(C_j \mid x)<br>\end{split}<br>\end{equation}<br>对于每个 $x$，我们将其划分到 $R_j$ 中，最大化 $p(C_j \mid x)$ 就能够使得期望损失最小化。也就是说，后验概率最大等价于 $0-1$ 损失函数时的期望损失最小。记决策结果为 $c= R_j$，我们需要最大化 $p(c \mid x)$。在现实任务中，$p(c \mid x)$ 通常难以直接获取，需要使用贝叶斯公式。</p>
+<p>基于贝叶斯定理，有：<br>\begin{equation}<br>p(c \mid x) = \frac{p(c) ~p(x \mid c)}{p(x)}<br>\end{equation}<br>其中 $p(c \mid x)$ 称之为后验概率。</p>
+<h1 id="3-朴素贝叶斯分类器"><a href="#3-朴素贝叶斯分类器" class="headerlink" title="3. 朴素贝叶斯分类器"></a>3. 朴素贝叶斯分类器</h1><p>为了得到我们的模型，需要最大化后验概率，因为：<br>\begin{equation} p(c \mid x) \propto p(c) ~p(x \mid c) \end{equation}<br>最大化后验概率等价于：<br>\begin{equation}<br>\label{11}<br>arg \max p(c) ~p(x \mid c) \end{equation}<br>也就是需要估计先验概率 $p(c)$ 和类条件概率 $p(x \mid c)$。针对具体问题，类条件概率 $p(x \mid c)$ 是所有特征 $x$ 上的联合概率，难以从有限的样本直接估计而得。为避开这个问题，朴素贝叶斯分类器采用了特征独立性假设：即对已知类别，假设所有属性相互独立。基于该假设，(\ref{11}) 式重写为：<br>\begin{equation}<br>arg \max p(c) ~\prod_{i=1}^d p(x_i \mid c)<br>\end{equation}</p>
+<p>因此，朴素贝叶斯分类器的训练过程就是基于数据集 <code>D</code> 来估算先验概率 $p(c)$ 和每个属性的条件概率 $p(x_i \mid c)$。</p>
+<p>假设训练过程已经完成，有一个新的输入 $x=\{x_1, x_2, x_3\cdots\}$，需要采用朴素贝叶斯来进行二分类 $y = \{0,1\}$，其过程为：</p>
+<ul>
+<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(0) ~\prod\limits_{i=1}^d p(x_i \mid 0)$；</li>
+<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(1) ~\prod\limits_{i=1}^d p(x_i \mid 1)$；</li>
+<li>那个大划分为那类。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
+<p>[2] Pattern Recognition and Machine Learning, Christopher M. Bishop.</p>
 
       
     </div>
@@ -401,7 +391,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MCMC/" rel="tag"># MCMC</a>
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+            <a href="/tags/Bayesian/" rel="tag"># Bayesian</a>
           
         </div>
       
@@ -414,8 +406,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/26/frequentism-and-bayesianism/" rel="next" title="频率主义和贝叶斯主义---参数估计">
-                <i class="fa fa-chevron-left"></i> 频率主义和贝叶斯主义---参数估计
+              <a href="/2017/08/21/decision-tree/" rel="next" title="机器学习算法(1): 决策树">
+                <i class="fa fa-chevron-left"></i> 机器学习算法(1): 决策树
               </a>
             
           </div>
@@ -424,8 +416,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/10/mcmc2/" rel="prev" title="MCMC (2): 马尔科夫链">
-                MCMC (2): 马尔科夫链 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/28/svm/" rel="prev" title="机器学习算法(3): 支持向量机">
+                机器学习算法(3): 支持向量机 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -606,7 +598,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蒙特卡洛方法"><span class="nav-text">1. 蒙特卡洛方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PYTHON实现"><span class="nav-text">2. PYTHON实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯决策论"><span class="nav-text">1. 贝叶斯决策论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-后验概率最大化"><span class="nav-text">2. 后验概率最大化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-朴素贝叶斯分类器"><span class="nav-text">3. 朴素贝叶斯分类器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

@@ -267,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/mcmc3/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/28/svm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -286,7 +286,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/08/24/mcmc3/" itemprop="url">MCMC (3): MCMC采样方法</a></h1>
+                <a class="post-title-link" href="/2017/08/28/svm/" itemprop="url">机器学习算法(3): 支持向量机</a></h1>
         
 
         <div class="post-meta">
@@ -298,8 +298,539 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T15:20:06+08:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-28T20:20:25+08:00">
+                2017-08-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-支持向量机"><a href="#1-支持向量机" class="headerlink" title="1.  支持向量机"></a>1.  支持向量机</h1><p>给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。<br><img src="/img/svm/svm1.png" title="图1. 可以划分数据的划分超平面"><br>可以看到，具有多个划分超平面可以将数据分类，我们需要找出唯一的划分超平面，使得划分效果最优，SVM 采用的是最大间隔 (maximum margin) 划分超平面。如图 2 所示。<br><img src="/img/svm/svm2.png" title="图2. 最大间隔划分超平面"><br>图 2 中的实心点，刚好处在划分超平面上，这些点确定了划分超平面，称之为支持向量。</p>
+<p>上面的例子为线性分类器，即超平面可以用一个线性方程表示：<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}</p>
+<p>对于需要非线性超平面才能分离的数据，SVM 采用核方法，这也是要引入对偶问题最大的原因。 </p>
+<p>先基于线性可分支持向量机讲述原理，之后说明线性不可分支持向量机，<br>最后说明非线性支持向量机。</p>
+<h1 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h1><h2 id="2-1-最大间隔超平面"><a href="#2-1-最大间隔超平面" class="headerlink" title="2.1. 最大间隔超平面"></a>2.1. 最大间隔超平面</h2><p>上面提到支持向量机的最优划分标准是最大间隔。在特征空间中，划分超平面可用如下线性方程表示:<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}<br>其中 $\mathbf{w}$ 为超平面的法向量，$b$ 为位移项。样本点 $x_i$ 到划分超平面的几何距离为：<br>\begin{equation}<br>\gamma_i = \frac{|\mathbf{w} \cdot x_i +b|}{||\mathbf{w}||}<br>\label{eqn3}<br>\end{equation}<br>$||\mathbf{w}||$ 为 $\mathbf{w}$ 的 $L_2$ 范数。<br>假设超平面能够将训练样本正确分类，即若 $\mathbf{w} \cdot x_i +b &gt;0$，则 $y_i = 1$，反之亦然。所以 (\ref{eqn3}) 式可以去掉绝对值，几何距离重写为：<br>\begin{equation}<br>\gamma_i = y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||}<br>\end{equation}<br>我们定义训练集中最小的几何距离为<strong>几何间隔</strong>：<br>\begin{equation}<br>\gamma = \min \gamma_i<br>\end{equation}<br>最大间隔思想就是最大化几何间隔，在满足所有样本点的几何距离大于几何间隔的条件下：<br>\begin{equation}<br>\begin{split}<br>&amp;\max_{\mathbf{w},b}\gamma \\ &amp;s.t. \ \ y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||} \ge \gamma, \ \ i = 1,2,…,N<br>\end{split}<br>\label{eqn6}<br>\end{equation}<br>为了简化问题，我们引入一个新的定义，<strong>函数间隔</strong>：<br>\begin{equation}<br>\widehat{\gamma} = \frac{\gamma }{||\mathbf{w}||}<br>\end{equation}<br>所以，(\ref{eqn6}) 式重写为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{\widehat{\gamma }}{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge \widehat{\gamma }, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn8}<br>\end{equation}<br>可以看到，我们自由缩放函数间隔 $N$ 倍：<br>\begin{equation}<br>N ~\widehat{\gamma} = N~ y_i (\mathbf{w} \cdot x_i +b)<br>\end{equation}<br>超平面 $\mathbf{w}^T \cdot \mathbf{x} +b= 0$ 与 缩放后的平面 $N~(\mathbf{w}^T \cdot \mathbf{x} +b)= 0$ 相同；几何间隔同样也不会变化。也就是说，任意缩放函数间隔，对于我们最大化几何间隔问题的解算没有影响。为了简化我们的问题，令函数间隔 $\widehat{\gamma}=1$，这也是引入函数间隔的原因。(\ref{eqn8}) 式简化为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{ 1 }{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>注意到最大化 $\frac{ 1 }{||\mathbf{w}||}$ 等价于最小化 $\frac{ 1 }{2}||\mathbf{w}||^2$，最终，SVM 需要解决的问题为以下有约束的最优化问题，更具体地，该问题为凸二次规划问题：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn11}<br>\end{equation}</p>
+<h2 id="2-2-对偶问题"><a href="#2-2-对偶问题" class="headerlink" title="2.2. 对偶问题"></a>2.2. 对偶问题</h2><p>凸二次规划问题可以使用现成的优化计算包计算，为了引入核函数和方便计算，将原问题转为其对偶问题进行求解。</p>
+<h3 id="2-2-1-原始问题"><a href="#2-2-1-原始问题" class="headerlink" title="2.2.1. 原始问题"></a>2.2.1. 原始问题</h3><p>将原问题 (\ref{eqn11}) 式重写为：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ g(\mathbf{w},b) \le 0 , \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn12}<br>\end{equation}<br>其中 $g(\mathbf{w},b)=1- y_i\left ( \mathbf{w}\cdot x_i + b \right )$。<br>首先，定义拉格朗日函数为：</p>
+<p>\begin{equation}<br>L(\mathbf{w},b,\alpha) = \frac{1}{2} ||\mathbf{w}||^2 - \sum_{i=1}^N \alpha_i ~g(\mathbf{w},b)<br>\end{equation}<br>其中，$\alpha_i \ge 0$。引入 $(\mathbf{w},b)$ 的函数，记为：</p>
+<p>\begin{equation}<br>\theta_p(\mathbf{w},b) = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>若上式最大化问题有解，其必满足 (\ref{eqn12}) 式的条件，且其解为：</p>
+<p>\begin{equation}<br> \frac{ 1 }{2}||\mathbf{w}||^2 = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>因为 $\alpha_i \ge 0$，需要 $g(\mathbf{w},b) \le 0$ 才能有最大值解。</p>
+<p>所以，原问题等价于如下问题：</p>
+<p>\begin{equation}<br>\min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}</p>
+<h3 id="2-2-2-原始问题的对偶问题"><a href="#2-2-2-原始问题的对偶问题" class="headerlink" title="2.2.2 原始问题的对偶问题"></a>2.2.2 原始问题的对偶问题</h3><p>记原始问题的对偶问题为：<br>\begin{equation}<br> \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha)<br>\end{equation}<br>记:<br> \begin{equation}<br> \theta_d(\alpha) = \min_{\mathbf{w},b} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>我们要通过对偶问题的求解来解决原始问题，那么我们的问题是：对偶问题的解和原始问题的解有什么关系呢？</p>
+<h3 id="2-2-3-原始问题与对偶问题的关系"><a href="#2-2-3-原始问题与对偶问题的关系" class="headerlink" title="2.2.3 原始问题与对偶问题的关系"></a>2.2.3 原始问题与对偶问题的关系</h3><p>对任意的 $(\mathbf{w},b,\alpha)$，有：</p>
+<p>\begin{equation}<br>\theta_d(\alpha) = \min_{\mathbf{w},b} L(\mathbf{w},b,\alpha) \le L(\mathbf{w},b,\alpha) \le \max_{\alpha} L(\mathbf{w},b,\alpha) =  \theta_p(\mathbf{w},b)<br>\end{equation}</p>
+<p>若原始问题和对偶问题都有解，根据上式，有：</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp;\theta_d(\alpha) \le \theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \theta_d(\alpha) \le \min_{\mathbf{w},b}\theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \le \min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{split}<br>\end{equation}<br>即对偶问题的解小于或等于原始问题的解。在什么情况下，对偶问题的解与原始问题的解相同呢？如果能找到这个条件，那么我们直接解决对偶问题就可以得到原始问题的解，这个条件就是 KKT (Karush-Kuhn-Tucker) 条件。</p>
+<p>KKT 条件为：</p>
+<p>\begin{equation}<br>\begin{split}<br>\nabla_\mathbf{w} L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_b L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_\alpha L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\alpha_i^* ~ g(\mathbf{w}^*,b^*) &amp;= 0, i=1,2,…,N \\<br>g(\mathbf{w}^*,b^*) &amp;\le 0, i=1,2,…,N \\<br>\alpha_i^* &amp;\ge 0, i=1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>如果 $(\mathbf{w}^*,b^*,\alpha^*)$ 满足 KKT 条件，则对偶问题和原始问题的解均为 $(\mathbf{w}^*,b^*,\alpha^*)$。</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp; \max_\alpha \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \\<br>&amp;= \max_{\alpha} L(\mathbf{w}^*,b^*,\alpha) \\<br>&amp; = L(\mathbf{w}^*,b^*,\alpha^*) \\<br>&amp; = \frac{1}{2} ||\mathbf{w^*}||^2 - \sum_{i=1}^N \alpha_i^* ~g(\mathbf{w^*},b^*) \\<br>&amp; = \min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \  \ s.t. \ \ g(\mathbf{w^*},b^*) \le 0 , \ \ i = 1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>所以，SVM 问题转化为 KKT 条件下的对偶问题求解。</p>
+<h3 id="2-2-3-对偶问题的求解"><a href="#2-2-3-对偶问题的求解" class="headerlink" title="2.2.3 对偶问题的求解"></a>2.2.3 对偶问题的求解</h3><p>为了得到对偶问题的解，需要先求 $L(\mathbf{w},b,\alpha)<br>$ 对 $(\mathbf{w},b)$ 的极小，再求对 $\alpha$ 的极大。</p>
+<ol>
+<li><p>求$\min \limits_{\mathbf{w},b}L(\mathbf{w},b,\alpha)$<br>将 $L(\mathbf{w},b,\alpha)$ 分别对 $\mathbf{w}$，$b$ 求偏导数并令其等于 $0$：<br>\begin{equation}<br>\begin{aligned}  \frac{\partial L(\mathbf{w},b,a)}{\partial \mathbf{w}} &amp;= 0 \Rightarrow \mathbf{w} - \sum_{i=1}^N a_iy_ix_i = 0 \\ \frac{\partial L(\mathbf{w},b,a)}{\partial b} &amp;= 0 \Rightarrow  - \sum_{i=1}^N a_i~y_i = 0 \end{aligned}<br>\end{equation}<br>将上式带入拉格朗日函数消去 $\mathbf{w}$，$b$，有：<br>\begin{equation}<br>\begin{aligned}<br>\min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) =  \ &amp;-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i \\<br>&amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+</li>
+<li><p>求对偶问题<br>\begin{equation}<br>\begin{aligned} &amp;\max_{a_i} \ -\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i\\ &amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+</li>
+</ol>
+<p>根据上式，可以求取对偶问题的解 $\alpha^*$，再根据 KKT 的条件求取原始问题的解 $(\mathbf{w}^*,b^*)$，从而可以得到划分超平面，这种算法为对偶学习算法。</p>
+<p>对偶问题的解是一个凸二次规划问题，理论上任何一个凸二次规划问题的软件包都可以解决，但是通常很慢，为了能够更快找到好的解，我们采用 <strong>SMO</strong> 算法。该算法的原理先放一放。</p>
+<h1 id="3-线性不可分支持向量机"><a href="#3-线性不可分支持向量机" class="headerlink" title="3. 线性不可分支持向量机"></a>3. 线性不可分支持向量机</h1><p>上述的问题是基于所有样本点 $(x_i, y_i)$ 都能满足函数间隔大于等于 $1$ 的约束条件，即线性可分的。如果存在异常点不满足约束条件，上面的方法就不适用了。为了解决线性不可分的问题，可以对每个样本引入一个松弛变量 $\xi _i  \ge 0$，使得函数间隔加上松弛变量大于等于 $1$，即约束条件变为：<br>\begin{equation}<br>y_i(\mathbf{w} \cdot x_i +b) \ge 1 – \xi_i<br>\end{equation}<br>显然，$\xi_i$ 不能任意大，否则所有样本点都满足约束条件，为了约束 $\xi_i$ 的大小，需要在目标函数中加入惩罚。最终，优化目标改成如下的形式：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b,\xi}\ \ \frac{1}{2}||\mathbf{w}||^2 + C\sum_{i=1}^N \xi_i \\ &amp;s.t. \ \ \ \ -y_i(\mathbf{w} \cdot x_i + b) -\xi_i + 1\le 0, \ \ i = 1,2,…,N \\ &amp;\ \ \ \ \ \  \ \ \ \ -\xi_i \le 0 ,\ \ i = 1,2,…,N \end{aligned}<br>\end{equation}<br>其中，$C &gt; 0$ 称为惩罚参数，一般由应用问题决定，$C$ 值越大对误分类的惩罚越大。</p>
+<p>同样地，线性不可分支持向量机的学习问题也是凸二次规划问题，我们采用与线性可分支持向量机同样的方法，即：</p>
+<ol>
+<li>构造拉格朗日函数；</li>
+<li>原始问题转化为对偶问题；</li>
+<li>利用 KKT 条件消去其他参数，得到只包含参数 $a_i$ 的对偶问题；</li>
+<li>利用 <strong>SMO</strong> 算法解释出 $a_i$；</li>
+<li>根据 KKT 条件和 $a_i$ 解算出 $\mathbf{w}~,b,$。</li>
+</ol>
+<p>这里给出对偶问题的具体形式：<br>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>可以看到，线性可分支持向量机可以认为是松弛变量等于$0$，也就是上式的特例。线性可分和线性不可分支持向量机合称为线性支持向量机。至此，上式就是线性支持向量机待学习的问题。</p>
+<h1 id="4-线性支持向量机算法"><a href="#4-线性支持向量机算法" class="headerlink" title="4. 线性支持向量机算法"></a>4. 线性支持向量机算法</h1><hr>
+<ol>
+<li><p>构造约束最优化问题：<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}</p>
+</li>
+<li><p>采用 <strong>SMO</strong> 算法求解 $a_, ~i = 1,2,….N$；</p>
+</li>
+<li><p>根据 KKT 条件和 $a_i^*$ 解算出 $\mathbf{w}^*~,b^*,$。<br>\begin{aligned}<br>&amp;\mathbf{w}^* = \sum_{i=1}^Na_i^*y_ix_i\\ &amp;b^* = y_j - \sum_{i=1}^N y_ia_i^*(x_i \cdot x_j)  \\\<br>&amp;0 &lt; a^*_j &lt; C<br>\end{aligned}</p>
+</li>
+<li><p>得到超平面 $\mathbf{w}^* \cdot x + b^* = 0$。对于需要分类的数据，根据 $f(x) = sign(\mathbf{w}^* \cdot x+b^*)$ 判断其类别，其中 $sign$ 为相应的决策函数。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/nBayes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/24/nBayes/" itemprop="url">机器学习算法(2): 朴素贝叶斯分类器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T20:20:25+08:00">
                 2017-08-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-贝叶斯决策论"><a href="#1-贝叶斯决策论" class="headerlink" title="1. 贝叶斯决策论"></a>1. 贝叶斯决策论</h1><p>考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但实际上它是 $C_2$ 类，这样我们就犯了分类错误，反之亦然。在决策过程中，我们希望能最小化错误分类率 $p(mistake)$：<br>\begin{equation}<br>\begin{split}<br>p(mistake) &amp;= p( x \in R_1,C_2) + p( x \in R_2,C_1)<br>\\\<br>&amp;= \int_{R_1} p(C_2,x) ~dx +\int_{R_2} p(C_1,x) ~dx<br>\end{split}<br>\end{equation}<br>即 $R_1$ 区域中，实际类别为 $C_2$ 的样本尽量少；$R_2$ 区域中，实际类别为 $C_1$ 的样本尽量少。</p>
+<p>实际情况中，我们面对的情况要比最小化错误率复杂，因为把 $C_1$ 类错分了 $C_2$ 类和把 $C_2$ 类错分为 $C_1$ 类的代价是不一样。我们需要对不同的错误加一个权值，这就是期望损失 (expected loss)：<br>\begin{equation}<br>EL = \int_{R_1} \color{red}{\lambda_{21}}~ p(C_2,x) ~dx +\int_{R_2}\color{red}{\lambda_{12}}~ p(C_1,x) ~dx<br>\end{equation}<br>其中，$\lambda_{21}$ 是将一个真实标记为 $C_1$ 误分类为 $C_2$ 的损失，反之同理。</p>
+<p>更一般地，对于 $K$ 类的问题，期望损失为：<br>\begin{equation}<br>EL =  \sum_{k} \sum_{j} \int_{R_j} \lambda_{kj}~~p( C_k, x)~ dx<br>\end{equation}</p>
+<p>对于每一个样本 $x$，我们要将其划分到决策区域 $R$ 中，那么划分到 $R_1$ 还是 $R_2$ ……中呢？我们希望期望损失能够最小化。也就是说，对于每个 $x$，我们将其划分到 $R_j$ 中，这样的结果下其期望损失最小：<br>\begin{equation}<br>arg~ \min ~\sum_k~\lambda_{kj}~p( C_k, x)<br>\end{equation}</p>
+<p>将联合概率形式写成条件概率：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)~p(x)<br> \label{5}<br>\end{equation}</p>
+<p>注意到 $p(x)$ 对于所有项都相同，最小化 (\ref{5}) 式等价于：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)<br>  \label{6}<br>\end{equation}</p>
+<h1 id="2-后验概率最大化"><a href="#2-后验概率最大化" class="headerlink" title="2. 后验概率最大化"></a>2. 后验概率最大化</h1><p>若我们的损失函数简化为：<br>\begin{equation}<br>\lambda_{kj} = \begin{cases}1,&amp;k≠j\\0,&amp;k=j\end{cases}<br>\end{equation}<br>(\ref{6}) 式等价于：<br>\begin{equation}<br>\begin{split}<br>f(x) &amp;= arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x) \\\<br>&amp; = arg~ \min ~\sum_{k\neq j}~ p(C_k \mid x)<br>\\\<br>&amp; = arg~ \min ~[1- p(C_{k = j} \mid x)]<br>\\\<br>&amp; = arg \max p(C_j \mid x)<br>\end{split}<br>\end{equation}<br>对于每个 $x$，我们将其划分到 $R_j$ 中，最大化 $p(C_j \mid x)$ 就能够使得期望损失最小化。也就是说，后验概率最大等价于 $0-1$ 损失函数时的期望损失最小。记决策结果为 $c= R_j$，我们需要最大化 $p(c \mid x)$。在现实任务中，$p(c \mid x)$ 通常难以直接获取，需要使用贝叶斯公式。</p>
+<p>基于贝叶斯定理，有：<br>\begin{equation}<br>p(c \mid x) = \frac{p(c) ~p(x \mid c)}{p(x)}<br>\end{equation}<br>其中 $p(c \mid x)$ 称之为后验概率。</p>
+<h1 id="3-朴素贝叶斯分类器"><a href="#3-朴素贝叶斯分类器" class="headerlink" title="3. 朴素贝叶斯分类器"></a>3. 朴素贝叶斯分类器</h1><p>为了得到我们的模型，需要最大化后验概率，因为：<br>\begin{equation} p(c \mid x) \propto p(c) ~p(x \mid c) \end{equation}<br>最大化后验概率等价于：<br>\begin{equation}<br>\label{11}<br>arg \max p(c) ~p(x \mid c) \end{equation}<br>也就是需要估计先验概率 $p(c)$ 和类条件概率 $p(x \mid c)$。针对具体问题，类条件概率 $p(x \mid c)$ 是所有特征 $x$ 上的联合概率，难以从有限的样本直接估计而得。为避开这个问题，朴素贝叶斯分类器采用了特征独立性假设：即对已知类别，假设所有属性相互独立。基于该假设，(\ref{11}) 式重写为：<br>\begin{equation}<br>arg \max p(c) ~\prod_{i=1}^d p(x_i \mid c)<br>\end{equation}</p>
+<p>因此，朴素贝叶斯分类器的训练过程就是基于数据集 <code>D</code> 来估算先验概率 $p(c)$ 和每个属性的条件概率 $p(x_i \mid c)$。</p>
+<p>假设训练过程已经完成，有一个新的输入 $x=\{x_1, x_2, x_3\cdots\}$，需要采用朴素贝叶斯来进行二分类 $y = \{0,1\}$，其过程为：</p>
+<ul>
+<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(0) ~\prod\limits_{i=1}^d p(x_i \mid 0)$；</li>
+<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(1) ~\prod\limits_{i=1}^d p(x_i \mid 1)$；</li>
+<li>那个大划分为那类。</li>
+</ul>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
+<p>[2] Pattern Recognition and Machine Learning, Christopher M. Bishop.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/21/decision-tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/21/decision-tree/" itemprop="url">机器学习算法(1): 决策树</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-21T20:20:25+08:00">
+                2017-08-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-决策树概述"><a href="#1-决策树概述" class="headerlink" title="1. 决策树概述"></a>1. 决策树概述</h1><p>决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：</p>
+<ul>
+<li>特征划分选择</li>
+<li>决策树生成</li>
+<li>剪枝处理</li>
+</ul>
+<p>一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下：</p>
+<p>输入：</p>
+<blockquote>
+<p>数据集：D<br>特征集：A</p>
+</blockquote>
+<p>输出：</p>
+<blockquote>
+<p>决策树</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">creatTree</span><span class="params">(D, A)</span>:</span></div><div class="line">	根据 D 生成叶节点集 node  <span class="comment"># 数据标记</span></div><div class="line">	<span class="keyword">if</span> len(node)==<span class="number">1</span>:       <span class="comment"># D 中样本属于同一类别</span></div><div class="line">		标记所有数据为同一叶节点</div><div class="line">	<span class="keyword">if</span> A == [] <span class="keyword">or</span> len(D.feature)==<span class="number">1</span> <span class="comment"># D 中只有一个特征</span></div><div class="line">		将 node 标记为叶节点，其 label 为 D 中样本数量最多的类</div><div class="line">	<span class="comment">#</span></div><div class="line">	从 A 中挑出最优特征 a</div><div class="line">	<span class="comment">#</span></div><div class="line">	<span class="keyword">for</span> value <span class="keyword">in</span> a:</div><div class="line">		生成新的特征集 A* = (A-a)</div><div class="line">		生成新的数据集 D* 表示 D 中取值为 value 的样本子集</div><div class="line">		<span class="keyword">if</span> D* == []</div><div class="line">			将 node 标记为叶节点，其 label 为 D* 中样本数量最多的类</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			creatTree(D*, A*)</div><div class="line">	<span class="keyword">return</span> tree</div></pre></td></tr></table></figure>
+<p>可以看到，算法第 8 行是决策树算法最关键的内容，即特征划分的选择：怎么选出最优特征。</p>
+<h1 id="2-特征划分选择"><a href="#2-特征划分选择" class="headerlink" title="2. 特征划分选择"></a>2. 特征划分选择</h1><p>我们希望采用某个值，按照该值可以对 A 中的特征进行排序，自然就选出了最优的特征。</p>
+<h2 id="2-1-信息增益"><a href="#2-1-信息增益" class="headerlink" title="2.1. 信息增益"></a>2.1. 信息增益</h2><p>假定当前数据集 D 中第 $k$ 类样本所占比例为 $p_k$，则 D 的信息熵为：<br>\begin{equation}<br>entropy(D) = -\sum_{k=1}^n p_k log_2 p_k<br>\end{equation}<br>假设属性 $a$ 有 $V$ 个取值，记 $D^v$ 为取值为 $a^v$ 的样本子集。用属性 $a$ 划分数据集所获得的信息增益为：<br>\begin{equation}<br>Gain(D,a) = entropy(D) - \sum^V_1 \frac{|D^v|}{D}entropy(D^v)<br>\label{id3}<br>\end{equation}<br>信息熵代表信息的混沌程度，信息增益的含义为：数据的混沌程度减去用  $a$ 划分后的数据混沌程度，划分后的数据集混沌程度越小，信息增益越大。因此我们可以用信息增益作为准则来选择最优特征。</p>
+<h2 id="2-2-ID3"><a href="#2-2-ID3" class="headerlink" title="2.2. ID3"></a>2.2. ID3</h2><p>ID3 就是采用公式 (\ref{id3}) 作为准则来划分特征的。</p>
+<h2 id="2-3-C4-5"><a href="#2-3-C4-5" class="headerlink" title="2.3. C4.5"></a>2.3. C4.5</h2><p>信息增益偏好于取值数目较多的特征，为了减少这种偏好，C4.5 采用增益率作为划分特征的准则：<br>\begin{equation}<br>Gain-Ratio(D,a) = \frac{Gain(D,a)}{IV(a)}<br>\label{c4.5}<br>\end{equation}<br>其中：<br>\begin{equation}<br>IV(a) = -\sum_1^V \frac{|D^v|}{D} log_2 \frac{|D^v|}{D}<br>\end{equation}<br>与 $a$ 的取值数目成正比，因此，增益率准则偏好于取值数目较少的特征，为了减少这种偏好，C4.5 并不是直接采用增益率作为划分准则，而是分为两步：</p>
+<ol>
+<li>找出信息增益高于平均水平的属性；</li>
+<li>从上述属性集中选取增益率最高的属性。</li>
+</ol>
+<h2 id="2-4-CART"><a href="#2-4-CART" class="headerlink" title="2.4 CART"></a>2.4 CART</h2><p>CART 采用基尼指数作为划分准则。基尼指数定义为：<br>\begin{equation}<br>Gini-Index(D,a) = \sum_1^V \frac{|D^v|}{D} Gini(D^v)<br>\end{equation}<br>其中，基尼值定义为：<br>\begin{equation}<br>Gini(D) = 1 - \sum_1^n p^2_k<br>\end{equation}<br>表示从数据集 D 中随机抽取两个不一样的样本的概率。</p>
+<h1 id="3-剪枝处理"><a href="#3-剪枝处理" class="headerlink" title="3. 剪枝处理"></a>3. 剪枝处理</h1><p>剪枝是为了处理过拟合，基本策略有：</p>
+<ul>
+<li>预剪枝：在决策树生成过程中，对每个节点划分前先进行估计，若不能带来泛化性能提升，则停止划分；</li>
+<li>后剪枝：先生成一颗完整的树，自下而上的对非叶节点进行估计，若该节点对应的子树替换成叶节点能带来泛化性能提升，则将子树替换为叶节点。</li>
+</ul>
+<p>预剪枝有可能引起欠拟合，后剪枝通常比预剪枝保留更多分支。一般来说，后剪枝剪枝效果好但是时间花销大。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/14/mcmc3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang LI">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/14/mcmc3/" itemprop="url">MCMC (3): MCMC采样方法</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-14T15:20:06+08:00">
+                2017-08-14
               </time>
             
 
@@ -708,7 +1239,7 @@
 <p>回到我们的正题。我们需要利用马尔科夫链的性质来生成复杂概率分布 $p(x)$ 的样本。很自然的，我们的想法是产生一条马氏链，使得它的平稳分布就是想要的分布。即，构造符合条件的转移矩阵，使其满足：<br>\begin{equation}<br>p(x)Q = p(x)<br>\end{equation}<br>因为 $p(x)$ 是上式的唯一解，我们可以根据上式来生成 $p(x)$ 的样本。</p>
 <p>那么，如何构造转移矩阵呢？</p>
 <p>假设我们有一个转移矩阵 $Q$($q(i,j)$)，其满足如下条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}<br>$i,j$ 是分布中的两个状态，如上面例子中的低层、中层(就是 $Q$ 矩阵中的下标)。根据 (\ref{dbc}) 式，我们有：<br>\begin{align}<br>&amp; \sum_{i=1}^\infty p(i)q(i,j) = \sum_{i=1}^\infty p(j)q(j,i)<br>= p(j) \sum_{i=1}^\infty q(j,i) = p(j) \\\<br>&amp; \Rightarrow p Q = p<br>\end{align}<br>可以看到，只要构造满足 (\ref{dbc}) 式的转移矩阵，我们就可以得到平稳分布 $p$，(\ref{dbc}) 式也就是马氏链的细致平稳条件。根据 (\ref{dbc}) 式，利用随机采样的方法，就可以得到分布 $p$ 的样本。随机采样的方法将在下一章记录。</p>
-<h1 id="3-参考资料"><a href="#3-参考资料" class="headerlink" title="3. 参考资料"></a>3. 参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
 <p>[2] Information Theory, Inference, and Learning Algorithms, David J.C. MacKay. (Chap. 29).</p>
 <p>[3] Pattern Recognition and Machine Learning, Christopher M. Bishop. (Chap. 11).</p>
 
@@ -1321,7 +1852,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -1332,7 +1863,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -1343,7 +1874,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

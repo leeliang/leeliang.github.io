@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MCMC," />
+  <meta name="keywords" content="Machine Learning," />
 
 
 
@@ -94,21 +94,18 @@
 
 
 
-<meta name="description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
-<meta name="keywords" content="MCMC">
+<meta name="description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
+<meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MCMC (1): 蒙特卡洛方法">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/07/mcmc1/index.html">
+<meta property="og:title" content="机器学习算法(1): 决策树">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/21/decision-tree/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
+<meta property="og:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:image" content="http://leeliang.github.io/img/mcmc/circle.png">
-<meta property="og:updated_time" content="2017-08-21T06:41:42.000Z">
+<meta property="og:updated_time" content="2017-08-23T06:56:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MCMC (1): 蒙特卡洛方法">
-<meta name="twitter:description" content="1. 蒙特卡洛方法蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计参数，该参数是某一随机事件的某个统计值，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。 举个例子帮助理解：  怎么利用蒙特卡洛方法估计$pi$?  如下图所示： 图中圆和正方形的面积比为：\begin{equation*}\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}\end{e">
-<meta name="twitter:image" content="http://leeliang.github.io/img/mcmc/circle.png">
+<meta name="twitter:title" content="机器学习算法(1): 决策树">
+<meta name="twitter:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
 
 
 
@@ -137,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/07/mcmc1/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/21/decision-tree/"/>
 
 
 
 
 
-  <title>MCMC (1): 蒙特卡洛方法 | My Blog</title>
+  <title>机器学习算法(1): 决策树 | My Blog</title>
   
 
 
@@ -270,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/07/mcmc1/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/21/decision-tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -287,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MCMC (1): 蒙特卡洛方法</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习算法(1): 决策树</h1>
         
 
         <div class="post-meta">
@@ -299,8 +296,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-07T14:37:33+08:00">
-                2017-08-07
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-21T20:20:25+08:00">
+                2017-08-21
               </time>
             
 
@@ -322,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Math/" itemprop="url" rel="index">
-                    <span itemprop="name">Math</span>
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
+                    <span itemprop="name">Machine Learning</span>
                   </a>
                 </span>
 
@@ -359,31 +356,39 @@
       
 
       
-        <h1 id="1-蒙特卡洛方法"><a href="#1-蒙特卡洛方法" class="headerlink" title="1. 蒙特卡洛方法"></a>1. 蒙特卡洛方法</h1><p>蒙特卡洛是用“模拟”解决问题的方法。具体来说，需要解决的问题是估计<strong>参数</strong>，该参数是某一随机事件的<strong>某个统计值</strong>，通过“模拟”大量该随机事件的样本，根据样本估计待估参数。</p>
-<p>举个例子帮助理解：</p>
+        <h1 id="1-决策树概述"><a href="#1-决策树概述" class="headerlink" title="1. 决策树概述"></a>1. 决策树概述</h1><p>决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：</p>
+<ul>
+<li>特征划分选择</li>
+<li>决策树生成</li>
+<li>剪枝处理</li>
+</ul>
+<p>一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下：</p>
+<p>输入：</p>
 <blockquote>
-<p>怎么利用蒙特卡洛方法估计$pi$?</p>
+<p>数据集：D<br>特征集：A</p>
 </blockquote>
-<p>如下图所示：<br><img src="/img/mcmc/circle.png" title="图1. 示意图"></p>
-<p>图中圆和正方形的面积比为：<br>\begin{equation*}<br>\frac{\pi r^2}{(2r)^2}=\frac{\pi}{4}<br>\end{equation*}<br>也就是说，只需要知道圆和它的外切正方形的面积比就可以求得 $\pi$。假设有这样的一个随机事件：</p>
+<p>输出：</p>
 <blockquote>
-<p>往正方形中撒入点，点落在正方形中的位置是均匀分布，随后计算有多少比例的点落入了圆中(根据距离圆心的距离判断)，这个比例就是 $\frac{\pi}{4}$。</p>
+<p>决策树</p>
 </blockquote>
-<p>上述过程就是蒙特卡洛方法，有以下三方面的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">creatTree</span><span class="params">(D, A)</span>:</span></div><div class="line">	根据 D 生成叶节点集 node  <span class="comment"># 数据标记</span></div><div class="line">	<span class="keyword">if</span> len(node)==<span class="number">1</span>:       <span class="comment"># D 中样本属于同一类别</span></div><div class="line">		标记所有数据为同一叶节点</div><div class="line">	<span class="keyword">if</span> A == [] <span class="keyword">or</span> len(D.feature)==<span class="number">1</span> <span class="comment"># D 中只有一个特征</span></div><div class="line">		将 node 标记为叶节点，其 label 为 D 中样本数量最多的类</div><div class="line">	<span class="comment">#</span></div><div class="line">	从 A 中挑出最优特征 a</div><div class="line">	<span class="comment">#</span></div><div class="line">	<span class="keyword">for</span> value <span class="keyword">in</span> a:</div><div class="line">		生成新的特征集 A* = (A-a)</div><div class="line">		生成新的数据集 D* 表示 D 中取值为 value 的样本子集</div><div class="line">		<span class="keyword">if</span> D* == []</div><div class="line">			将 node 标记为叶节点，其 label 为 D* 中样本数量最多的类</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			creatTree(D*, A*)</div><div class="line">	<span class="keyword">return</span> tree</div></pre></td></tr></table></figure>
+<p>可以看到，算法第 8 行是决策树算法最关键的内容，即特征划分的选择：怎么选出最优特征。</p>
+<h1 id="2-特征划分选择"><a href="#2-特征划分选择" class="headerlink" title="2. 特征划分选择"></a>2. 特征划分选择</h1><p>我们希望采用某个值，按照该值可以对 A 中的特征进行排序，自然就选出了最优的特征。</p>
+<h2 id="2-1-信息增益"><a href="#2-1-信息增益" class="headerlink" title="2.1. 信息增益"></a>2.1. 信息增益</h2><p>假定当前数据集 D 中第 $k$ 类样本所占比例为 $p_k$，则 D 的信息熵为：<br>\begin{equation}<br>entropy(D) = -\sum_{k=1}^n p_k log_2 p_k<br>\end{equation}<br>假设属性 $a$ 有 $V$ 个取值，记 $D^v$ 为取值为 $a^v$ 的样本子集。用属性 $a$ 划分数据集所获得的信息增益为：<br>\begin{equation}<br>Gain(D,a) = entropy(D) - \sum^V_1 \frac{|D^v|}{D}entropy(D^v)<br>\label{id3}<br>\end{equation}<br>信息熵代表信息的混沌程度，信息增益的含义为：数据的混沌程度减去用  $a$ 划分后的数据混沌程度，划分后的数据集混沌程度越小，信息增益越大。因此我们可以用信息增益作为准则来选择最优特征。</p>
+<h2 id="2-2-ID3"><a href="#2-2-ID3" class="headerlink" title="2.2. ID3"></a>2.2. ID3</h2><p>ID3 就是采用公式 (\ref{id3}) 作为准则来划分特征的。</p>
+<h2 id="2-3-C4-5"><a href="#2-3-C4-5" class="headerlink" title="2.3. C4.5"></a>2.3. C4.5</h2><p>信息增益偏好于取值数目较多的特征，为了减少这种偏好，C4.5 采用增益率作为划分特征的准则：<br>\begin{equation}<br>Gain-Ratio(D,a) = \frac{Gain(D,a)}{IV(a)}<br>\label{c4.5}<br>\end{equation}<br>其中：<br>\begin{equation}<br>IV(a) = -\sum_1^V \frac{|D^v|}{D} log_2 \frac{|D^v|}{D}<br>\end{equation}<br>与 $a$ 的取值数目成正比，因此，增益率准则偏好于取值数目较少的特征，为了减少这种偏好，C4.5 并不是直接采用增益率作为划分准则，而是分为两步：</p>
 <ol>
-<li>随机事件：正方形中撒入点；</li>
-<li>根据随机事件的概率分布(均匀分布)模拟数据，生成样本；</li>
-<li>根据样本的某统计值(在圆内的比例)估计待估参数 $pi$。</li>
+<li>找出信息增益高于平均水平的属性；</li>
+<li>从上述属性集中选取增益率最高的属性。</li>
 </ol>
-<p>一般地，蒙特卡洛方法的三个步骤为：</p>
-<ol>
-<li>构造概率过程：确定随机事件的概率分布，该随机事件的某统计量刚好是待估参数；</li>
-<li>采样：根据随机事件的概率分布采样；</li>
-<li>估计参数：根据采样的样本估算参数。</li>
-</ol>
-<h1 id="2-PYTHON实现"><a href="#2-PYTHON实现" class="headerlink" title="2. PYTHON实现"></a>2. PYTHON实现</h1><p>利用蒙特卡洛法估计 $pi$，代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">n = <span class="number">1000</span></div><div class="line">x = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">y = <span class="number">2.0</span>*np.random.random(size=n)<span class="number">-1.0</span></div><div class="line">index = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(n) <span class="keyword">if</span> (x[i]**<span class="number">2</span>+y[i]**<span class="number">2</span>) &lt;<span class="number">1</span>]</div><div class="line">count = len(index)</div><div class="line">pi = <span class="number">4.0</span>*count/n</div><div class="line">print(<span class="string">"PI=%f"</span> %pi)</div></pre></td></tr></table></figure></p>
-<p>随机模拟了1000个点，所得结果为：PI=3.164。</p>
-<img src="/img/mcmc/circle.png" title="图2. 示意图2">
+<h2 id="2-4-CART"><a href="#2-4-CART" class="headerlink" title="2.4 CART"></a>2.4 CART</h2><p>CART 采用基尼指数作为划分准则。基尼指数定义为：<br>\begin{equation}<br>Gini-Index(D,a) = \sum_1^V \frac{|D^v|}{D} Gini(D^v)<br>\end{equation}<br>其中，基尼值定义为：<br>\begin{equation}<br>Gini(D) = 1 - \sum_1^n p^2_k<br>\end{equation}<br>表示从数据集 D 中随机抽取两个不一样的样本的概率。</p>
+<h1 id="3-剪枝处理"><a href="#3-剪枝处理" class="headerlink" title="3. 剪枝处理"></a>3. 剪枝处理</h1><p>剪枝是为了处理过拟合，基本策略有：</p>
+<ul>
+<li>预剪枝：在决策树生成过程中，对每个节点划分前先进行估计，若不能带来泛化性能提升，则停止划分；</li>
+<li>后剪枝：先生成一颗完整的树，自下而上的对非叶节点进行估计，若该节点对应的子树替换成叶节点能带来泛化性能提升，则将子树替换为叶节点。</li>
+</ul>
+<p>预剪枝有可能引起欠拟合，后剪枝通常比预剪枝保留更多分支。一般来说，后剪枝剪枝效果好但是时间花销大。</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
 
       
     </div>
@@ -401,7 +406,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MCMC/" rel="tag"># MCMC</a>
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
           
         </div>
       
@@ -414,8 +419,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/26/frequentism-and-bayesianism/" rel="next" title="频率主义和贝叶斯主义---参数估计">
-                <i class="fa fa-chevron-left"></i> 频率主义和贝叶斯主义---参数估计
+              <a href="/2017/08/14/mcmc3/" rel="next" title="MCMC (3): MCMC采样方法">
+                <i class="fa fa-chevron-left"></i> MCMC (3): MCMC采样方法
               </a>
             
           </div>
@@ -424,8 +429,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/10/mcmc2/" rel="prev" title="MCMC (2): 马尔科夫链">
-                MCMC (2): 马尔科夫链 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/24/nBayes/" rel="prev" title="机器学习算法(2): 朴素贝叶斯分类器">
+                机器学习算法(2): 朴素贝叶斯分类器 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -606,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-蒙特卡洛方法"><span class="nav-text">1. 蒙特卡洛方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-PYTHON实现"><span class="nav-text">2. PYTHON实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-决策树概述"><span class="nav-text">1. 决策树概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-特征划分选择"><span class="nav-text">2. 特征划分选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-信息增益"><span class="nav-text">2.1. 信息增益</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-ID3"><span class="nav-text">2.2. ID3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-C4-5"><span class="nav-text">2.3. C4.5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-4-CART"><span class="nav-text">2.4 CART</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-剪枝处理"><span class="nav-text">3. 剪枝处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
