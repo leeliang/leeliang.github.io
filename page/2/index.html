@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Machine Learning,Bayesian," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -94,18 +94,16 @@
 
 
 
-<meta name="description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
-<meta name="keywords" content="Machine Learning,Bayesian">
-<meta property="og:type" content="article">
-<meta property="og:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/24/nBayes/index.html">
+<meta name="description" content="A mind needs books.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="My Blog">
+<meta property="og:url" content="http://leeliang.github.io/page/2/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta property="og:description" content="A mind needs books.">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-08-24T08:57:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta name="twitter:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta name="twitter:title" content="My Blog">
+<meta name="twitter:description" content="A mind needs books.">
 
 
 
@@ -134,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/24/nBayes/"/>
+  <link rel="canonical" href="http://leeliang.github.io/page/2/"/>
 
 
 
 
 
-  <title>机器学习算法(2): 朴素贝叶斯分类器 | My Blog</title>
+  <title>My Blog</title>
   
 
 
@@ -168,7 +166,9 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail ">
+  <div class="container sidebar-position-left 
+   page-home 
+ ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -261,9 +261,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -276,7 +276,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/nBayes/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/07/22/convolution/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -293,7 +293,9 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">机器学习算法(2): 朴素贝叶斯分类器</h1>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/22/convolution/" itemprop="url">通俗易懂的理解卷积</a></h1>
         
 
         <div class="post-meta">
@@ -305,8 +307,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T20:20:25+08:00">
-                2017-08-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-22T14:25:29+08:00">
+                2017-07-22
               </time>
             
 
@@ -328,8 +330,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index">
-                    <span itemprop="name">Machine Learning</span>
+                  <a href="/categories/Math/" itemprop="url" rel="index">
+                    <span itemprop="name">Math</span>
                   </a>
                 </span>
 
@@ -365,25 +367,36 @@
       
 
       
-        <h1 id="1-贝叶斯决策论"><a href="#1-贝叶斯决策论" class="headerlink" title="1. 贝叶斯决策论"></a>1. 贝叶斯决策论</h1><p>考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但实际上它是 $C_2$ 类，这样我们就犯了分类错误，反之亦然。在决策过程中，我们希望能最小化错误分类率 $p(mistake)$：<br>\begin{equation}<br>\begin{split}<br>p(mistake) &amp;= p( x \in R_1,C_2) + p( x \in R_2,C_1)<br>\\\<br>&amp;= \int_{R_1} p(C_2,x) ~dx +\int_{R_2} p(C_1,x) ~dx<br>\end{split}<br>\end{equation}<br>即 $R_1$ 区域中，实际类别为 $C_2$ 的样本尽量少；$R_2$ 区域中，实际类别为 $C_1$ 的样本尽量少。</p>
-<p>实际情况中，我们面对的情况要比最小化错误率复杂，因为把 $C_1$ 类错分了 $C_2$ 类和把 $C_2$ 类错分为 $C_1$ 类的代价是不一样。我们需要对不同的错误加一个权值，这就是期望损失 (expected loss)：<br>\begin{equation}<br>EL = \int_{R_1} \color{red}{\lambda_{21}}~ p(C_2,x) ~dx +\int_{R_2}\color{red}{\lambda_{12}}~ p(C_1,x) ~dx<br>\end{equation}<br>其中，$\lambda_{21}$ 是将一个真实标记为 $C_1$ 误分类为 $C_2$ 的损失，反之同理。</p>
-<p>更一般地，对于 $K$ 类的问题，期望损失为：<br>\begin{equation}<br>EL =  \sum_{k} \sum_{j} \int_{R_j} \lambda_{kj}~~p( C_k, x)~ dx<br>\end{equation}</p>
-<p>对于每一个样本 $x$，我们要将其划分到决策区域 $R$ 中，那么划分到 $R_1$ 还是 $R_2$ ……中呢？我们希望期望损失能够最小化。也就是说，对于每个 $x$，我们将其划分到 $R_j$ 中，这样的结果下其期望损失最小：<br>\begin{equation}<br>arg~ \min ~\sum_k~\lambda_{kj}~p( C_k, x)<br>\end{equation}</p>
-<p>将联合概率形式写成条件概率：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)~p(x)<br> \label{5}<br>\end{equation}</p>
-<p>注意到 $p(x)$ 对于所有项都相同，最小化 (\ref{5}) 式等价于：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)<br>  \label{6}<br>\end{equation}</p>
-<h1 id="2-后验概率最大化"><a href="#2-后验概率最大化" class="headerlink" title="2. 后验概率最大化"></a>2. 后验概率最大化</h1><p>若我们的损失函数简化为：<br>\begin{equation}<br>\lambda_{kj} = \begin{cases}1,&amp;k≠j\\0,&amp;k=j\end{cases}<br>\end{equation}<br>(\ref{6}) 式等价于：<br>\begin{equation}<br>\begin{split}<br>f(x) &amp;= arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x) \\\<br>&amp; = arg~ \min ~\sum_{k\neq j}~ p(C_k \mid x)<br>\\\<br>&amp; = arg~ \min ~[1- p(C_{k = j} \mid x)]<br>\\\<br>&amp; = arg \max p(C_j \mid x)<br>\end{split}<br>\end{equation}<br>对于每个 $x$，我们将其划分到 $R_j$ 中，最大化 $p(C_j \mid x)$ 就能够使得期望损失最小化。也就是说，后验概率最大等价于 $0-1$ 损失函数时的期望损失最小。记决策结果为 $c= R_j$，我们需要最大化 $p(c \mid x)$。在现实任务中，$p(c \mid x)$ 通常难以直接获取，需要使用贝叶斯公式。</p>
-<p>基于贝叶斯定理，有：<br>\begin{equation}<br>p(c \mid x) = \frac{p(c) ~p(x \mid c)}{p(x)}<br>\end{equation}<br>其中 $p(c \mid x)$ 称之为后验概率。</p>
-<h1 id="3-朴素贝叶斯分类器"><a href="#3-朴素贝叶斯分类器" class="headerlink" title="3. 朴素贝叶斯分类器"></a>3. 朴素贝叶斯分类器</h1><p>为了得到我们的模型，需要最大化后验概率，因为：<br>\begin{equation} p(c \mid x) \propto p(c) ~p(x \mid c) \end{equation}<br>最大化后验概率等价于：<br>\begin{equation}<br>\label{11}<br>arg \max p(c) ~p(x \mid c) \end{equation}<br>也就是需要估计先验概率 $p(c)$ 和类条件概率 $p(x \mid c)$。针对具体问题，类条件概率 $p(x \mid c)$ 是所有特征 $x$ 上的联合概率，难以从有限的样本直接估计而得。为避开这个问题，朴素贝叶斯分类器采用了特征独立性假设：即对已知类别，假设所有属性相互独立。基于该假设，(\ref{11}) 式重写为：<br>\begin{equation}<br>arg \max p(c) ~\prod_{i=1}^d p(x_i \mid c)<br>\end{equation}</p>
-<p>因此，朴素贝叶斯分类器的训练过程就是基于数据集 <code>D</code> 来估算先验概率 $p(c)$ 和每个属性的条件概率 $p(x_i \mid c)$。</p>
-<p>假设训练过程已经完成，有一个新的输入 $x=\{x_1, x_2, x_3\cdots\}$，需要采用朴素贝叶斯来进行二分类 $y = \{0,1\}$，其过程为：</p>
+        
+          
+            <h1 id="1-卷积"><a href="#1-卷积" class="headerlink" title="1. 卷积"></a>1. 卷积</h1><p>卷积是通过两个函数生成第三个函数的一种数学算子：<br>\begin{equation}<br>y(\color{red}{t})= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\color{blue}{\tau}<br>\end{equation}</p>
+<p>我们先什么都不要管，只需要注意，不要把公式中的 $\color{red}{t}$ 和 $\color{blue}{\tau}$ 混淆了。</p>
+<h1 id="2-卷积的解释"><a href="#2-卷积的解释" class="headerlink" title="2. 卷积的解释"></a>2. 卷积的解释</h1><p>贴近生活的解释永远比公式更好理解，参考网上卷积的各种血腥残暴的解释。这里，我们使用一个温和的例子。</p>
+<p>假设你是一名研究生，你还有三天的时间来完成老板的任务，由于患有拖延症，你工作的热情可如下图表示：<br><img src="/img/convolution/passion.png" title="图1. 工作热情函数"></p>
+<p>上面就是你的输入函数 $x(t)$，具体内容为:<br>\begin{equation*}<br>x(0) = 0.1, \quad<br>x(1) = 0.1, \quad<br>x(2) = 0.6.<br>\end{equation*}</p>
+<p>按照你这个效率，完全不可能完成任务，因此老板会每天苦口婆心的来 push 你。老板的 push 就是 $h(t)$ 函数，我们称之为响应函数。基本上，随着时间的流逝，老板的劝说只是浪费了一点口水，对你的作用越来越小。所以，我们的 $h(t)$ 函数应该长这样：<br><img src="/img/convolution/push.png" title="图2. 响应函数"></p>
+<p>$h(t)$ 的具体内容为:<br>\begin{equation*}<br>h(0) = 8, \quad<br>h(1) = 3, \quad<br>h(2) = 2.<br>\end{equation*}</p>
+<p>意思就是老板当天的劝说对你的作用是8倍，过了一天后为3倍，过了两天后为2倍。<strong>也就是说，$h$ 函数作用于工作热情上的效果是这样的：对当天工作热情的效果是 8 倍，对昨天工作热情的效果是 3 倍，对前天工作热情的效果是 2 倍。其他时候我们记为 $h^{+}=0$</strong></p>
+<p>那在老板的 push 下，我们的工作热情是怎么样的呢？</p>
+<p>这里就是输入函数在响应的作用下，得到输出函数的问题，也就是求卷积。说了这么多，好像只是介绍了我们的 $x$ 和 $h$ 函数，卷积到底是什么意思呢？让我们看一下 $x$ 和 $h$ 的卷积会发生什么。</p>
 <ul>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(0) ~\prod\limits_{i=1}^d p(x_i \mid 0)$；</li>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(1) ~\prod\limits_{i=1}^d p(x_i \mid 1)$；</li>
-<li>那个大划分为那类。</li>
+<li><p>Day 0：今天不太想工作，只有 0.1 的意愿，但是老板来 push 了，最终的工作意愿为：<br>\begin{equation*}<br>\begin{split}<br>y(0) &amp;= \int_0^2 x(\tau)h(0-\tau)d\tau \\\<br>   &amp;= \color{red}{x(0)}h(0) + \color{blue}{x(1)}h^+ +\color{blue}{x(2)}h^+ \\\<br>   &amp;= \color{red}{x(0)}h(0) =0.8<br>\end{split}<br>\end{equation*}<br>该公式的意思可以这样理解：将 $h$ 函数作用在输入上，得到了我们的输出。根据 $h$ 函数的特性，它只作用在今天、昨天和前天的数据上 (以 $y(0)$ 中的 $0$ 为参考)，对于明天 ($x(1)$) 和后天的数据 ($x(2)$) 的数据没有作用。</p>
+</li>
+<li><p>Day 1: 昨天老板骂了一顿，今天又来了，老板昨天的效果也还在。最终，我们的工作热情为：<br>\begin{equation*}<br>\begin{split}<br>y(1) &amp;=  \color{blue}{x(0)}h(1)+\color{red}{x(1)}h(0)+\color{blue}{x(2)}h^+ \\\<br>&amp;= 0.8+0.3=1.1<br>\end{split}<br>\end{equation*}<br>意思就是今天你的工作热情只有 0.1，老板把你骂了后，你的热情变成了0.8；除此之外，老板昨天劝说的效果还在，只是从 8 倍的作用变成了 3 倍。按照 $h$ 函数的作用，将所有输入结果叠加。</p>
+</li>
+<li><p>Day 2：同样的：<br>\begin{equation*}<br>\begin{split}<br>y(2) &amp;=  \color{blue}{x(0)}h(2)+\color{blue}{x(1)}h(1)+\color{red}{x(2)}h(0) \\\<br>&amp;=4.8+0.3+0.2=5.3<br>\end{split}<br>\end{equation*}<br>我们可以把 $h$ 看做权，这个计算实际上就相当于对 $x$ 进行了加权叠加。</p>
+</li>
+<li><p>Day 3: 虽然从今天开始我们不再有新的工作热情(输入数据)，但是思想教育的效果依然余留，工作效率在老板 push 的作用下为：<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h(2)+\color{blue}{x(2)}h(1) \\\<br>&amp;=1.8 + 0.2 = 2<br>\end{split}<br>\end{equation*}<br>幸好，根据 $h$ 的加权作用，老板第一天的教育终于被你忘了。</p>
+</li>
+<li><p>Day 4: 快要迎来美好时光，老板前几天的教育都要被你忘了。<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h^++\color{blue}{x(2)}h(2) \\\<br>&amp;=1.2<br>\end{split}<br>\end{equation*}<br>老板的督促使得你保持了几天工作热情。根据你三分钟热度的性格，今天之后，又过上了毫无工作热情的生活。</p>
+</li>
 </ul>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
-<p>[2] Pattern Recognition and Machine Learning, Christopher M. Bishop.</p>
+<p>我们复习一下卷积的公式：<br>\begin{equation}<br>y(\color{red}{t})= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\color{blue}{\tau}<br>\end{equation}</p>
+<p>从上面的例子可以看出，卷积就是对于每一个位置 $t_i \in (-\infty,\infty)$，将输入 $x$ (整个输入，上面几式中颜色标注)，按照 $h$ 的方式加权叠加起来，这里 $h$ 的方式就是以当前时间为基准 ($t_i$，红色标注)，对当天的效应是 8，昨天的效应是 3，前天的效应是 2。</p>
+<p>最后，给出在老板的连番督促下，你的工作热情:<br><img src="/img/convolution/passion.png" title="图3. 输出函数"></p>
 
+          
+        
       
     </div>
     
@@ -398,42 +411,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
-          
-            <a href="/tags/Bayesian/" rel="tag"># Bayesian</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/08/21/decision-tree/" rel="next" title="机器学习算法(1): 决策树">
-                <i class="fa fa-chevron-left"></i> 机器学习算法(1): 决策树
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/28/svm/" rel="prev" title="机器学习算法(3): 支持向量机">
-                机器学习算法(3): 支持向量机 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -443,11 +428,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -455,10 +443,6 @@
 
 
           
-  <div class="comments" id="comments">
-    
-  </div>
-
 
         </div>
         
@@ -479,17 +463,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -597,22 +572,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯决策论"><span class="nav-text">1. 贝叶斯决策论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-后验概率最大化"><span class="nav-text">2. 后验概率最大化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-朴素贝叶斯分类器"><span class="nav-text">3. 朴素贝叶斯分类器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -743,10 +702,10 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-
+  
 
   
 

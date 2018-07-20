@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
+<meta name="description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下，其中 D 为数据集，A 为特征集： 1234567891011121314151617def creatTree(D, A):	根据 D 生成叶节点集 node">
 <meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习算法(1): 决策树">
 <meta property="og:url" content="http://leeliang.github.io/2017/08/21/decision-tree/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
+<meta property="og:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下，其中 D 为数据集，A 为特征集： 1234567891011121314151617def creatTree(D, A):	根据 D 生成叶节点集 node">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-08-23T06:56:49.000Z">
+<meta property="og:updated_time" content="2017-09-04T07:01:54.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习算法(1): 决策树">
-<meta name="twitter:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下： 输入：  数据集：D特征集：A  输出：  决策树  1234567891011121314151617def creatTree(D, A):	根据 D 生">
+<meta name="twitter:description" content="1. 决策树概述决策树是一种基本的分类和回归算法。其根据数据的特征，采用树结构进行决策的方法。通常包括 3 个步骤：  特征划分选择 决策树生成 剪枝处理  一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下，其中 D 为数据集，A 为特征集： 1234567891011121314151617def creatTree(D, A):	根据 D 生成叶节点集 node">
 
 
 
@@ -371,15 +371,7 @@
 <li>决策树生成</li>
 <li>剪枝处理</li>
 </ul>
-<p>一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下：</p>
-<p>输入：</p>
-<blockquote>
-<p>数据集：D<br>特征集：A</p>
-</blockquote>
-<p>输出：</p>
-<blockquote>
-<p>决策树</p>
-</blockquote>
+<p>一般地，一颗决策树包含一个根节点，若干内部节点和若干叶节点。其算法的基本流程如下，其中 <code>D</code> 为数据集，<code>A</code> 为特征集：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">creatTree</span><span class="params">(D, A)</span>:</span></div><div class="line">	根据 D 生成叶节点集 node  <span class="comment"># 数据标记</span></div><div class="line">	<span class="keyword">if</span> len(node)==<span class="number">1</span>:       <span class="comment"># D 中样本属于同一类别</span></div><div class="line">		标记所有数据为同一叶节点</div><div class="line">	<span class="keyword">if</span> A == [] <span class="keyword">or</span> len(D.feature)==<span class="number">1</span> <span class="comment"># D 中只有一个特征</span></div><div class="line">		将 node 标记为叶节点，其 label 为 D 中样本数量最多的类</div><div class="line">	<span class="comment">#</span></div><div class="line">	从 A 中挑出最优特征 a</div><div class="line">	<span class="comment">#</span></div><div class="line">	<span class="keyword">for</span> value <span class="keyword">in</span> a:</div><div class="line">		生成新的特征集 A* = (A-a)</div><div class="line">		生成新的数据集 D* 表示 D 中取值为 value 的样本子集</div><div class="line">		<span class="keyword">if</span> D* == []</div><div class="line">			将 node 标记为叶节点，其 label 为 D* 中样本数量最多的类</div><div class="line">		<span class="keyword">else</span>:</div><div class="line">			creatTree(D*, A*)</div><div class="line">	<span class="keyword">return</span> tree</div></pre></td></tr></table></figure>
 <p>可以看到，算法第 8 行是决策树算法最关键的内容，即特征划分的选择：怎么选出最优特征。</p>
 <h1 id="2-特征划分选择"><a href="#2-特征划分选择" class="headerlink" title="2. 特征划分选择"></a>2. 特征划分选择</h1><p>我们希望采用某个值，按照该值可以对 A 中的特征进行排序，自然就选出了最优的特征。</p>
@@ -517,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -539,7 +531,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>

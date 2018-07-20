@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Machine Learning,Bayesian," />
+  <meta name="keywords" content="Machine Learning,KNN," />
 
 
 
@@ -94,18 +94,20 @@
 
 
 
-<meta name="description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
-<meta name="keywords" content="Machine Learning,Bayesian">
+<meta name="description" content="1.  k 近邻概述k 近邻法是一种常用的监督学习方法。给定一个训练集，其中样本的类别已定。分类时，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后根据这 k 个样本的类别通过多数表决等方式进行预测。k 近邻法不具有显式的训练过程，是懒惰学习 (lazy learning) 的著名代表。其中，关键的内容为距离度量和 k 值的选择。 1.1 距离度量常用的距离度量有闵可夫斯基距离： \">
+<meta name="keywords" content="Machine Learning,KNN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/24/nBayes/index.html">
+<meta property="og:title" content="机器学习算法(4): k 近邻">
+<meta property="og:url" content="http://leeliang.github.io/2017/08/30/knn/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta property="og:description" content="1.  k 近邻概述k 近邻法是一种常用的监督学习方法。给定一个训练集，其中样本的类别已定。分类时，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后根据这 k 个样本的类别通过多数表决等方式进行预测。k 近邻法不具有显式的训练过程，是懒惰学习 (lazy learning) 的著名代表。其中，关键的内容为距离度量和 k 值的选择。 1.1 距离度量常用的距离度量有闵可夫斯基距离： \">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-08-24T08:57:21.000Z">
+<meta property="og:image" content="http://leeliang.github.io/img/knn/kdtree.png">
+<meta property="og:updated_time" content="2017-09-04T07:02:12.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta name="twitter:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta name="twitter:title" content="机器学习算法(4): k 近邻">
+<meta name="twitter:description" content="1.  k 近邻概述k 近邻法是一种常用的监督学习方法。给定一个训练集，其中样本的类别已定。分类时，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后根据这 k 个样本的类别通过多数表决等方式进行预测。k 近邻法不具有显式的训练过程，是懒惰学习 (lazy learning) 的著名代表。其中，关键的内容为距离度量和 k 值的选择。 1.1 距离度量常用的距离度量有闵可夫斯基距离： \">
+<meta name="twitter:image" content="http://leeliang.github.io/img/knn/kdtree.png">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/24/nBayes/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/08/30/knn/"/>
 
 
 
 
 
-  <title>机器学习算法(2): 朴素贝叶斯分类器 | My Blog</title>
+  <title>机器学习算法(4): k 近邻 | My Blog</title>
   
 
 
@@ -276,7 +278,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/nBayes/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/30/knn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -293,7 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">机器学习算法(2): 朴素贝叶斯分类器</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习算法(4): k 近邻</h1>
         
 
         <div class="post-meta">
@@ -305,8 +307,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T20:20:25+08:00">
-                2017-08-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-30T20:20:25+08:00">
+                2017-08-30
               </time>
             
 
@@ -365,24 +367,45 @@
       
 
       
-        <h1 id="1-贝叶斯决策论"><a href="#1-贝叶斯决策论" class="headerlink" title="1. 贝叶斯决策论"></a>1. 贝叶斯决策论</h1><p>考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但实际上它是 $C_2$ 类，这样我们就犯了分类错误，反之亦然。在决策过程中，我们希望能最小化错误分类率 $p(mistake)$：<br>\begin{equation}<br>\begin{split}<br>p(mistake) &amp;= p( x \in R_1,C_2) + p( x \in R_2,C_1)<br>\\\<br>&amp;= \int_{R_1} p(C_2,x) ~dx +\int_{R_2} p(C_1,x) ~dx<br>\end{split}<br>\end{equation}<br>即 $R_1$ 区域中，实际类别为 $C_2$ 的样本尽量少；$R_2$ 区域中，实际类别为 $C_1$ 的样本尽量少。</p>
-<p>实际情况中，我们面对的情况要比最小化错误率复杂，因为把 $C_1$ 类错分了 $C_2$ 类和把 $C_2$ 类错分为 $C_1$ 类的代价是不一样。我们需要对不同的错误加一个权值，这就是期望损失 (expected loss)：<br>\begin{equation}<br>EL = \int_{R_1} \color{red}{\lambda_{21}}~ p(C_2,x) ~dx +\int_{R_2}\color{red}{\lambda_{12}}~ p(C_1,x) ~dx<br>\end{equation}<br>其中，$\lambda_{21}$ 是将一个真实标记为 $C_1$ 误分类为 $C_2$ 的损失，反之同理。</p>
-<p>更一般地，对于 $K$ 类的问题，期望损失为：<br>\begin{equation}<br>EL =  \sum_{k} \sum_{j} \int_{R_j} \lambda_{kj}~~p( C_k, x)~ dx<br>\end{equation}</p>
-<p>对于每一个样本 $x$，我们要将其划分到决策区域 $R$ 中，那么划分到 $R_1$ 还是 $R_2$ ……中呢？我们希望期望损失能够最小化。也就是说，对于每个 $x$，我们将其划分到 $R_j$ 中，这样的结果下其期望损失最小：<br>\begin{equation}<br>arg~ \min ~\sum_k~\lambda_{kj}~p( C_k, x)<br>\end{equation}</p>
-<p>将联合概率形式写成条件概率：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)~p(x)<br> \label{5}<br>\end{equation}</p>
-<p>注意到 $p(x)$ 对于所有项都相同，最小化 (\ref{5}) 式等价于：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)<br>  \label{6}<br>\end{equation}</p>
-<h1 id="2-后验概率最大化"><a href="#2-后验概率最大化" class="headerlink" title="2. 后验概率最大化"></a>2. 后验概率最大化</h1><p>若我们的损失函数简化为：<br>\begin{equation}<br>\lambda_{kj} = \begin{cases}1,&amp;k≠j\\0,&amp;k=j\end{cases}<br>\end{equation}<br>(\ref{6}) 式等价于：<br>\begin{equation}<br>\begin{split}<br>f(x) &amp;= arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x) \\\<br>&amp; = arg~ \min ~\sum_{k\neq j}~ p(C_k \mid x)<br>\\\<br>&amp; = arg~ \min ~[1- p(C_{k = j} \mid x)]<br>\\\<br>&amp; = arg \max p(C_j \mid x)<br>\end{split}<br>\end{equation}<br>对于每个 $x$，我们将其划分到 $R_j$ 中，最大化 $p(C_j \mid x)$ 就能够使得期望损失最小化。也就是说，后验概率最大等价于 $0-1$ 损失函数时的期望损失最小。记决策结果为 $c= R_j$，我们需要最大化 $p(c \mid x)$。在现实任务中，$p(c \mid x)$ 通常难以直接获取，需要使用贝叶斯公式。</p>
-<p>基于贝叶斯定理，有：<br>\begin{equation}<br>p(c \mid x) = \frac{p(c) ~p(x \mid c)}{p(x)}<br>\end{equation}<br>其中 $p(c \mid x)$ 称之为后验概率。</p>
-<h1 id="3-朴素贝叶斯分类器"><a href="#3-朴素贝叶斯分类器" class="headerlink" title="3. 朴素贝叶斯分类器"></a>3. 朴素贝叶斯分类器</h1><p>为了得到我们的模型，需要最大化后验概率，因为：<br>\begin{equation} p(c \mid x) \propto p(c) ~p(x \mid c) \end{equation}<br>最大化后验概率等价于：<br>\begin{equation}<br>\label{11}<br>arg \max p(c) ~p(x \mid c) \end{equation}<br>也就是需要估计先验概率 $p(c)$ 和类条件概率 $p(x \mid c)$。针对具体问题，类条件概率 $p(x \mid c)$ 是所有特征 $x$ 上的联合概率，难以从有限的样本直接估计而得。为避开这个问题，朴素贝叶斯分类器采用了特征独立性假设：即对已知类别，假设所有属性相互独立。基于该假设，(\ref{11}) 式重写为：<br>\begin{equation}<br>arg \max p(c) ~\prod_{i=1}^d p(x_i \mid c)<br>\end{equation}</p>
-<p>因此，朴素贝叶斯分类器的训练过程就是基于数据集 <code>D</code> 来估算先验概率 $p(c)$ 和每个属性的条件概率 $p(x_i \mid c)$。</p>
-<p>假设训练过程已经完成，有一个新的输入 $x=\{x_1, x_2, x_3\cdots\}$，需要采用朴素贝叶斯来进行二分类 $y = \{0,1\}$，其过程为：</p>
-<ul>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(0) ~\prod\limits_{i=1}^d p(x_i \mid 0)$；</li>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(1) ~\prod\limits_{i=1}^d p(x_i \mid 1)$；</li>
-<li>那个大划分为那类。</li>
-</ul>
+        <h1 id="1-k-近邻概述"><a href="#1-k-近邻概述" class="headerlink" title="1.  k 近邻概述"></a>1.  k 近邻概述</h1><p>k 近邻法是一种常用的监督学习方法。给定一个训练集，其中样本的类别已定。分类时，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后根据这 k 个样本的类别通过多数表决等方式进行预测。k 近邻法不具有显式的训练过程，是懒惰学习 (lazy learning) 的著名代表。其中，关键的内容为距离度量和 k 值的选择。</p>
+<h2 id="1-1-距离度量"><a href="#1-1-距离度量" class="headerlink" title="1.1 距离度量"></a>1.1 距离度量</h2><p>常用的距离度量有闵可夫斯基距离：</p>
+<p>\begin{equation}<br>L_p(x_i,x_j)=(\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|^p)^{1/p}<br>\end{equation}</p>
+<ol>
+<li><p>$p=2$ 时，欧式距离：<br>\begin{equation}<br>L_p(x_i,x_j)=(\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|^2)^{1/2}<br>\end{equation}</p>
+</li>
+<li><p>$p=1$ 时，曼哈顿距离：<br>\begin{equation}<br>L_p(x_i,x_j)=\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|<br>\end{equation}</p>
+</li>
+<li><p>$p=\infty$ 时，切比雪夫距离：<br>\begin{equation}<br>L_p(x_i,x_j)=\max_l |x_i^{(l)}-x_j^{(l)}|<br>\end{equation}</p>
+</li>
+</ol>
+<h2 id="1-2-k-值的选择"><a href="#1-2-k-值的选择" class="headerlink" title="1.2. k 值的选择"></a>1.2. k 值的选择</h2><p>k 值的选择会对结果产生重大影响。</p>
+<p>k 值选择较小，则分类结果容易因为噪声点的干扰而出现错误。换句话说，k 值较小意味模型复杂，容易过拟合。</p>
+<p>k 值选择较大，意味着与输入样本较远的训练样本也会对结果起作用，使得预测结果错误。</p>
+<p>通常做法是利用交叉验证评估一系列不同的 k 值，选取结果最好的 k 值作为训练参数。</p>
+<h1 id="2-kd-树"><a href="#2-kd-树" class="headerlink" title="2. kd 树"></a>2. kd 树</h1><p>现在我们有了 k 近邻的思想。对于一个输入样本，我们怎么样选取它的 k 个近邻呢？</p>
+<p>最简单的方法就是线性扫描，计算输入样本和训练集中每一个样本的距离。但是当训练样本很大时，这种方法是不可取的。</p>
+<p>为了提高 k 个近邻的搜索速度，可以采用特殊的结构存储训练数据，这里介绍 kd 树方法。</p>
+<h2 id="2-1-kd-树的构造"><a href="#2-1-kd-树的构造" class="headerlink" title="2.1. kd 树的构造"></a>2.1. kd 树的构造</h2><p>kd 树是一种对 k 维空间样本点进行存储的树形数据结构，表示对 k 维空间的划分。构造 kd 树的过程相当于用垂直于某一维度的超平面将 k 维空间切分。</p>
+<p>构造平衡 kd 树的过程如下：</p>
+<ol>
+<li>在训练集中选择具有最大方差的维度 k，然后在该维度上选择中位数为切分点，对该数据集合进行划分，得到两个子集合，划分的超平面为过切分点且垂直于 k 维度坐标轴的超平面；同时，将落在划分超平面上的样本点保存为根节点。</li>
+<li>对两个子集重复 <code>1</code> 步骤，直至所有子集合不能再划分为止；如果某个子集合不能划分，则将该子集合中的数据保存到叶子节点。</li>
+</ol>
+<p>图 1 所示为 kd 树构造过程，数据来源于 wikipedia。首先在维度 $X^{(0)}$ 上选取切分点 <code>A</code>，分为两个子集合，并把 <code>A</code> 保存为根节点…………。<br><img src="/img/knn/kdtree.png" title="图1. 构造 kd 树过程，左边为特征空间的切分，右边为构造的 kd 树。"></p>
+<h2 id="2-2-kd-树搜索"><a href="#2-2-kd-树搜索" class="headerlink" title="2.2. kd 树搜索"></a>2.2. kd 树搜索</h2><p>假设已经构造了 kd 树，我们有一个新的输入 $x$，搜索它的最近邻。<br>其算法如下：</p>
+<ol>
+<li>在 kd 树中找出包含目标点 $x$ 的叶结点：从根结点出发，递归的向下访问 kd 树。比较当前维上 $x$ 与切分点的坐标，若小移动到左子结点，否则右边，知道叶结点为止；</li>
+<li>将到达的叶节点记为“当前最近点”，离目标点的距离为最近距离；</li>
+<li><p>递归向上回溯，在每个结点作如下操作：</p>
+<blockquote>
+<p>3.1 如果该结点上的样本离目标点更远，向上回溯；<br>3.2 如果该结点上的样本距离目标点更近，将该结点标记为当前最近点，更新最近距离；并检查该结点的另一子结点对应的区域是否与以目标点为球心，最近距离为半径的超球体相交。若相交，移动到另一个子节点，向下落到叶节点，递归地进行最近邻搜索。若不相交，向上回溯。</p>
+</blockquote>
+</li>
+<li><p>当回退到根节点时，搜索结束。 </p>
+</li>
+</ol>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
-<p>[2] Pattern Recognition and Machine Learning, Christopher M. Bishop.</p>
+<p>[2] 《<a href="https://book.douban.com/subject/10590856/" target="_blank" rel="external">统计学习方法</a>》, 李航</p>
 
       
     </div>
@@ -402,7 +425,7 @@
           
             <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
           
-            <a href="/tags/Bayesian/" rel="tag"># Bayesian</a>
+            <a href="/tags/KNN/" rel="tag"># KNN</a>
           
         </div>
       
@@ -415,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/21/decision-tree/" rel="next" title="机器学习算法(1): 决策树">
-                <i class="fa fa-chevron-left"></i> 机器学习算法(1): 决策树
+              <a href="/2017/08/28/svm/" rel="next" title="机器学习算法(3): 支持向量机">
+                <i class="fa fa-chevron-left"></i> 机器学习算法(3): 支持向量机
               </a>
             
           </div>
@@ -425,8 +448,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/08/28/svm/" rel="prev" title="机器学习算法(3): 支持向量机">
-                机器学习算法(3): 支持向量机 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/01/random-forest/" rel="prev" title="机器学习算法(5): 集成学习之 随机森林">
+                机器学习算法(5): 集成学习之 随机森林 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -607,7 +630,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯决策论"><span class="nav-text">1. 贝叶斯决策论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-后验概率最大化"><span class="nav-text">2. 后验概率最大化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-朴素贝叶斯分类器"><span class="nav-text">3. 朴素贝叶斯分类器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-k-近邻概述"><span class="nav-text">1.  k 近邻概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-距离度量"><span class="nav-text">1.1 距离度量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-k-值的选择"><span class="nav-text">1.2. k 值的选择</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-kd-树"><span class="nav-text">2. kd 树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-kd-树的构造"><span class="nav-text">2.1. kd 树的构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-kd-树搜索"><span class="nav-text">2.2. kd 树搜索</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>

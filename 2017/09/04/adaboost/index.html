@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Machine Learning,Bayesian," />
+  <meta name="keywords" content="Machine Learning,Boosting,Ensemble," />
 
 
 
@@ -94,18 +94,20 @@
 
 
 
-<meta name="description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
-<meta name="keywords" content="Machine Learning,Bayesian">
+<meta name="description" content="1.  BoostingBoosting 是一族将弱学习器提升为强学习器的算法。工作机制类似：  从初始训练集中训练出一个基学习器； 根据基学习器的表现调整样本的权值，使得先前基学习器做错的样本权值更大； 然后基于调整之后的权值训练下一个基学习器； 反复学习，得到一系列基学习器，组合这些基学习器。  对于 Boosting 算法来说，关键点在于以下两个问题：  如何改造权值？ 如果组合基学习器？">
+<meta name="keywords" content="Machine Learning,Boosting,Ensemble">
 <meta property="og:type" content="article">
-<meta property="og:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta property="og:url" content="http://leeliang.github.io/2017/08/24/nBayes/index.html">
+<meta property="og:title" content="机器学习算法(6): 集成学习之 AdaBoost">
+<meta property="og:url" content="http://leeliang.github.io/2017/09/04/adaboost/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta property="og:description" content="1.  BoostingBoosting 是一族将弱学习器提升为强学习器的算法。工作机制类似：  从初始训练集中训练出一个基学习器； 根据基学习器的表现调整样本的权值，使得先前基学习器做错的样本权值更大； 然后基于调整之后的权值训练下一个基学习器； 反复学习，得到一系列基学习器，组合这些基学习器。  对于 Boosting 算法来说，关键点在于以下两个问题：  如何改造权值？ 如果组合基学习器？">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-08-24T08:57:21.000Z">
+<meta property="og:image" content="http://leeliang.github.io/img/adaboost/ae.png">
+<meta property="og:updated_time" content="2017-09-05T05:38:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="机器学习算法(2): 朴素贝叶斯分类器">
-<meta name="twitter:description" content="1. 贝叶斯决策论考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但">
+<meta name="twitter:title" content="机器学习算法(6): 集成学习之 AdaBoost">
+<meta name="twitter:description" content="1.  BoostingBoosting 是一族将弱学习器提升为强学习器的算法。工作机制类似：  从初始训练集中训练出一个基学习器； 根据基学习器的表现调整样本的权值，使得先前基学习器做错的样本权值更大； 然后基于调整之后的权值训练下一个基学习器； 反复学习，得到一系列基学习器，组合这些基学习器。  对于 Boosting 算法来说，关键点在于以下两个问题：  如何改造权值？ 如果组合基学习器？">
+<meta name="twitter:image" content="http://leeliang.github.io/img/adaboost/ae.png">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://leeliang.github.io/2017/08/24/nBayes/"/>
+  <link rel="canonical" href="http://leeliang.github.io/2017/09/04/adaboost/"/>
 
 
 
 
 
-  <title>机器学习算法(2): 朴素贝叶斯分类器 | My Blog</title>
+  <title>机器学习算法(6): 集成学习之 AdaBoost | My Blog</title>
   
 
 
@@ -276,7 +278,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/08/24/nBayes/">
+    <link itemprop="mainEntityOfPage" href="http://leeliang.github.io/2017/09/04/adaboost/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang LI">
@@ -293,7 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">机器学习算法(2): 朴素贝叶斯分类器</h1>
+          <h1 class="post-title" itemprop="name headline">机器学习算法(6): 集成学习之 AdaBoost</h1>
         
 
         <div class="post-meta">
@@ -305,8 +307,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-24T20:20:25+08:00">
-                2017-08-24
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-04T20:20:25+08:00">
+                2017-09-04
               </time>
             
 
@@ -365,24 +367,43 @@
       
 
       
-        <h1 id="1-贝叶斯决策论"><a href="#1-贝叶斯决策论" class="headerlink" title="1. 贝叶斯决策论"></a>1. 贝叶斯决策论</h1><p>考虑一个简单的二分类问题，假设有一个输入向量 $x$，我们的目标是对于 $x$ 预测它的类别 $y$，其中 $y = \{C_1, C_2\}$。现在我们有一个算法对 $x$ 进行了分类，这个算法会把输入空间划分为不同的区域 $R_k$，区域 $R_k$ 中的所有点都被分类为 $C_k$。假设现在我们有个输入，根据算法它被划分在区域 $R_1$，即我们的决策结果为 $C_1$，但实际上它是 $C_2$ 类，这样我们就犯了分类错误，反之亦然。在决策过程中，我们希望能最小化错误分类率 $p(mistake)$：<br>\begin{equation}<br>\begin{split}<br>p(mistake) &amp;= p( x \in R_1,C_2) + p( x \in R_2,C_1)<br>\\\<br>&amp;= \int_{R_1} p(C_2,x) ~dx +\int_{R_2} p(C_1,x) ~dx<br>\end{split}<br>\end{equation}<br>即 $R_1$ 区域中，实际类别为 $C_2$ 的样本尽量少；$R_2$ 区域中，实际类别为 $C_1$ 的样本尽量少。</p>
-<p>实际情况中，我们面对的情况要比最小化错误率复杂，因为把 $C_1$ 类错分了 $C_2$ 类和把 $C_2$ 类错分为 $C_1$ 类的代价是不一样。我们需要对不同的错误加一个权值，这就是期望损失 (expected loss)：<br>\begin{equation}<br>EL = \int_{R_1} \color{red}{\lambda_{21}}~ p(C_2,x) ~dx +\int_{R_2}\color{red}{\lambda_{12}}~ p(C_1,x) ~dx<br>\end{equation}<br>其中，$\lambda_{21}$ 是将一个真实标记为 $C_1$ 误分类为 $C_2$ 的损失，反之同理。</p>
-<p>更一般地，对于 $K$ 类的问题，期望损失为：<br>\begin{equation}<br>EL =  \sum_{k} \sum_{j} \int_{R_j} \lambda_{kj}~~p( C_k, x)~ dx<br>\end{equation}</p>
-<p>对于每一个样本 $x$，我们要将其划分到决策区域 $R$ 中，那么划分到 $R_1$ 还是 $R_2$ ……中呢？我们希望期望损失能够最小化。也就是说，对于每个 $x$，我们将其划分到 $R_j$ 中，这样的结果下其期望损失最小：<br>\begin{equation}<br>arg~ \min ~\sum_k~\lambda_{kj}~p( C_k, x)<br>\end{equation}</p>
-<p>将联合概率形式写成条件概率：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)~p(x)<br> \label{5}<br>\end{equation}</p>
-<p>注意到 $p(x)$ 对于所有项都相同，最小化 (\ref{5}) 式等价于：<br>\begin{equation}<br> arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x)<br>  \label{6}<br>\end{equation}</p>
-<h1 id="2-后验概率最大化"><a href="#2-后验概率最大化" class="headerlink" title="2. 后验概率最大化"></a>2. 后验概率最大化</h1><p>若我们的损失函数简化为：<br>\begin{equation}<br>\lambda_{kj} = \begin{cases}1,&amp;k≠j\\0,&amp;k=j\end{cases}<br>\end{equation}<br>(\ref{6}) 式等价于：<br>\begin{equation}<br>\begin{split}<br>f(x) &amp;= arg~ \min ~\sum_k~\lambda_{kj}~p(C_k \mid x) \\\<br>&amp; = arg~ \min ~\sum_{k\neq j}~ p(C_k \mid x)<br>\\\<br>&amp; = arg~ \min ~[1- p(C_{k = j} \mid x)]<br>\\\<br>&amp; = arg \max p(C_j \mid x)<br>\end{split}<br>\end{equation}<br>对于每个 $x$，我们将其划分到 $R_j$ 中，最大化 $p(C_j \mid x)$ 就能够使得期望损失最小化。也就是说，后验概率最大等价于 $0-1$ 损失函数时的期望损失最小。记决策结果为 $c= R_j$，我们需要最大化 $p(c \mid x)$。在现实任务中，$p(c \mid x)$ 通常难以直接获取，需要使用贝叶斯公式。</p>
-<p>基于贝叶斯定理，有：<br>\begin{equation}<br>p(c \mid x) = \frac{p(c) ~p(x \mid c)}{p(x)}<br>\end{equation}<br>其中 $p(c \mid x)$ 称之为后验概率。</p>
-<h1 id="3-朴素贝叶斯分类器"><a href="#3-朴素贝叶斯分类器" class="headerlink" title="3. 朴素贝叶斯分类器"></a>3. 朴素贝叶斯分类器</h1><p>为了得到我们的模型，需要最大化后验概率，因为：<br>\begin{equation} p(c \mid x) \propto p(c) ~p(x \mid c) \end{equation}<br>最大化后验概率等价于：<br>\begin{equation}<br>\label{11}<br>arg \max p(c) ~p(x \mid c) \end{equation}<br>也就是需要估计先验概率 $p(c)$ 和类条件概率 $p(x \mid c)$。针对具体问题，类条件概率 $p(x \mid c)$ 是所有特征 $x$ 上的联合概率，难以从有限的样本直接估计而得。为避开这个问题，朴素贝叶斯分类器采用了特征独立性假设：即对已知类别，假设所有属性相互独立。基于该假设，(\ref{11}) 式重写为：<br>\begin{equation}<br>arg \max p(c) ~\prod_{i=1}^d p(x_i \mid c)<br>\end{equation}</p>
-<p>因此，朴素贝叶斯分类器的训练过程就是基于数据集 <code>D</code> 来估算先验概率 $p(c)$ 和每个属性的条件概率 $p(x_i \mid c)$。</p>
-<p>假设训练过程已经完成，有一个新的输入 $x=\{x_1, x_2, x_3\cdots\}$，需要采用朴素贝叶斯来进行二分类 $y = \{0,1\}$，其过程为：</p>
-<ul>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(0) ~\prod\limits_{i=1}^d p(x_i \mid 0)$；</li>
-<li>根据训练的结果：先验概率和每个属性的条件概率，计算 $p(1) ~\prod\limits_{i=1}^d p(x_i \mid 1)$；</li>
-<li>那个大划分为那类。</li>
-</ul>
+        <h1 id="1-Boosting"><a href="#1-Boosting" class="headerlink" title="1.  Boosting"></a>1.  Boosting</h1><p>Boosting 是一族将弱学习器提升为强学习器的算法。工作机制类似：</p>
+<ol>
+<li>从初始训练集中训练出一个基学习器；</li>
+<li>根据基学习器的表现调整样本的权值，使得先前基学习器做错的样本权值更大；</li>
+<li>然后基于调整之后的权值训练下一个基学习器；</li>
+<li>反复学习，得到一系列基学习器，组合这些基学习器。</li>
+</ol>
+<p>对于 Boosting 算法来说，关键点在于以下两个问题：</p>
+<ol>
+<li>如何改造权值？</li>
+<li>如果组合基学习器？</li>
+</ol>
+<p>Boosting 族算法最著名的代表是 AdaBoost。</p>
+<h1 id="2-AdaBoost-算法"><a href="#2-AdaBoost-算法" class="headerlink" title="2. AdaBoost 算法"></a>2. AdaBoost 算法</h1><p>简单来说，AdaBoost 算法就是根据指定参数 $M$，进行 $M$ 轮训练，得到 $M$ 个弱学习器 $G_i$ 及每个弱学习器的权重 $\alpha_i$，最终将这些弱学习器进行线性组合得到最终的学习器 $G$。</p>
+<p>给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。 AdaBoost 算法流程如下：</p>
+<p>(1). 初始化训练集的权值分布：</p>
+<p>\begin{equation}<br>D_{1}=(w_{11},…,w_{1i},…,w_{1N}),~w_{1i}=\frac{1}{N},~i=1,2,…,N<br>\end{equation}</p>
+<p>(2) 对 $m=1,2,3…,M$:<br>(2.1) 使用权值分布 $D_m$ 的训练集学习，得到基学习器：<br>\begin{equation}<br>G_{m}(x):~X{\rightarrow}\{-1,+1\}<br>\end{equation}<br>(2.2) 计算 $G_{m}(x)$ 在训练集上的误差率：<br>\begin{equation}<br>e_{m}=P(G_{m}(x_{i})\neq y_{i}) =\sum_{i=1}^n w_{mi}I(G_{m}(x_{i})\neq y_{i})<br>\end{equation}<br>其中，</p>
+<p>\begin{equation}<br>I(G_{m}(x_{i})\neq y_{i}) =<br>  \left\{<br>   \begin{array}{ccc}<br>           0,~ G_{m}(x_{i})&amp;=&amp; y_i \\<br>           1,~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{equation}<br>(2.3) 计算 $G_{m}(x)$ 的系数：<br>\begin{equation}<br>\alpha_{m}=\frac{1}{2}log \frac{1-e_{m}}{e_{m}}<br>\end{equation}<br>如图 1 所示，基学习器误差越大，其系数越小。<br><img src="/img/adaboost/ae.png" width="400" height="320" title="图1 基学习器系数随误差率的变化"><br>(2.4) 更新训练集的权值分布：<br>\begin{equation}<br>\begin{split}<br>&amp; D_{m+1}=(w_{m+1,1},…,w_{m+1,i},…,w_{m+1,N}) \\\<br>&amp; w_{m+1,i}= \left\{<br>   \begin{array}{ccc}<br>          \frac{w_{mi}}{Z_{m}}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \\<br>          \frac{w_{mi}}{Z_{m}}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{split}<br>\end{equation}<br>其中，<br>\begin{equation}<br>Z_{m} = \sum_{i=1}^{N}w_{mi}exp(-\alpha_{m}y_{i}G_{m}(x_{i}))<br>\end{equation}<br>为归一化因子。</p>
+<p>（3） 构建线性分类器的线性组合：</p>
+<p>\begin{equation}<br>f(x)=\sum_{m=1}^{M}\alpha_{m}G_{m}(x)<br>\end{equation}</p>
+<p>得到最终分类器：<br>\begin{equation}<br>G(x)=sign(f(x))=sign(\sum_{m=1}^{M}\alpha_{m}G_{m}(x))<br>\end{equation}</p>
+<h1 id="3-AdaBoost-的解释之损失函数优化"><a href="#3-AdaBoost-的解释之损失函数优化" class="headerlink" title="3. AdaBoost 的解释之损失函数优化"></a>3. AdaBoost 的解释之损失函数优化</h1><p>上一节提及到了学习器系数和权值更新公式，但是没有解释这个公式的来源，其实它们可以从从损失函数优化问题的角度来解读。</p>
+<p>AdaBoost 还有另一个解释，即可以认为 Adaboost 是模型为加法模型，学习算法为前向分步学习算法，损失函数为指数函数的分类问题。</p>
+<h2 id="3-1-加法模型"><a href="#3-1-加法模型" class="headerlink" title="3.1. 加法模型"></a>3.1. 加法模型</h2><p>加法模型 (additive model) 为：<br>\begin{equation}<br>f(x) = \sum_{m=1}^M \beta_m b(x; \gamma_m)<br>\end{equation}<br>其中，$b(x; \gamma_m)$ 为基函数，$\gamma_m$ 为基函数的参数，$\beta_m$ 为基函数的系数。</p>
+<p>很明显，AdaBoost 的最终分类器等价于加法模型。现在的问题是该怎么样得到最终分类器，也就是其中的参数呢？</p>
+<h2 id="3-2-指数损失函数优化"><a href="#3-2-指数损失函数优化" class="headerlink" title="3.2. 指数损失函数优化"></a>3.2. 指数损失函数优化</h2><p>AdaBoost 的损失函数是指数损失函数，即求得的最终分类器：<br>\begin{equation}<br>f(x)=\sum_{m=1}^{M}\alpha_{m}G_{m}(x)<br>\end{equation}<br>满足最小化指数损失函数：</p>
+<p>\begin{equation}<br>L(y,f(x)) = e^{-yf(x)}<br>\end{equation}</p>
+<p>通常这是一个复杂的优化问题。需要采用前向分布算法来求解。</p>
+<h2 id="3-3-前向分布算法"><a href="#3-3-前向分布算法" class="headerlink" title="3.3 前向分布算法"></a>3.3 前向分布算法</h2><p>前向分布算法的思想是：因为学习的是加法模型，如果能够从前向后，每一步只学习一个基函数及其系数，逐步逼近目标函数，那么就可以简化优化的复杂度。</p>
+<p>AdaBoost 第一个基分类器是直接将基学习器算法用于初始训练集得到；此后利用前一个弱学习器的结果，迭代生成权值和基学习器系数，生成后一个弱学习器。第 $m$ 轮的学习器与第 $m-1$ 轮的学习器有如下关系：<br>\begin{equation}<br>f_{m}(x) =   f_{m-1}(x) + \alpha_m G_m(x)<br>\end{equation}<br>目标是每一轮的学习过程中得到 $\alpha_m$ 和 $G_m(x)$，使得 $f_m(x)$ 的指数损失最小，从而最终分类器的指数损失最小。</p>
+<p>根据前向分布学习算法的关系，第 $m$ 轮得到的损失函数为：<br>\begin{equation}<br>\begin{split}<br>&amp;arg ~\min_{\alpha_m, G_m} e^{-y f_m{(x)}}\\\<br>&amp;=arg ~\min_{\alpha_m, G_m} e^{-y~(f_{m-1}(x)+\alpha_m G_m(x) )}\\\<br>&amp;=arg ~\min_{\alpha_m, G_m} \sum_{i=1}^N e^{-y_i~(f_{m-1}(x_i)+\alpha_m G_m(x_i) )}<br>\end{split}<br>\end{equation}<br>令 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，它的值不依赖于 $\alpha_m$、$G_m(x)$，仅仅依赖于 $f_{m-1}$，随着每一轮迭代而改变。</p>
+<p>先求得 $G^*_m(x)$，再上式对 $\alpha_m$ 求导，得到:<br>\begin{equation} \alpha^*_{m}=\frac{1}{2}log \frac{1-e_{m}}{e_{m}} \end{equation}<br>也就是上文的 (5) 式，即学习器系数。</p>
+<p>根据 (13) 式和 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，有：<br>\begin{equation} \begin{split}  w_{m+1,i}= \left\{    \begin{array}{ccc}           w_{mi}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \\           w_{mi}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i    \end{array}   \right. \end{split} \end{equation}<br>其与 (6) 式的权值更新公式只差归一化因子，因而等价。</p>
+<p>以上，就是 AdaBoost 的另一种解释。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
-<p>[2] Pattern Recognition and Machine Learning, Christopher M. Bishop.</p>
+<p>[2] 《<a href="https://book.douban.com/subject/10590856/" target="_blank" rel="external">统计学习方法</a>》, 李航</p>
 
       
     </div>
@@ -402,7 +423,9 @@
           
             <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
           
-            <a href="/tags/Bayesian/" rel="tag"># Bayesian</a>
+            <a href="/tags/Boosting/" rel="tag"># Boosting</a>
+          
+            <a href="/tags/Ensemble/" rel="tag"># Ensemble</a>
           
         </div>
       
@@ -415,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/21/decision-tree/" rel="next" title="机器学习算法(1): 决策树">
-                <i class="fa fa-chevron-left"></i> 机器学习算法(1): 决策树
+              <a href="/2017/09/01/random-forest/" rel="next" title="机器学习算法(5): 集成学习之 随机森林">
+                <i class="fa fa-chevron-left"></i> 机器学习算法(5): 集成学习之 随机森林
               </a>
             
           </div>
@@ -424,10 +447,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/28/svm/" rel="prev" title="机器学习算法(3): 支持向量机">
-                机器学习算法(3): 支持向量机 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -607,7 +626,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-贝叶斯决策论"><span class="nav-text">1. 贝叶斯决策论</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-后验概率最大化"><span class="nav-text">2. 后验概率最大化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-朴素贝叶斯分类器"><span class="nav-text">3. 朴素贝叶斯分类器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-Boosting"><span class="nav-text">1.  Boosting</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-AdaBoost-算法"><span class="nav-text">2. AdaBoost 算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-AdaBoost-的解释之损失函数优化"><span class="nav-text">3. AdaBoost 的解释之损失函数优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#3-1-加法模型"><span class="nav-text">3.1. 加法模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-2-指数损失函数优化"><span class="nav-text">3.2. 指数损失函数优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-3-前向分布算法"><span class="nav-text">3.3 前向分布算法</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
