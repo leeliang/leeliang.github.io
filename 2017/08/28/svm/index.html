@@ -94,21 +94,21 @@
 
 
 
-<meta name="description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta name="description" content="1.  支持向量机给定训练样本集 $\left { (x_i,y_i)\right }_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in { -1,+1 }$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分超平面可">
 <meta name="keywords" content="Machine Learning,SVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="机器学习算法(3): 支持向量机">
 <meta property="og:url" content="http://leeliang.github.io/2017/08/28/svm/index.html">
 <meta property="og:site_name" content="My Blog">
-<meta property="og:description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta property="og:description" content="1.  支持向量机给定训练样本集 $\left { (x_i,y_i)\right }_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in { -1,+1 }$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分超平面可">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://leeliang.github.io/img/svm/svm1.png">
 <meta property="og:image" content="http://leeliang.github.io/img/svm/svm2.png">
 <meta property="og:image" content="http://leeliang.github.io/img/svm/svm3.png">
-<meta property="og:updated_time" content="2017-08-29T07:16:32.000Z">
+<meta property="og:updated_time" content="2018-07-24T06:35:27.692Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="机器学习算法(3): 支持向量机">
-<meta name="twitter:description" content="1.  支持向量机给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分">
+<meta name="twitter:description" content="1.  支持向量机给定训练样本集 $\left { (x_i,y_i)\right }_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in { -1,+1 }$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。可以看到，具有多个划分超平面可">
 <meta name="twitter:image" content="http://leeliang.github.io/img/svm/svm1.png">
 
 
@@ -369,16 +369,18 @@
       
 
       
-        <h1 id="1-支持向量机"><a href="#1-支持向量机" class="headerlink" title="1.  支持向量机"></a>1.  支持向量机</h1><p>给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。<br><img src="/img/svm/svm1.png" title="图1. 可以划分数据的划分超平面"><br>可以看到，具有多个划分超平面可以将数据分类，我们需要找出唯一的划分超平面，使得划分效果最优，SVM 采用的是最大间隔 (maximum margin) 划分超平面。如图 2 所示。<br><img src="/img/svm/svm2.png" title="图2. 最大间隔划分超平面"><br>图 2 中的实心点，刚好处在划分超平面上，这些点确定了划分超平面，称之为支持向量。</p>
+        <h1 id="1-支持向量机"><a href="#1-支持向量机" class="headerlink" title="1.  支持向量机"></a>1.  支持向量机</h1><p>给定训练样本集 $\left { (x_i,y_i)\right }_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in { -1,+1 }$ 为类标签。支持向量机是基于划分超平面 (separating hyperplane) 将数据分类的分类器。如图 1 所示，二维数据的线性划分超平面为一条直线。<br><img src="/img/svm/svm1.png" title="图1. 可以划分数据的划分超平面"><br>可以看到，具有多个划分超平面可以将数据分类，我们需要找出唯一的划分超平面，使得划分效果最优，SVM 采用的是最大间隔 (maximum margin) 划分超平面。如图 2 所示。<br><img src="/img/svm/svm2.png" title="图2. 最大间隔划分超平面"><br>图 2 中的实心点，刚好处在划分超平面上，这些点确定了划分超平面，称之为支持向量。</p>
 <p>上面的例子为线性分类器，即超平面可以用一个线性方程表示：<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}</p>
 <p>对于需要非线性超平面才能分离的数据，SVM 采用核方法，这也是要引入对偶问题最大的原因。 </p>
 <p>先基于线性可分支持向量机讲述原理，之后说明线性不可分支持向量机，<br>最后说明非线性支持向量机。</p>
-<h1 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h1><h2 id="2-1-最大间隔超平面"><a href="#2-1-最大间隔超平面" class="headerlink" title="2.1. 最大间隔超平面"></a>2.1. 最大间隔超平面</h2><p>上面提到支持向量机的最优划分标准是最大间隔。在特征空间中，划分超平面可用如下线性方程表示:<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}<br>其中 $\mathbf{w}$ 为超平面的法向量，$b$ 为位移项。样本点 $x_i$ 到划分超平面的几何距离为：<br>\begin{equation}<br>\gamma_i = \frac{|\mathbf{w} \cdot x_i +b|}{||\mathbf{w}||}<br>\label{eqn3}<br>\end{equation}<br>$||\mathbf{w}||$ 为 $\mathbf{w}$ 的 $L_2$ 范数。<br>假设超平面能够将训练样本正确分类，即若 $\mathbf{w} \cdot x_i +b &gt;0$，则 $y_i = 1$，反之亦然。所以 (\ref{eqn3}) 式可以去掉绝对值，几何距离重写为：<br>\begin{equation}<br>\gamma_i = y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||}<br>\end{equation}<br>我们定义训练集中最小的几何距离为<strong>几何间隔</strong>：<br>\begin{equation}<br>\gamma = \min \gamma_i<br>\end{equation}<br>最大间隔思想就是最大化几何间隔，在满足所有样本点的几何距离大于几何间隔的条件下：<br>\begin{equation}<br>\begin{split}<br>&amp;\max_{\mathbf{w},b}\gamma \\ &amp;s.t. \ \ y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||} \ge \gamma, \ \ i = 1,2,…,N<br>\end{split}<br>\label{eqn6}<br>\end{equation}<br>为了简化问题，我们引入一个新的定义，<strong>函数间隔</strong>：<br>\begin{equation}<br>\widehat{\gamma} = \frac{\gamma }{||\mathbf{w}||}<br>\end{equation}<br>所以，(\ref{eqn6}) 式重写为：</p>
-<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{\widehat{\gamma }}{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge \widehat{\gamma }, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn8}<br>\end{equation}<br>可以看到，我们自由缩放函数间隔 $N$ 倍：<br>\begin{equation}<br>N ~\widehat{\gamma} = N~ y_i (\mathbf{w} \cdot x_i +b)<br>\end{equation}<br>超平面 $\mathbf{w}^T \cdot \mathbf{x} +b= 0$ 与 缩放后的平面 $N~(\mathbf{w}^T \cdot \mathbf{x} +b)= 0$ 相同；几何间隔同样也不会变化。也就是说，任意缩放函数间隔，对于我们最大化几何间隔问题的解算没有影响。为了简化我们的问题，令函数间隔 $\widehat{\gamma}=1$，这也是引入函数间隔的原因。(\ref{eqn8}) 式简化为：</p>
-<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{ 1 }{||\mathbf{w}||} \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
-<p>注意到最大化 $\frac{ 1 }{||\mathbf{w}||}$ 等价于最小化 $\frac{ 1 }{2}||\mathbf{w}||^2$，最终，SVM 需要解决的问题为以下有约束的最优化问题，更具体地，该问题为凸二次规划问题：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn11}<br>\end{equation}</p>
+<h1 id="2-线性可分支持向量机"><a href="#2-线性可分支持向量机" class="headerlink" title="2. 线性可分支持向量机"></a>2. 线性可分支持向量机</h1><h2 id="2-1-最大间隔超平面"><a href="#2-1-最大间隔超平面" class="headerlink" title="2.1. 最大间隔超平面"></a>2.1. 最大间隔超平面</h2><p>上面提到支持向量机的最优划分标准是最大间隔。在特征空间中，划分超平面可用如下线性方程表示:<br>\begin{equation}<br>\mathbf{w}^T \cdot \mathbf{x} +b= 0<br>\end{equation}<br>其中 $\mathbf{w}$ 为超平面的法向量，$b$ 为位移项。样本点 $x_i$ 到划分超平面的几何距离为：<br>\begin{equation}<br>\gamma_i = \frac{|\mathbf{w} \cdot x_i +b|}{||\mathbf{w}||}<br>\label{eqn3}<br>\end{equation}<br>$||\mathbf{w}||$ 为 $\mathbf{w}$ 的 $L_2$ 范数。<br>假设超平面能够将训练样本正确分类，即若 $\mathbf{w} \cdot x_i +b &gt;0$，则 $y_i = 1$，反之亦然。所以 (\ref{eqn3}) 式可以去掉绝对值，几何距离重写为：</p>
+<p>\begin{equation}<br>\gamma_i = y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||}<br>\end{equation}</p>
+<p>我们定义训练集中最小的几何距离为<strong>几何间隔</strong>：<br>\begin{equation}<br>\gamma = \min \gamma_i<br>\end{equation}<br>最大间隔思想就是最大化几何间隔，在满足所有样本点的几何距离大于几何间隔的条件下：<br>\begin{equation}<br>\begin{split}<br>&amp;\max_{\mathbf{w},b}\gamma \ &amp;s.t. \ \ y_i\frac{\mathbf{w} \cdot x_i +b}{||\mathbf{w}||} \ge \gamma, \ \ i = 1,2,…,N<br>\end{split}<br>\label{eqn6}<br>\end{equation}<br>为了简化问题，我们引入一个新的定义，<strong>函数间隔</strong>：<br>\begin{equation}<br>\widehat{\gamma} = \frac{\gamma }{||\mathbf{w}||}<br>\end{equation}<br>所以，(\ref{eqn6}) 式重写为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{\widehat{\gamma }}{||\mathbf{w}||} \ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge \widehat{\gamma }, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn8}<br>\end{equation}<br>可以看到，我们自由缩放函数间隔 $N$ 倍：<br>\begin{equation}<br>N ~\widehat{\gamma} = N~ y_i (\mathbf{w} \cdot x_i +b)<br>\end{equation}<br>超平面 $\mathbf{w}^T \cdot \mathbf{x} +b= 0$ 与 缩放后的平面 $N~(\mathbf{w}^T \cdot \mathbf{x} +b)= 0$ 相同；几何间隔同样也不会变化。也就是说，任意缩放函数间隔，对于我们最大化几何间隔问题的解算没有影响。为了简化我们的问题，令函数间隔 $\widehat{\gamma}=1$，这也是引入函数间隔的原因。(\ref{eqn8}) 式简化为：</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\max_{\mathbf{w},b} \frac{ 1 }{||\mathbf{w}||} \ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>注意到最大化 $\frac{ 1 }{||\mathbf{w}||}$ 等价于最小化 $\frac{ 1 }{2}||\mathbf{w}||^2$，最终，SVM 需要解决的问题为以下有约束的最优化问题，更具体地，该问题为凸二次规划问题：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \ &amp;s.t. \ \ y_i\left ( \mathbf{w}\cdot x_i + b \right ) \ge 1, \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn11}<br>\end{equation}</p>
 <h2 id="2-2-对偶问题"><a href="#2-2-对偶问题" class="headerlink" title="2.2. 对偶问题"></a>2.2. 对偶问题</h2><p>凸二次规划问题可以使用现成的优化计算包计算，为了引入核函数和方便计算，将原问题转为其对偶问题进行求解。</p>
-<h3 id="2-2-1-原始问题"><a href="#2-2-1-原始问题" class="headerlink" title="2.2.1. 原始问题"></a>2.2.1. 原始问题</h3><p>将原问题 (\ref{eqn11}) 式重写为：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \\ &amp;s.t. \ \ g(\mathbf{w},b) \le 0 , \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn12}<br>\end{equation}<br>其中 $g(\mathbf{w},b)=1- y_i\left ( \mathbf{w}\cdot x_i + b \right )$。<br>首先，定义拉格朗日函数为：</p>
+<h3 id="2-2-1-原始问题"><a href="#2-2-1-原始问题" class="headerlink" title="2.2.1. 原始问题"></a>2.2.1. 原始问题</h3><p>将原问题 (\ref{eqn11}) 式重写为：<br>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \ &amp;s.t. \ \ g(\mathbf{w},b) \le 0 , \ \ i = 1,2,…,N \end{aligned}<br>\label{eqn12}<br>\end{equation}<br>其中 $g(\mathbf{w},b)=1- y_i\left ( \mathbf{w}\cdot x_i + b \right )$。<br>首先，定义拉格朗日函数为：</p>
 <p>\begin{equation}<br>L(\mathbf{w},b,\alpha) = \frac{1}{2} ||\mathbf{w}||^2 - \sum_{i=1}^N \alpha_i ~g(\mathbf{w},b)<br>\end{equation}<br>其中，$\alpha_i \ge 0$。引入 $(\mathbf{w},b)$ 的函数，记为：</p>
 <p>\begin{equation}<br>\theta_p(\mathbf{w},b) = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>若上式最大化问题有解，其必满足 (\ref{eqn12}) 式的条件，且其解为：</p>
 <p>\begin{equation}<br> \frac{ 1 }{2}||\mathbf{w}||^2 = \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{equation}<br>因为 $\alpha_i \ge 0$，需要 $g(\mathbf{w},b) \le 0$ 才能有最大值解。</p>
@@ -388,23 +390,23 @@
 <h3 id="2-2-3-原始问题与对偶问题的关系"><a href="#2-2-3-原始问题与对偶问题的关系" class="headerlink" title="2.2.3 原始问题与对偶问题的关系"></a>2.2.3 原始问题与对偶问题的关系</h3><p>对任意的 $(\mathbf{w},b,\alpha)$，有：</p>
 <p>\begin{equation}<br>\theta_d(\alpha) = \min_{\mathbf{w},b} L(\mathbf{w},b,\alpha) \le L(\mathbf{w},b,\alpha) \le \max_{\alpha} L(\mathbf{w},b,\alpha) =  \theta_p(\mathbf{w},b)<br>\end{equation}</p>
 <p>若原始问题和对偶问题都有解，根据上式，有：</p>
-<p>\begin{equation}<br>\begin{split}<br>&amp;\theta_d(\alpha) \le \theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \theta_d(\alpha) \le \min_{\mathbf{w},b}\theta_p(\mathbf{w},b) \\\<br>&amp;\Rightarrow \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \le \min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{split}<br>\end{equation}<br>即对偶问题的解小于或等于原始问题的解。在什么情况下，对偶问题的解与原始问题的解相同呢？如果能找到这个条件，那么我们直接解决对偶问题就可以得到原始问题的解，这个条件就是 KKT (Karush-Kuhn-Tucker) 条件。</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp;\theta_d(\alpha) \le \theta_p(\mathbf{w},b) \\<br>&amp;\Rightarrow \max_{\alpha} \theta_d(\alpha) \le \min_{\mathbf{w},b}\theta_p(\mathbf{w},b) \\<br>&amp;\Rightarrow \max_{\alpha} \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \le \min_{\mathbf{w},b} \max_{\alpha} L(\mathbf{w},b,\alpha)<br>\end{split}<br>\end{equation}<br>即对偶问题的解小于或等于原始问题的解。在什么情况下，对偶问题的解与原始问题的解相同呢？如果能找到这个条件，那么我们直接解决对偶问题就可以得到原始问题的解，这个条件就是 KKT (Karush-Kuhn-Tucker) 条件。</p>
 <p>KKT 条件为：</p>
-<p>\begin{equation}<br>\begin{split}<br>\nabla_\mathbf{w} L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_b L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\nabla_\alpha L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \\<br>\alpha_i^* ~ g(\mathbf{w}^*,b^*) &amp;= 0, i=1,2,…,N \\<br>g(\mathbf{w}^*,b^*) &amp;\le 0, i=1,2,…,N \\<br>\alpha_i^* &amp;\ge 0, i=1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>\begin{equation}<br>\begin{split}<br>\nabla_\mathbf{w} L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \<br>\nabla_b L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \<br>\nabla_\alpha L(\mathbf{w}^*,b^*,\alpha^*) &amp;= 0 \<br>\alpha_i^* ~ g(\mathbf{w}^*,b^*) &amp;= 0, i=1,2,…,N \<br>g(\mathbf{w}^*,b^*) &amp;\le 0, i=1,2,…,N \<br>\alpha_i^* &amp;\ge 0, i=1,2,…,N<br>\end{split}<br>\end{equation}</p>
 <p>如果 $(\mathbf{w}^*,b^*,\alpha^*)$ 满足 KKT 条件，则对偶问题和原始问题的解均为 $(\mathbf{w}^*,b^*,\alpha^*)$。</p>
-<p>\begin{equation}<br>\begin{split}<br>&amp; \max_\alpha \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \\<br>&amp;= \max_{\alpha} L(\mathbf{w}^*,b^*,\alpha) \\<br>&amp; = L(\mathbf{w}^*,b^*,\alpha^*) \\<br>&amp; = \frac{1}{2} ||\mathbf{w^*}||^2 - \sum_{i=1}^N \alpha_i^* ~g(\mathbf{w^*},b^*) \\<br>&amp; = \min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \  \ s.t. \ \ g(\mathbf{w^*},b^*) \le 0 , \ \ i = 1,2,…,N<br>\end{split}<br>\end{equation}</p>
+<p>\begin{equation}<br>\begin{split}<br>&amp; \max_\alpha \min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) \<br>&amp;= \max_{\alpha} L(\mathbf{w}^*,b^*,\alpha) \<br>&amp; = L(\mathbf{w}^*,b^*,\alpha^*) \<br>&amp; = \frac{1}{2} ||\mathbf{w^*}||^2 - \sum_{i=1}^N \alpha_i^* ~g(\mathbf{w^*},b^*) \<br>&amp; = \min_{\mathbf{w},b} \frac{ 1 }{2}||\mathbf{w}||^2 \  \ s.t. \ \ g(\mathbf{w^*},b^*) \le 0 , \ \ i = 1,2,…,N<br>\end{split}<br>\end{equation}</p>
 <p>所以，SVM 问题转化为 KKT 条件下的对偶问题求解。</p>
 <h3 id="2-2-3-对偶问题的求解"><a href="#2-2-3-对偶问题的求解" class="headerlink" title="2.2.3 对偶问题的求解"></a>2.2.3 对偶问题的求解</h3><p>为了得到对偶问题的解，需要先求 $L(\mathbf{w},b,\alpha)<br>$ 对 $(\mathbf{w},b)$ 的极小，再求对 $\alpha$ 的极大。</p>
 <ol>
-<li><p>求$\min \limits_{\mathbf{w},b}L(\mathbf{w},b,\alpha)$<br>将 $L(\mathbf{w},b,\alpha)$ 分别对 $\mathbf{w}$，$b$ 求偏导数并令其等于 $0$：<br>\begin{equation}<br>\begin{aligned}  \frac{\partial L(\mathbf{w},b,a)}{\partial \mathbf{w}} &amp;= 0 \Rightarrow \mathbf{w} - \sum_{i=1}^N a_iy_ix_i = 0 \\ \frac{\partial L(\mathbf{w},b,a)}{\partial b} &amp;= 0 \Rightarrow  - \sum_{i=1}^N a_i~y_i = 0 \end{aligned}<br>\end{equation}<br>将上式带入拉格朗日函数消去 $\mathbf{w}$，$b$，有：<br>\begin{equation}<br>\begin{aligned}<br>\min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) =  \ &amp;-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i \\<br>&amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+<li><p>求$\min \limits_{\mathbf{w},b}L(\mathbf{w},b,\alpha)$<br>将 $L(\mathbf{w},b,\alpha)$ 分别对 $\mathbf{w}$，$b$ 求偏导数并令其等于 $0$：<br>\begin{equation}<br>\begin{aligned}  \frac{\partial L(\mathbf{w},b,a)}{\partial \mathbf{w}} &amp;= 0 \Rightarrow \mathbf{w} - \sum_{i=1}^N a_iy_ix_i = 0 \ \frac{\partial L(\mathbf{w},b,a)}{\partial b} &amp;= 0 \Rightarrow  - \sum_{i=1}^N a_i~y_i = 0 \end{aligned}<br>\end{equation}<br>将上式带入拉格朗日函数消去 $\mathbf{w}$，$b$，有：<br>\begin{equation}<br>\begin{aligned}<br>\min_{\mathbf{w},b}L(\mathbf{w},b,\alpha) =  \ &amp;-\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i \<br>&amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
 </li>
-<li><p>求对偶问题<br>\begin{equation}<br>\begin{aligned} &amp;\max_{a_i} \ -\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i\\ &amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
+<li><p>求对偶问题<br>\begin{equation}<br>\begin{aligned} &amp;\max_{a_i} \ -\frac{1}{2}\sum_{i=1}^N\sum_{j=1}^Na_i a_jy_iy_j (x_i \cdot x_j) + \sum _{i=1}^Na_i\ &amp; \ s.t. \ \ \ \sum_{i=1}^N a_iy_i = 0 \end{aligned}<br>\end{equation}</p>
 </li>
 </ol>
 <p>根据上式，可以求取对偶问题的解 $\alpha^*$，再根据 KKT 的条件求取原始问题的解 $(\mathbf{w}^*,b^*)$，从而可以得到划分超平面，这种算法为对偶学习算法。</p>
 <p>对偶问题的解是一个凸二次规划问题，理论上任何一个凸二次规划问题的软件包都可以解决，但是通常很慢，为了能够更快找到好的解，我们采用 <strong>SMO</strong> 算法。该算法的原理先放一放。</p>
 <h1 id="3-线性不可分支持向量机"><a href="#3-线性不可分支持向量机" class="headerlink" title="3. 线性不可分支持向量机"></a>3. 线性不可分支持向量机</h1><p>上述的问题是基于所有样本点 $(x_i, y_i)$ 都能满足函数间隔大于等于 $1$ 的约束条件，即线性可分的。如果存在异常点不满足约束条件，上面的方法就不适用了。为了解决线性不可分的问题，可以对每个样本引入一个松弛变量 $\xi _i  \ge 0$，使得函数间隔加上松弛变量大于等于 $1$，即约束条件变为：<br>\begin{equation}<br>y_i(\mathbf{w} \cdot x_i +b) \ge 1 – \xi_i<br>\end{equation}<br>显然，$\xi_i$ 不能任意大，否则所有样本点都满足约束条件，为了约束 $\xi_i$ 的大小，需要在目标函数中加入惩罚。最终，优化目标改成如下的形式：</p>
-<p>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b,\xi}\ \ \frac{1}{2}||\mathbf{w}||^2 + C\sum_{i=1}^N \xi_i \\ &amp;s.t. \ \ \ \ -y_i(\mathbf{w} \cdot x_i + b) -\xi_i + 1\le 0, \ \ i = 1,2,…,N \\ &amp;\ \ \ \ \ \  \ \ \ \ -\xi_i \le 0 ,\ \ i = 1,2,…,N \end{aligned}<br>\end{equation}<br>其中，$C &gt; 0$ 称为惩罚参数，一般由应用问题决定，$C$ 值越大对误分类的惩罚越大。</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\min_{\mathbf{w},b,\xi}\ \ \frac{1}{2}||\mathbf{w}||^2 + C\sum_{i=1}^N \xi_i \ &amp;s.t. \ \ \ \ -y_i(\mathbf{w} \cdot x_i + b) -\xi_i + 1\le 0, \ \ i = 1,2,…,N \ &amp;\ \ \ \ \ \  \ \ \ \ -\xi_i \le 0 ,\ \ i = 1,2,…,N \end{aligned}<br>\end{equation}<br>其中，$C &gt; 0$ 称为惩罚参数，一般由应用问题决定，$C$ 值越大对误分类的惩罚越大。</p>
 <p>同样地，线性不可分支持向量机的学习问题也是凸二次规划问题，我们采用与线性可分支持向量机同样的方法，即：</p>
 <ol>
 <li>构造拉格朗日函数；</li>
@@ -413,24 +415,24 @@
 <li>利用 <strong>SMO</strong> 算法解释出 $a_i$；</li>
 <li>根据 KKT 条件和 $a_i$ 解算出 $\mathbf{w}~,b,$。</li>
 </ol>
-<p>这里给出对偶问题的具体形式：<br>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
+<p>这里给出对偶问题的具体形式：<br>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}</p>
 <p>可以看到，线性可分支持向量机可以认为是松弛变量等于$0$，也就是上式的特例。线性可分和线性不可分支持向量机合称为线性支持向量机。至此，上式就是线性支持向量机待学习的问题。</p>
 <h1 id="4-线性支持向量机算法"><a href="#4-线性支持向量机算法" class="headerlink" title="4. 线性支持向量机算法"></a>4. 线性支持向量机算法</h1><hr>
 <ol>
-<li><p>构造约束最优化问题：<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}</p>
+<li><p>构造约束最优化问题：<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j(x_i \cdot x_j) - \sum_{i=1}^Na_i \ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}</p>
 </li>
 <li><p>采用 <strong>SMO</strong> 算法求解 $a_, ~i = 1,2,….N$；</p>
 </li>
-<li><p>根据 KKT 条件和 $a_i^*$ 解算出 $\mathbf{w}^*~,b^*,$。<br>\begin{aligned}<br>&amp;\mathbf{w}^* = \sum_{i=1}^Na_i^*y_ix_i\\ &amp;b^* = y_j - \sum_{i=1}^N y_ia_i^*(x_i \cdot x_j)  \\\<br>&amp;0 &lt; a^*_j &lt; C<br>\end{aligned}</p>
+<li><p>根据 KKT 条件和 $a_i^*$ 解算出 $\mathbf{w}^*~,b^*,$。<br>\begin{aligned}<br>&amp;\mathbf{w}^* = \sum_{i=1}^Na_i^*y_ix_i\ &amp;b^* = y_j - \sum_{i=1}^N y_ia_i^*(x_i \cdot x_j)  \\<br>&amp;0 &lt; a^*_j &lt; C<br>\end{aligned}</p>
 </li>
 <li><p>得到超平面 $\mathbf{w}^* \cdot x + b^* = 0$。对于需要分类的数据，根据 $f(x) = sign(\mathbf{w}^* \cdot x+b^*)$ 判断其类别，其中 $sign$ 为相应的决策函数。</p>
 </li>
 </ol>
 <hr>
-<h1 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h1><p>对于给定的非线性可分数据集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，找不到一个分类平面将数据集分类。自然的想法就是将数据映射到新的空间 $\mathbf{x} \rightarrow \phi(\mathbf{x})$，使得其在新的空间中存在分类平面 $\mathbf{w}^T \cdot \phi(\mathbf{x}) +b= 0$，将其分类。如图 3 所示。<br><img src="/img/svm/svm3.png" title="图3. 左边为非线性可分，投影之后线性可分."></p>
+<h1 id="5-非线性支持向量机"><a href="#5-非线性支持向量机" class="headerlink" title="5. 非线性支持向量机"></a>5. 非线性支持向量机</h1><p>对于给定的非线性可分数据集 $\left { (x_i,y_i)\right }_{i=1}^N$，找不到一个分类平面将数据集分类。自然的想法就是将数据映射到新的空间 $\mathbf{x} \rightarrow \phi(\mathbf{x})$，使得其在新的空间中存在分类平面 $\mathbf{w}^T \cdot \phi(\mathbf{x}) +b= 0$，将其分类。如图 3 所示。<br><img src="/img/svm/svm3.png" title="图3. 左边为非线性可分，投影之后线性可分."></p>
 <p>通常来说，非线性 SVM 不显式地定义映射函数 $\phi(\mathbf{x})$，而是采用核技巧，原因下面讲。</p>
 <h2 id="5-1-核技巧"><a href="#5-1-核技巧" class="headerlink" title="5.1. 核技巧"></a>5.1. 核技巧</h2><p>针对非线性可分数据集，假设找到了映射函数 $\phi(\mathbf{x})$，使其线性可分。与线性支持向量机推导一样，约束最优化问题为：</p>
-<p>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j\color{red}{(\phi{(x_i)}^T \cdot \phi{(x_j)})}- \sum_{i=1}^Na_i \\ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}<br>可以看到，上式的优化问题需要计算 $K(x_i,x_j)= \phi{(x_i)}^T \cdot \phi{(x_j)}$，我们称 $K(x_i,x_j)$ 为核函数。因为特征空间通常很高维，甚至是无穷维，映射函数的内积 $\phi{(x_i)}^T \cdot \phi{(x_j)}$ 并不容易计算。为了避开这个障碍，特征空间的內积用核函数 $K(,)$ 来代替，从而避免高维中的內积。所以，不需要定义映射函数 $\phi{\mathbf{x}}$，只需要定义核函数，这便是核技巧。核技巧的好处在于不需要显式定义映射函数，只需要选择合适的核函数。此外，值得说明的是，正是对偶问题的引入，才能使得应用核技巧。</p>
+<p>\begin{equation}<br>\begin{aligned} &amp;\min_a \ \   \frac{1}{2}\sum_{i=1}^N\sum_{j=1}^N a_ia_jy_iy_j\color{red}{(\phi{(x_i)}^T \cdot \phi{(x_j)})}- \sum_{i=1}^Na_i \ &amp;s.t. \ \ \ \ \  0 \le a_i \le C , \ i = 1,2,…,N\ &amp;  \ \ \ \ \ \ \ \ \ \sum_{i=1}^Na_iy_i = 0,\  i = 1,2,…,N \end{aligned}<br>\end{equation}<br>可以看到，上式的优化问题需要计算 $K(x_i,x_j)= \phi{(x_i)}^T \cdot \phi{(x_j)}$，我们称 $K(x_i,x_j)$ 为核函数。因为特征空间通常很高维，甚至是无穷维，映射函数的内积 $\phi{(x_i)}^T \cdot \phi{(x_j)}$ 并不容易计算。为了避开这个障碍，特征空间的內积用核函数 $K(,)$ 来代替，从而避免高维中的內积。所以，不需要定义映射函数 $\phi{\mathbf{x}}$，只需要定义核函数，这便是核技巧。核技巧的好处在于不需要显式定义映射函数，只需要选择合适的核函数。此外，值得说明的是，正是对偶问题的引入，才能使得应用核技巧。</p>
 <h2 id="5-2-核函数"><a href="#5-2-核函数" class="headerlink" title="5.2. 核函数"></a>5.2. 核函数</h2><p>显然，若已知映射函数，则可写出核函数。但是现实任务中我们通常不知道映射函数是什么样的形式。那么，什么样的函数 $K(,)$ 可以作为一个有效的核函数呢？答案是只要 $K(,)$ 满足 <strong>Mercer</strong> 定理即可。这里不再展开叙述。</p>
 <p>定义了核函数，实际上就定义了一个新的特征空间，这个新的特征空间称之为再生核希尔伯特空间。需要注意的是，在不知道特征映射的形式时，我们并不知道什么样的核函数是合适的，而核函数也仅是隐式的定义了新的特征空间。于是，核函数的选用成为了非线性支持向量机的最大变数。若核函数选择不合适，则意味着数据映射到了一个不合适的特征空间，很可能会导致分类效果不佳。</p>
 <p>显然，判断一个函数是否可以当成核函数或者判断一个核函数是否适合是很困难的。这里给出一些常用的核函数。</p>
@@ -568,7 +570,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -579,7 +581,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -590,7 +592,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -694,7 +696,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

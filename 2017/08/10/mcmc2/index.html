@@ -382,7 +382,7 @@
 <p>也就是状态转移的概率只依赖于前一个状态。符合这样定义的马氏链有什么性质呢？让我们看一个例子。</p>
 <p>社会学家经常把人按其经济状况分成 3 类：低层、中层、高层 ，我们用 1、2、3 分别代表这三个阶层。社会学家们发现决定一个人的收入阶层只与其父母的收入阶层有关，也就说收入状态转移的概率只依赖于前一个状态(马尔科夫链)。具体的转移概率如下图所示：<br><img src="/img/mcmc/uml.png" title="图1. 转移概率"></p>
 <p>也就说如果一个人的父代的收入阶层是底层，他属于底层的概率是 0.65、属于中层的概率是 0.28、属于高层的概率是 0.07 (寒门难出贵子！)。将转移概率写成矩阵：</p>
-<p>\begin{equation}<br>P =<br>\begin{bmatrix}<br>0.65 &amp; 0.28 &amp; 0.07 \\\<br>0.15 &amp; 0.67 &amp; 0.18 \\\<br>0.12 &amp; 0.36 &amp; 0.52 \\\<br>\end{bmatrix}<br>\end{equation}</p>
+<p>\begin{equation}<br>P =<br>\begin{bmatrix}<br>0.65 &amp; 0.28 &amp; 0.07 \\<br>0.15 &amp; 0.67 &amp; 0.18 \\<br>0.12 &amp; 0.36 &amp; 0.52 \\<br>\end{bmatrix}<br>\end{equation}</p>
 <p>假设某一代为初始状态，初始概率分布为 $\pi_0 = [0.21,0.68,0.11]$，则根据转移矩阵我们可以计算 $n$ 代人的收入阶层分布：</p>
 <table>
 <thead>
@@ -558,7 +558,7 @@
 <p>这里我们不过多的讲述关于马尔科夫链的定理和性质，需近一步了解的可以参考本文后列出的参考资料。我们需要知道的是，对于一个概率分布来说，如果马尔科夫链中的每一步都让这个概率分布保持不变，我们就说这个概率分布是马尔科夫链的平稳分布。用公式可如下表示：<br>\begin{equation}<br>\pi P = \pi, \quad \sum_{i=0}^{\infty} \pi_i = 1<br>\end{equation}<br>其中 $\pi$ 是马尔科夫链的概率分布，$P$ 是转移概率矩阵。即概率分布乘上转移矩阵还是它本身，也就是概率分布在每一步都保持不变。而且 $\pi$ 是方程 $\pi P = \pi$ 的唯一非负解。</p>
 <p>回到我们的正题。我们需要利用马尔科夫链的性质来生成复杂概率分布 $p(x)$ 的样本。很自然的，我们的想法是产生一条马氏链，使得它的平稳分布就是想要的分布。即，构造符合条件的转移矩阵，使其满足：<br>\begin{equation}<br>p(x)Q = p(x)<br>\end{equation}<br>因为 $p(x)$ 是上式的唯一解，我们可以根据上式来生成 $p(x)$ 的样本。</p>
 <p>那么，如何构造转移矩阵呢？</p>
-<p>假设我们有一个转移矩阵 $Q$($q(i,j)$)，其满足如下条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}<br>$i,j$ 是分布中的两个状态，如上面例子中的低层、中层(就是 $Q$ 矩阵中的下标)。根据 (\ref{dbc}) 式，我们有：<br>\begin{align}<br>&amp; \sum_{i=1}^\infty p(i)q(i,j) = \sum_{i=1}^\infty p(j)q(j,i)<br>= p(j) \sum_{i=1}^\infty q(j,i) = p(j) \\\<br>&amp; \Rightarrow p Q = p<br>\end{align}<br>可以看到，只要构造满足 (\ref{dbc}) 式的转移矩阵，我们就可以得到平稳分布 $p$，(\ref{dbc}) 式也就是马氏链的细致平稳条件。根据 (\ref{dbc}) 式，利用随机采样的方法，就可以得到分布 $p$ 的样本。随机采样的方法将在下一章记录。</p>
+<p>假设我们有一个转移矩阵 $Q$($q(i,j)$)，其满足如下条件：<br>\begin{equation}<br>p(i)q(i,j) = p(j)q(j,i)<br>\label{dbc}<br>\end{equation}<br>$i,j$ 是分布中的两个状态，如上面例子中的低层、中层(就是 $Q$ 矩阵中的下标)。根据 (\ref{dbc}) 式，我们有：<br>\begin{align}<br>&amp; \sum_{i=1}^\infty p(i)q(i,j) = \sum_{i=1}^\infty p(j)q(j,i)<br>= p(j) \sum_{i=1}^\infty q(j,i) = p(j) \\<br>&amp; \Rightarrow p Q = p<br>\end{align}<br>可以看到，只要构造满足 (\ref{dbc}) 式的转移矩阵，我们就可以得到平稳分布 $p$，(\ref{dbc}) 式也就是马氏链的细致平稳条件。根据 (\ref{dbc}) 式，利用随机采样的方法，就可以得到分布 $p$ 的样本。随机采样的方法将在下一章记录。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] <a href="https://cosx.org/2013/01/lda-math-mcmc-and-gibbs-sampling" target="_blank" rel="external">LDA-math-MCMC 和 Gibbs Sampling</a></p>
 <p>[2] Information Theory, Inference, and Learning Algorithms, David J.C. MacKay. (Chap. 29).</p>
 <p>[3] Pattern Recognition and Machine Learning, Christopher M. Bishop. (Chap. 11).</p>
@@ -681,7 +681,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -692,7 +692,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -703,7 +703,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -807,7 +807,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

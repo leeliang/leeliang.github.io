@@ -380,15 +380,15 @@
 <p>那在老板的 push 下，我们的工作热情是怎么样的呢？</p>
 <p>这里就是输入函数在响应的作用下，得到输出函数的问题，也就是求卷积。说了这么多，好像只是介绍了我们的 $x$ 和 $h$ 函数，卷积到底是什么意思呢？让我们看一下 $x$ 和 $h$ 的卷积会发生什么。</p>
 <ul>
-<li><p>Day 0：今天不太想工作，只有 0.1 的意愿，但是老板来 push 了，最终的工作意愿为：<br>\begin{equation*}<br>\begin{split}<br>y(0) &amp;= \int_0^2 x(\tau)h(0-\tau)d\tau \\\<br>   &amp;= \color{red}{x(0)}h(0) + \color{blue}{x(1)}h^+ +\color{blue}{x(2)}h^+ \\\<br>   &amp;= \color{red}{x(0)}h(0) =0.8<br>\end{split}<br>\end{equation*}<br>该公式的意思可以这样理解：将 $h$ 函数作用在输入上，得到了我们的输出。根据 $h$ 函数的特性，它只作用在今天、昨天和前天的数据上 (以 $y(0)$ 中的 $0$ 为参考)，对于明天 ($x(1)$) 和后天的数据 ($x(2)$) 的数据没有作用。</p>
+<li><p>Day 0：今天不太想工作，只有 0.1 的意愿，但是老板来 push 了，最终的工作意愿为：<br>\begin{equation*}<br>\begin{split}<br>y(0) &amp;= \int_0^2 x(\tau)h(0-\tau)d\tau \\<br>   &amp;= \color{red}{x(0)}h(0) + \color{blue}{x(1)}h^+ +\color{blue}{x(2)}h^+ \\<br>   &amp;= \color{red}{x(0)}h(0) =0.8<br>\end{split}<br>\end{equation*}<br>该公式的意思可以这样理解：将 $h$ 函数作用在输入上，得到了我们的输出。根据 $h$ 函数的特性，它只作用在今天、昨天和前天的数据上 (以 $y(0)$ 中的 $0$ 为参考)，对于明天 ($x(1)$) 和后天的数据 ($x(2)$) 的数据没有作用。</p>
 </li>
-<li><p>Day 1: 昨天老板骂了一顿，今天又来了，老板昨天的效果也还在。最终，我们的工作热情为：<br>\begin{equation*}<br>\begin{split}<br>y(1) &amp;=  \color{blue}{x(0)}h(1)+\color{red}{x(1)}h(0)+\color{blue}{x(2)}h^+ \\\<br>&amp;= 0.8+0.3=1.1<br>\end{split}<br>\end{equation*}<br>意思就是今天你的工作热情只有 0.1，老板把你骂了后，你的热情变成了0.8；除此之外，老板昨天劝说的效果还在，只是从 8 倍的作用变成了 3 倍。按照 $h$ 函数的作用，将所有输入结果叠加。</p>
+<li><p>Day 1: 昨天老板骂了一顿，今天又来了，老板昨天的效果也还在。最终，我们的工作热情为：<br>\begin{equation*}<br>\begin{split}<br>y(1) &amp;=  \color{blue}{x(0)}h(1)+\color{red}{x(1)}h(0)+\color{blue}{x(2)}h^+ \\<br>&amp;= 0.8+0.3=1.1<br>\end{split}<br>\end{equation*}<br>意思就是今天你的工作热情只有 0.1，老板把你骂了后，你的热情变成了0.8；除此之外，老板昨天劝说的效果还在，只是从 8 倍的作用变成了 3 倍。按照 $h$ 函数的作用，将所有输入结果叠加。</p>
 </li>
-<li><p>Day 2：同样的：<br>\begin{equation*}<br>\begin{split}<br>y(2) &amp;=  \color{blue}{x(0)}h(2)+\color{blue}{x(1)}h(1)+\color{red}{x(2)}h(0) \\\<br>&amp;=4.8+0.3+0.2=5.3<br>\end{split}<br>\end{equation*}<br>我们可以把 $h$ 看做权，这个计算实际上就相当于对 $x$ 进行了加权叠加。</p>
+<li><p>Day 2：同样的：<br>\begin{equation*}<br>\begin{split}<br>y(2) &amp;=  \color{blue}{x(0)}h(2)+\color{blue}{x(1)}h(1)+\color{red}{x(2)}h(0) \\<br>&amp;=4.8+0.3+0.2=5.3<br>\end{split}<br>\end{equation*}<br>我们可以把 $h$ 看做权，这个计算实际上就相当于对 $x$ 进行了加权叠加。</p>
 </li>
-<li><p>Day 3: 虽然从今天开始我们不再有新的工作热情(输入数据)，但是思想教育的效果依然余留，工作效率在老板 push 的作用下为：<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h(2)+\color{blue}{x(2)}h(1) \\\<br>&amp;=1.8 + 0.2 = 2<br>\end{split}<br>\end{equation*}<br>幸好，根据 $h$ 的加权作用，老板第一天的教育终于被你忘了。</p>
+<li><p>Day 3: 虽然从今天开始我们不再有新的工作热情(输入数据)，但是思想教育的效果依然余留，工作效率在老板 push 的作用下为：<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h(2)+\color{blue}{x(2)}h(1) \\<br>&amp;=1.8 + 0.2 = 2<br>\end{split}<br>\end{equation*}<br>幸好，根据 $h$ 的加权作用，老板第一天的教育终于被你忘了。</p>
 </li>
-<li><p>Day 4: 快要迎来美好时光，老板前几天的教育都要被你忘了。<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h^++\color{blue}{x(2)}h(2) \\\<br>&amp;=1.2<br>\end{split}<br>\end{equation*}<br>老板的督促使得你保持了几天工作热情。根据你三分钟热度的性格，今天之后，又过上了毫无工作热情的生活。</p>
+<li><p>Day 4: 快要迎来美好时光，老板前几天的教育都要被你忘了。<br>\begin{equation*}<br>\begin{split}<br>y(3) &amp;=  \color{blue}{x(0)}h^++\color{blue}{x(1)}h^++\color{blue}{x(2)}h(2) \\<br>&amp;=1.2<br>\end{split}<br>\end{equation*}<br>老板的督促使得你保持了几天工作热情。根据你三分钟热度的性格，今天之后，又过上了毫无工作热情的生活。</p>
 </li>
 </ul>
 <p>我们复习一下卷积的公式：<br>\begin{equation}<br>y(\color{red}{t})= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) d\color{blue}{\tau}<br>\end{equation}</p>
@@ -509,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -520,7 +520,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -531,7 +531,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -635,7 +635,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

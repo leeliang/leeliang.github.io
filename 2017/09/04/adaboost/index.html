@@ -381,11 +381,11 @@
 </ol>
 <p>Boosting 族算法最著名的代表是 AdaBoost。</p>
 <h1 id="2-AdaBoost-算法"><a href="#2-AdaBoost-算法" class="headerlink" title="2. AdaBoost 算法"></a>2. AdaBoost 算法</h1><p>简单来说，AdaBoost 算法就是根据指定参数 $M$，进行 $M$ 轮训练，得到 $M$ 个弱学习器 $G_i$ 及每个弱学习器的权重 $\alpha_i$，最终将这些弱学习器进行线性组合得到最终的学习器 $G$。</p>
-<p>给定训练样本集 $\left \{ (x_i,y_i)\right \}_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in \{ -1,+1 \}$ 为类标签。 AdaBoost 算法流程如下：</p>
+<p>给定训练样本集 $\left { (x_i,y_i)\right }_{i=1}^N$，其中 $x_i \in \mathbb{R}^n $ 为特征空间，$y_i \in { -1,+1 }$ 为类标签。 AdaBoost 算法流程如下：</p>
 <p>(1). 初始化训练集的权值分布：</p>
 <p>\begin{equation}<br>D_{1}=(w_{11},…,w_{1i},…,w_{1N}),~w_{1i}=\frac{1}{N},~i=1,2,…,N<br>\end{equation}</p>
-<p>(2) 对 $m=1,2,3…,M$:<br>(2.1) 使用权值分布 $D_m$ 的训练集学习，得到基学习器：<br>\begin{equation}<br>G_{m}(x):~X{\rightarrow}\{-1,+1\}<br>\end{equation}<br>(2.2) 计算 $G_{m}(x)$ 在训练集上的误差率：<br>\begin{equation}<br>e_{m}=P(G_{m}(x_{i})\neq y_{i}) =\sum_{i=1}^n w_{mi}I(G_{m}(x_{i})\neq y_{i})<br>\end{equation}<br>其中，</p>
-<p>\begin{equation}<br>I(G_{m}(x_{i})\neq y_{i}) =<br>  \left\{<br>   \begin{array}{ccc}<br>           0,~ G_{m}(x_{i})&amp;=&amp; y_i \\<br>           1,~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{equation}<br>(2.3) 计算 $G_{m}(x)$ 的系数：<br>\begin{equation}<br>\alpha_{m}=\frac{1}{2}log \frac{1-e_{m}}{e_{m}}<br>\end{equation}<br>如图 1 所示，基学习器误差越大，其系数越小。<br><img src="/img/adaboost/ae.png" width="400" height="320" title="图1 基学习器系数随误差率的变化"><br>(2.4) 更新训练集的权值分布：<br>\begin{equation}<br>\begin{split}<br>&amp; D_{m+1}=(w_{m+1,1},…,w_{m+1,i},…,w_{m+1,N}) \\\<br>&amp; w_{m+1,i}= \left\{<br>   \begin{array}{ccc}<br>          \frac{w_{mi}}{Z_{m}}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \\<br>          \frac{w_{mi}}{Z_{m}}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{split}<br>\end{equation}<br>其中，<br>\begin{equation}<br>Z_{m} = \sum_{i=1}^{N}w_{mi}exp(-\alpha_{m}y_{i}G_{m}(x_{i}))<br>\end{equation}<br>为归一化因子。</p>
+<p>(2) 对 $m=1,2,3…,M$:<br>(2.1) 使用权值分布 $D_m$ 的训练集学习，得到基学习器：<br>\begin{equation}<br>G_{m}(x):~X{\rightarrow}{-1,+1}<br>\end{equation}<br>(2.2) 计算 $G_{m}(x)$ 在训练集上的误差率：<br>\begin{equation}<br>e_{m}=P(G_{m}(x_{i})\neq y_{i}) =\sum_{i=1}^n w_{mi}I(G_{m}(x_{i})\neq y_{i})<br>\end{equation}<br>其中，</p>
+<p>\begin{equation}<br>I(G_{m}(x_{i})\neq y_{i}) =<br>  \left{<br>   \begin{array}{ccc}<br>           0,~ G_{m}(x_{i})&amp;=&amp; y_i \<br>           1,~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{equation}<br>(2.3) 计算 $G_{m}(x)$ 的系数：<br>\begin{equation}<br>\alpha_{m}=\frac{1}{2}log \frac{1-e_{m}}{e_{m}}<br>\end{equation}<br>如图 1 所示，基学习器误差越大，其系数越小。<br><img src="/img/adaboost/ae.png" width="400" height="320" title="图1 基学习器系数随误差率的变化"><br>(2.4) 更新训练集的权值分布：<br>\begin{equation}<br>\begin{split}<br>&amp; D_{m+1}=(w_{m+1,1},…,w_{m+1,i},…,w_{m+1,N}) \\<br>&amp; w_{m+1,i}= \left{<br>   \begin{array}{ccc}<br>          \frac{w_{mi}}{Z_{m}}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \<br>          \frac{w_{mi}}{Z_{m}}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i<br>   \end{array}<br>  \right.<br>\end{split}<br>\end{equation}<br>其中，<br>\begin{equation}<br>Z_{m} = \sum_{i=1}^{N}w_{mi}exp(-\alpha_{m}y_{i}G_{m}(x_{i}))<br>\end{equation}<br>为归一化因子。</p>
 <p>（3） 构建线性分类器的线性组合：</p>
 <p>\begin{equation}<br>f(x)=\sum_{m=1}^{M}\alpha_{m}G_{m}(x)<br>\end{equation}</p>
 <p>得到最终分类器：<br>\begin{equation}<br>G(x)=sign(f(x))=sign(\sum_{m=1}^{M}\alpha_{m}G_{m}(x))<br>\end{equation}</p>
@@ -398,9 +398,9 @@
 <p>通常这是一个复杂的优化问题。需要采用前向分布算法来求解。</p>
 <h2 id="3-3-前向分布算法"><a href="#3-3-前向分布算法" class="headerlink" title="3.3 前向分布算法"></a>3.3 前向分布算法</h2><p>前向分布算法的思想是：因为学习的是加法模型，如果能够从前向后，每一步只学习一个基函数及其系数，逐步逼近目标函数，那么就可以简化优化的复杂度。</p>
 <p>AdaBoost 第一个基分类器是直接将基学习器算法用于初始训练集得到；此后利用前一个弱学习器的结果，迭代生成权值和基学习器系数，生成后一个弱学习器。第 $m$ 轮的学习器与第 $m-1$ 轮的学习器有如下关系：<br>\begin{equation}<br>f_{m}(x) =   f_{m-1}(x) + \alpha_m G_m(x)<br>\end{equation}<br>目标是每一轮的学习过程中得到 $\alpha_m$ 和 $G_m(x)$，使得 $f_m(x)$ 的指数损失最小，从而最终分类器的指数损失最小。</p>
-<p>根据前向分布学习算法的关系，第 $m$ 轮得到的损失函数为：<br>\begin{equation}<br>\begin{split}<br>&amp;arg ~\min_{\alpha_m, G_m} e^{-y f_m{(x)}}\\\<br>&amp;=arg ~\min_{\alpha_m, G_m} e^{-y~(f_{m-1}(x)+\alpha_m G_m(x) )}\\\<br>&amp;=arg ~\min_{\alpha_m, G_m} \sum_{i=1}^N e^{-y_i~(f_{m-1}(x_i)+\alpha_m G_m(x_i) )}<br>\end{split}<br>\end{equation}<br>令 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，它的值不依赖于 $\alpha_m$、$G_m(x)$，仅仅依赖于 $f_{m-1}$，随着每一轮迭代而改变。</p>
-<p>先求得 $G^*_m(x)$，再上式对 $\alpha_m$ 求导，得到:<br>\begin{equation} \alpha^*_{m}=\frac{1}{2}log \frac{1-e_{m}}{e_{m}} \end{equation}<br>也就是上文的 (5) 式，即学习器系数。</p>
-<p>根据 (13) 式和 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，有：<br>\begin{equation} \begin{split}  w_{m+1,i}= \left\{    \begin{array}{ccc}           w_{mi}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \\           w_{mi}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i    \end{array}   \right. \end{split} \end{equation}<br>其与 (6) 式的权值更新公式只差归一化因子，因而等价。</p>
+<p>根据前向分布学习算法的关系，第 $m$ 轮得到的损失函数为：<br>\begin{equation}<br>\begin{split}<br>&amp;arg ~\min_{\alpha_m, G_m} e^{-y f_m{(x)}}\\<br>&amp;=arg ~\min_{\alpha_m, G_m} e^{-y~(f_{m-1}(x)+\alpha_m G_m(x) )}\\<br>&amp;=arg ~\min_{\alpha_m, G_m} \sum_{i=1}^N e^{-y_i~(f_{m-1}(x_i)+\alpha_m G_m(x_i) )}<br>\end{split}<br>\end{equation}<br>令 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，它的值不依赖于 $\alpha_m$、$G_m(x)$，仅仅依赖于 $f_{m-1}$，随着每一轮迭代而改变。</p>
+<p>先求得 $G^*_m(x)$，再上式对 $\alpha_m$ 求导，得到:<br>\begin{equation} \alpha^*<em>{m}=\frac{1}{2}log \frac{1-e</em>{m}}{e_{m}} \end{equation}<br>也就是上文的 (5) 式，即学习器系数。</p>
+<p>根据 (13) 式和 $w_{mi} = e^{-y_i~f_{m-1}(x_i)}$，有：<br>\begin{equation} \begin{split}  w_{m+1,i}= \left{    \begin{array}{ccc}           w_{mi}~ e^{-\alpha_i},~ G_{m}(x_{i})&amp;=&amp; y_i \           w_{mi}~ e^{\alpha_i},~ G_{m}(x_{i})&amp;\neq&amp; y_i    \end{array}   \right. \end{split} \end{equation}<br>其与 (6) 式的权值更新公式只差归一化因子，因而等价。</p>
 <p>以上，就是 AdaBoost 的另一种解释。</p>
 <h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[1] 《<a href="https://book.douban.com/subject/26708119/" target="_blank" rel="external">机器学习</a>》, 周志华</p>
 <p>[2] 《<a href="https://book.douban.com/subject/10590856/" target="_blank" rel="external">统计学习方法</a>》, 李航</p>
@@ -527,7 +527,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">posts</span>
               </a>
             </div>
@@ -538,7 +538,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">categories</span>
               </a>
             </div>
@@ -549,7 +549,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">tags</span>
               </a>
             </div>
@@ -653,7 +653,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2018</span>
+  <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
